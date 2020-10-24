@@ -211,4 +211,10 @@ dmypy.json
 # pytype static type analyzer
 .pytype/
 
+# database
+data/*
+!data/.gitkeep
 
+# logs
+logs/*
+!logs/.gitkeep

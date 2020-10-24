@@ -59,21 +59,18 @@ b) Launch the app
 Windows (cmd):
 ```
 set FLASK_APP=app.py
+set FLASK_ENV=development
 flask run
 ```
 
 Windows (PowerShell):
 ```
 $env:FLASK_APP = "app.py"
+$env:FLASK_ENV = development
 flask run
 ```
 
-Linux (bash):
+Linux (bash / fish):
 ```
-FLASK_APP=app.py flask run
-```
-
-Linux (fish):
-```
-FLASK_APP=app.py flask run
+FLASK_APP=app.py FLASK_ENV=development flask run
 ```

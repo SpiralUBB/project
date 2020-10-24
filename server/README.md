@@ -1,16 +1,26 @@
 # Server
 
+
 ## Prerequisites
 1\. [Python 3.8](https://www.python.org/downloads/)
+
 2\. [MongoDB](https://docs.mongodb.com/manual/administration/install-community/)
     - [Add the mongod.exe executable to your PATH environment variable](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/install-mongodb#configure-the-vm-and-mongodb)
     so you can use it anywhere
     
-## Initial setup
+## Setup
+
+Start a terminal in the server directory and run the following command(s).
 
 1\. Create a python3.8 local environment
+(only on first setup, no need to do when server gets updated)
 ```
 python3.8 -m venv venv
+```
+
+2\. Update the packages
+```
+pip install -r requirements.txt
 ```
 
 ## Running the app

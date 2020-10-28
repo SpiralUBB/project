@@ -18,7 +18,10 @@ Start a terminal in the server directory and run the following command(s).
 python3.8 -m venv venv
 ```
 
-2\. Update the packages
+2\. Use the local environment
+(steps explained in running the app section)
+
+3\. Update the packages
 ```
 pip install -r requirements.txt
 ```

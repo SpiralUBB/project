@@ -1,0 +1,21 @@
+<div class='login-container'>
+  <form class="login-form">
+    <mat-error *ngIf="hasLoginError"> 
+      Authentication error.
+    </mat-error>
+    <mat-form-field class="login-full-width">
+      <mat-label>Email</mat-label>
+      <input matInput placeholder="Ex. name@example.com">
+    </mat-form-field>
+    <mat-form-field class="login-full-width">
+      <mat-label>Password</mat-label>
+      <input matInput type="password">
+    </mat-form-field>
+  </form>
+
+  <div class='buttons-container'>
+    <button class='login-button' mat-raised-button color="primary">Login</button>
+    <button class='cancel-button' mat-raised-button>Cancel</button>
+  </div>
+</div>
+

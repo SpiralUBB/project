@@ -218,3 +218,6 @@ data/*
 # logs
 logs/*
 !logs/.gitkeep
+
+# app config
+config.py

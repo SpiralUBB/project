@@ -12,18 +12,52 @@
 
 Start a terminal in the server directory and run the following command(s).
 
-1\. Create a python3.8 local environment
-(only on first setup, no need to do when server gets updated)
+1\. Create a local python environment
+(only on first setup)
 ```
 python3.8 -m venv venv
 ```
 
-2\. Use the local environment
-(steps explained in running the app section)
+2\. Use the local python environment
+Windows (cmd):
+```
+.\venv\Scripts\activate.bat
+```
+
+Windows (PowerShell):
+```
+.\venv\Scripts\Activate.ps1
+```
+
+Linux (bash):
+```
+./venv/bin/activate
+```
+
+Linux (fish):
+```
+./venv/bin/activate.fish
+```
 
 3\. Update the packages
 ```
 pip install -r requirements.txt
+```
+
+4\. Copy the config.py.example file to config.py
+
+This is an example configuration, it should be enough for most usages.
+
+5\. Populate the database with example data
+
+Windows:
+```
+python3.8 populate_db.py
+```
+
+Linux:
+```
+./populate_db.py
 ```
 
 ## Running the app
@@ -45,27 +79,7 @@ mongod --config=mongo.config
  
 Start a terminal in the server directory and run the following command(s).
 
-a) Use the local environment
-
-Windows (cmd):
-```
-.\venv\Scripts\activate.bat
-```
-
-Windows (PowerShell):
-```
-.\venv\Scripts\Activate.ps1
-```
-
-Linux (bash):
-```
-./venv/bin/activate
-```
-
-Linux (fish):
-```
-./venv/bin/activate.fish
-```
+a) Use the local python environment (explained before)
 
 b) Launch the app
 

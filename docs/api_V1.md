@@ -2,14 +2,5 @@
 
 Mounted on /api/v1.
 
-### `GET` `/about`
-
-### Response
-
-```
-{
-    "description": "Version 1 API endpoint",
-    "hello": "world",
-    "version": 1
-}
-```
+Usage examples can be found by importing the `api_V1_postman.json`
+file into Postman.

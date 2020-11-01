@@ -1,1 +1,5 @@
 flask
+mongoengine
+bcrypt
+flask_jwt_extended
+flask_injector

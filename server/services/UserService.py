@@ -1,3 +1,5 @@
+from typing import Union
+
 from mongoengine import DoesNotExist
 
 from models.User import User
@@ -29,10 +31,8 @@ class UserService:
         if not user.is_correct_password(password):
             raise LoginFailed()
 
-    def find_by(self, username: str) -> User:
+    def find_by(self, username: str) -> Union[User, None]:
         try:
-            user = User.objects.get(username__exact=username)
+            return User.objects.get(username__exact=username)
         except DoesNotExist:
-            raise UserDoesNotExist(username)
-
-        return user
+            return None

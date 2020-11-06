@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from flask import Flask, jsonify
+from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_injector import FlaskInjector
 from mongoengine import connect
@@ -19,6 +20,8 @@ connect(
 )
 
 app = Flask(__name__)
+
+CORS(app)
 
 app.config['JWT_SECRET_KEY'] = JWT_SECRET_KEY
 app.config['JWT_TOKEN_LOCATION'] = JWT_TOKEN_LOCATION

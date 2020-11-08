@@ -1,9 +1,12 @@
-# WebApp
+# WebApp setup
 
-To install angular-cli run `npm install -g @angular/cli`
+Install [node.js 14.15.0](https://nodejs.org/en/) or greater
+
+Install angular-cli by running `npm install -g @angular/cli`
 
 ## Development server
 
+On first run and after file additions you have to run `npm install`
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding

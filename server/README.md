@@ -48,20 +48,7 @@ pip install -r requirements.txt
 
 This is an example configuration, it should be enough for most usages.
 
-5\. Populate the database with example data
-
-Windows:
-```
-python3.8 populate_db.py
-```
-
-Linux:
-```
-./populate_db.py
-```
-
-## Running the app
-1\. Start the database
+5\. Start the database
 
 Start a terminal in the server directory and run the following command(s).
 
@@ -74,6 +61,21 @@ Linux:
 ```
 mongod --config=mongo.config
 ```
+
+6\. Populate the database with example data
+
+Windows:
+```
+python3.8 populate_db.py
+```
+
+Linux:
+```
+./populate_db.py
+```
+
+## Running the app
+1\. Start the database (explained before)
 
 2\. Start the app
  

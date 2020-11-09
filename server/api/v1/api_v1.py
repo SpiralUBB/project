@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, Flask
 
 from api.v1.user import register_blueprint as register_user_api_blueprint
+from api.v1.event import register_blueprint as register_event_api_blueprint
 
 api = Blueprint('api_v1', __name__)
 

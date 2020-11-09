@@ -19,6 +19,7 @@ python3.8 -m venv venv
 ```
 
 2\. Use the local python environment
+
 Windows (cmd):
 ```
 .\venv\Scripts\activate.bat

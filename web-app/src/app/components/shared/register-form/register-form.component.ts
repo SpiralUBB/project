@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 
@@ -8,17 +10,17 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./register-form.component.scss']
 })
 export class RegisterFormComponent implements OnInit {
-
-  hasRegisterError = false;
   
-  constructor(private apiService: ApiService, private router: Router) {}
+  constructor(private apiService: ApiService, private router: Router,
+    private dialogRef: MatDialogRef<RegisterFormComponent>, private snackbar: MatSnackBar) {}
 
   ngOnInit(): void {
   }
 
   register(firstName: string, lastName: string, username: string, password: string){
-      this.apiService.register(firstName,lastName,username,password).subscribe((res) => {
-        this.router.navigateByUrl('/login');
+      this.apiService.register({username,password,firstName,lastName}).subscribe((res) => {
+        this.snackbar.open("User registered!");
+        this.dialogRef.close();
       });
     }
 }

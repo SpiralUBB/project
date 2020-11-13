@@ -22,6 +22,7 @@ import { EventsComponent } from './components/events/events.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { SidenavComponent } from './components/shared/sidenav/sidenav.component';
 import { SidenavContentComponent } from './components/shared/sidenav/sidenav-content/sidenav-content.component';
+import { NavigationService } from './services/navigation.service';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { SidenavContentComponent } from './components/shared/sidenav/sidenav-con
       useClass: HttpErrorInterceptorService,
       multi: true,
     },
+    NavigationService
   ],
   bootstrap: [AppComponent],
 })

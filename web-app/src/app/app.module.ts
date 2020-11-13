@@ -11,13 +11,15 @@ import { AuthService } from './services/auth.service';
 import { HttpResponseParserService } from './services/http-response-parser.service';
 import { AboutUsComponent } from './components/about-us/about-us/about-us.component';
 import { DashboardComponent } from './components/dashboard/dashboard/dashboard.component';
+import { RegisterFormComponent } from './components/shared/register-form/register-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginFormComponent,
     AboutUsComponent,
-    DashboardComponent
+    DashboardComponent,
+    RegisterFormComponent
   ],
   imports: [
     BrowserModule,

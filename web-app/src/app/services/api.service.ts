@@ -14,4 +14,9 @@ export class ApiService {
   login(user: LoginUser): Observable<User>{
     return this.http.post<User>('/user/login', user);
   }
+
+  register(firstName: string, lastName: string, username: string, password: string){
+    var userRegister={first_name: firstName, last_name: lastName, username: username, password: password};
+    return this.http.post<any>('/user/register',userRegister);
+  }
 }

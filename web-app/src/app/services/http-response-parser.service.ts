@@ -16,7 +16,8 @@ export class HttpResponseParserService implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const newReq = req.clone({
       url: this.apiBasePath + req.url,
-      body: this.remapKeysToSnakeCase(req.body)
+      body: this.remapKeysToSnakeCase(req.body),
+      withCredentials: true
     })
 
     return next.handle(newReq).pipe(

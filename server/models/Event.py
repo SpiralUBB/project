@@ -35,16 +35,16 @@ event_category_map = DualMap({
 
 
 class Event(Document):
-    owner = ReferenceField('User')
-    title = StringField()
+    owner = ReferenceField('User', required=True)
+    title = StringField(required=True)
     location = StringField()
     location_point = PointField()
-    date = StringField()
-    description = StringField()
+    date = StringField(required=True)
+    description = StringField(required=True)
     visibility = IntField(min_value=event_visibility_map.minimum_key(),
-                          max_value=event_visibility_map.maximum_key())
+                          max_value=event_visibility_map.maximum_key(), required=True)
     category = IntField(min_value=event_category_map.minimum_key(),
-                        max_value=event_category_map.maximum_key())
+                        max_value=event_category_map.maximum_key(), required=True)
 
     def to_dict(self):
         return {

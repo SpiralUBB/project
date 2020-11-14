@@ -222,7 +222,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events",
+					"raw": "http://localhost:5000/api/v1/events/5fafbc088cf0afec7bec4438",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -231,7 +231,8 @@
 					"path": [
 						"api",
 						"v1",
-						"events"
+						"events",
+						"5fafbc088cf0afec7bec4438"
 					]
 				}
 			},

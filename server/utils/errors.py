@@ -10,6 +10,7 @@ class HttpError(Exception):
         return {
             'code': self.code,
             'message': self.message,
+            'error': True,
         }
 
 
@@ -67,6 +68,22 @@ class UserLoginFailed(HttpError):
             message = 'User login failed'
 
         super().__init__(message, 'user-login-failed', 401)
+
+
+class UserTokenExpired(HttpError):
+    def __init__(self, token=None):
+        if token:
+            message = 'User {} token expired'
+        else:
+            message = 'User token expired'
+
+        super().__init__(message, 'user-token-expired', 401)
+
+
+class UserTokenInvalid(HttpError):
+    def __init__(self, reason=None):
+        message = 'User token is invalid: {}'.format(reason)
+        super().__init__(message, 'user-token-invalid', 422)
 
 
 class EventAlreadyExistsError(HttpError):

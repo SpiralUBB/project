@@ -194,6 +194,122 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Get events",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/v1/events",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get event",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/v1/events",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create event",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Beuta x2\",\n  \"location\": \"Infinity, Piezisa\",\n  \"date\": \"This is a date I guess\",\n  \"description\": \"Let's drink you fuckers\",\n  \"visibility\": 0,\n  \"category\": 5\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/v1/events",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get event visibilities",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/v1/events/visibilities",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"events",
+						"visibilities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get event categories",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/v1/events/categories",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"events",
+						"categories"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [

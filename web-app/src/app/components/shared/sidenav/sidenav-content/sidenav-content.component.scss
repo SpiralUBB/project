@@ -1,3 +1,16 @@
+@import "~@angular/material/theming";
+
 :host {
   flex-grow: 1;
+}
+
+mat-list{
+  min-width: 300px;
+  padding: 0;
+}
+
+
+.selected-element{
+  background-color: #3f51b5;
+  color: white;
 }

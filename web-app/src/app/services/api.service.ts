@@ -16,7 +16,16 @@ export class ApiService {
     return this.http.post<User>('/user/login', user);
   }
 
+  getCurrentUser(): Observable<User>{
+    return this.http.get<User>('/user');
+  }
+
   register(user: RegisterUser): Observable<RegisterUser>{
     return this.http.post<RegisterUser>('/user/register',user);
+  }
+  
+  
+  logout(): Observable<any>{
+    return this.http.post<any>('/user/logout', null);
   }
 }

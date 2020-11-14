@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { User } from '../models/user';
@@ -12,7 +13,10 @@ export class AuthService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser$: Observable<User>;
 
-  constructor(private apiService: ApiService) {
+  constructor(
+    private apiService: ApiService, 
+    private router: Router
+  ) {
     this.currentUserSubject = new BehaviorSubject<User>(null);
     this.currentUser$ = this.currentUserSubject.asObservable();
   }
@@ -33,8 +37,10 @@ export class AuthService {
     );
   }
 
-  logout() {
-    localStorage.removeItem('currentUser');
-    this.currentUserSubject.next(null);
+  logout() {  
+    this.apiService.logout().subscribe(() => {
+      this.currentUserSubject.next(null);
+      this.router.navigateByUrl("/landing-page");
+    })
   }
 }

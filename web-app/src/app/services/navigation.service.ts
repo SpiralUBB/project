@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { MenuEntry } from '../models/menu-entry.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,10 @@ export class NavigationService {
   public sidenavToggled$ = this.sidenavToggledSubject.asObservable();
 
   constructor() {}
+  menuEntries: MenuEntry[] = [
+    {title: "Landing Page", url: "/landing-page"},
+    {title: "Events", url: "/app/events"}
+  ];
 
   public toggleSidenav() {
     this.isSidenavToggled = !this.isSidenavToggled;

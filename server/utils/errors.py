@@ -94,6 +94,14 @@ class EventAlreadyExists(HttpError):
         super().__init__(message, 'event-already-exists', 403)
 
 
+class EventDoesNotExist(HttpError):
+    def __init__(self, message=None):
+        if not message:
+            message = 'Event does not exist'
+
+        super().__init__(message, 'event-not-exist', 404)
+
+
 class EventOwnerInvalid(HttpError):
     def __init__(self, message=None):
         if not message:

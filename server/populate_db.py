@@ -4,7 +4,7 @@ from mongoengine import connect
 
 from config import DB_USERNAME, DB_NAME, DB_PASSWORD, DB_HOST
 from services.UserService import UserService
-from services.EventService import EventService
+from services.EventsService import EventsService
 from utils.errors import UserAlreadyExistsError
 from validators.UserValidator import UserValidator
 from validators.EventValidator import EventValidator
@@ -25,5 +25,5 @@ except UserAlreadyExistsError:
     adminUser = userService.find_by(username="admin")
 
 eventValidator = EventValidator()
-eventService = EventService(eventValidator)
-eventService.add("1", "admin", "Beuta", "Infinity", "27/11/2020-22:00", "Hai cu noi la bere", "private", "Food & Drink")
+eventService = EventsService(eventValidator)
+eventService.add(adminUser, "Beuta", "Infinity", "27/11/2020-22:00", "Hai cu noi la bere", "private", "Food & Drink")

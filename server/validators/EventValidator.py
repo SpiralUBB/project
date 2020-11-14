@@ -1,54 +1,60 @@
-from utils.errors import IdInvalid, UsernameInvalid, TitleInvalid, LocationInvalid, DateInvalid, DescriptionInvalid, \
-    PrivacyInvalid, TypeInvalid
-from utils.types import Types
+from models.Event import event_visibility_map, event_category_map
+from models.User import User
+from utils.errors import UserUsernameInvalid, EventTitleInvalid, EventLocationInvalid, EventDateInvalid, EventDescriptionInvalid, \
+    EventVisibilityInvalid, EventCategoryInvalid
+
 
 class EventValidator:
-    def validate_id(self, value: int):
+    def validate_user(self, value: User):
         if not value:
-            raise IdInvalid(message='ID cannot be empty')
-
-    def validate_username(self, value: str):
-        if not value:
-            raise UsernameInvalid(message='Creator username cannot be empty')
+            raise UserUsernameInvalid(message='Event owner cannot be missing')
 
     def validate_title(self, value: str):
         if not value:
-            raise TitleInvalid(message='Title cannot be empty')
+            raise EventTitleInvalid(message='Event title cannot be empty')
 
     def validate_location(self, value: str):
         if not value:
-            raise LocationInvalid(message='Location cannot be empty')
+            raise EventLocationInvalid(message='Event location cannot be empty')
 
-    # TODO make sure to convert to date type and validate the format
     def validate_date(self, value: str):
         if not value:
-            raise DateInvalid(message='Date cannot be empty')
+            raise EventDateInvalid(message='Event date cannot be empty')
 
     def validate_description(self, value: str):
         if not value:
-            raise DescriptionInvalid(message='ID cannot be empty')
+            raise EventDescriptionInvalid(message='Event description cannot be empty')
 
-    def validate_privacy(self, value: str):
-        if not value:
-            raise PrivacyInvalid(message='Privacy type cannot be empty')
-        types = Types()
-        if value not in types.privacy_types:
-            raise PrivacyInvalid(message='Invalid privacy type')
+    def parse_visibility(self, value):
+        if value is None:
+            raise EventCategoryInvalid(message='Event visibility cannot be empty')
 
-    def validate_type(self, value: str):
-        if not value:
-            raise TypeInvalid(message='Type cannot be empty')
-        types = Types()
-        if value not in types.event_types:
-            raise PrivacyInvalid(message='Invalid event type')
+        try:
+            value = int(value)
+        except ValueError:
+            pass
 
-    def validate_parameters(self, id: int, username: str, title: str, location: str, date: str, description: str,
-                            privacy: str, ev_type: str):
-        self.validate_id(id)
-        self.validate_username(username)
+        value = event_visibility_map.to_key_either(value)
+        if value is None:
+            raise EventCategoryInvalid(message='Event visibility cannot be found inside the predefined list')
+
+        return value
+
+    def parse_category(self, value):
+        try:
+            value = int(value)
+        except ValueError:
+            pass
+
+        value = event_category_map.to_key_either(value)
+        if value is None:
+            raise EventCategoryInvalid(message='Event category cannot be found inside the predefined list')
+
+        return value
+
+    def validate_parameters(self, user: User, title: str, location: str, date: str, description: str):
+        self.validate_user(user)
         self.validate_title(title)
         self.validate_location(location)
         self.validate_date(date)
         self.validate_description(description)
-        self.validate_privacy(privacy)
-        self.validate_type(ev_type)

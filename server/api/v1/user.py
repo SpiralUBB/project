@@ -3,7 +3,7 @@ from flask_jwt_extended import create_access_token, set_access_cookies, jwt_requ
     unset_access_cookies
 
 from services.UserService import UserService
-from utils.errors import UserDoesNotExist, LoginFailed
+from utils.errors import UserDoesNotExist, UserLoginFailed
 
 api = Blueprint('api_v1_user', __name__)
 
@@ -26,7 +26,7 @@ def login_post(service: UserService):
 
     user = service.find_by(username=username)
     if user is None:
-        raise LoginFailed()
+        raise UserLoginFailed()
 
     service.verify_password(user, password)
 

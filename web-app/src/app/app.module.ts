@@ -13,6 +13,8 @@ import {
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthService } from './services/auth.service';
 import { HttpResponseParserService } from './services/http-response-parser.service';
+
+import { RegisterFormComponent } from './components/shared/register-form/register-form.component';
 import { HttpErrorInterceptorService } from './services/http-error-interceptor.service';
 import { ErrorSnackbarComponent } from './components/shared/error-snackbar/error-snackbar.component';
 import { NavbarComponent } from './components/shared/navbar/navbar.component';
@@ -20,11 +22,13 @@ import { EventsComponent } from './components/events/events.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { SidenavComponent } from './components/shared/sidenav/sidenav.component';
 import { SidenavContentComponent } from './components/shared/sidenav/sidenav-content/sidenav-content.component';
+import { NavigationService } from './services/navigation.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginFormComponent,
+    RegisterFormComponent,
     ErrorSnackbarComponent,
     NavbarComponent,
     EventsComponent,
@@ -51,6 +55,7 @@ import { SidenavContentComponent } from './components/shared/sidenav/sidenav-con
       useClass: HttpErrorInterceptorService,
       multi: true,
     },
+    NavigationService
   ],
   bootstrap: [AppComponent],
 })

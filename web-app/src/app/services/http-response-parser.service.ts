@@ -15,7 +15,8 @@ export class HttpResponseParserService implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const newReq = req.clone({
-      url: this.apiBasePath + req.url
+      url: this.apiBasePath + req.url,
+      body: this.remapKeysToSnakeCase(req.body)
     })
 
     return next.handle(newReq).pipe(
@@ -26,6 +27,7 @@ export class HttpResponseParserService implements HttpInterceptor {
 
           return modEvent;
         }
+        
       })
     )
   }
@@ -48,6 +50,7 @@ export class HttpResponseParserService implements HttpInterceptor {
     return o;
   }
 
+
   private toCamel(toParse: string) {
     console.log(toParse);
     // const toReturn = toParse.replace('/([-_][a-z])/g',
@@ -55,6 +58,37 @@ export class HttpResponseParserService implements HttpInterceptor {
     //     .replace('-', '')
     //     .replace('_', ''));
     const toReturn = toParse.split('_').map((x, i) => ((i > 0) ? x[0].toUpperCase() : x[0]) + x.slice(1)).join('');
+    console.log(toReturn);
+    return toReturn;
+  }
+
+
+  private remapKeysToSnakeCase(o: object) {
+    if (o !== null && typeof o === 'object') {
+      const n = {};
+
+      Object.keys(o)
+        .forEach((k) => {
+          n[this.toSnake(k)] = this.remapKeysToSnakeCase(o[k]);
+        });
+  
+      return n;
+    } else if (Array.isArray(o)) {
+      return o.map((i) => {
+        return this.toSnake(i);
+      });
+    }
+    return o;
+  }
+
+
+  private toSnake(toParse: string) {
+    console.log(toParse);
+    // const toReturn = toParse.replace('/([-_][a-z])/g',
+    //   (group) => group.toUpperCase()
+    //     .replace('-', '')
+    //     .replace('_', ''));
+    const toReturn = toParse.replace(/(?:^|\.?)([A-Z])/g, function (x,y){return "_" + y.toLowerCase()}).replace(/^_/, "")
     console.log(toReturn);
     return toReturn;
   }

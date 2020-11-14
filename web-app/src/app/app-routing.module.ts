@@ -4,6 +4,7 @@ import { AppComponent } from './app.component';
 import { EventsComponent } from './components/events/events.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { LoginFormComponent } from './components/shared/login-form/login-form.component';
+import { RegisterFormComponent} from './components/shared/register-form/register-form.component';
 import { AuthGuardService } from './guards/auth-guard.service';
 
 const routes: Routes = [

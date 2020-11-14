@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { LoginUser } from '../models/login-user.interface';
+import { RegisterUser } from '../models/register-user.interface';
 import { User } from '../models/user';
 
 @Injectable({
@@ -13,5 +14,9 @@ export class ApiService {
 
   login(user: LoginUser): Observable<User>{
     return this.http.post<User>('/user/login', user);
+  }
+
+  register(user: RegisterUser): Observable<RegisterUser>{
+    return this.http.post<RegisterUser>('/user/register',user);
   }
 }

@@ -77,93 +77,57 @@ class EventAlreadyExistsError(HttpError):
         super().__init__(message, 'event-already-exists', 403)
 
 
-class EventDoesNotExist(HttpError):
+class EventOwnerInvalid(HttpError):
     def __init__(self, message=None):
         if not message:
-            message = 'Event does not exist'
+            message = 'Event owner is invalid'
 
-        super().__init__(message, 'event-not-exist', 404)
+        super().__init__(message, 'event-owner-invalid', 400)
 
 
-class IdInvalid(HttpError):
+class EventTitleInvalid(HttpError):
     def __init__(self, message=None):
         if not message:
-            message = 'ID is invalid'
+            message = 'Event title is invalid'
 
-        super().__init__(message, 'id-invalid', 400)
+        super().__init__(message, 'event-title-invalid', 400)
 
 
-class UsernameInvalid(HttpError):
+class EventLocationInvalid(HttpError):
     def __init__(self, message=None):
         if not message:
-            message = 'Username of the creator is invalid'
+            message = 'Event location is invalid'
 
-        super().__init__(message, 'id-creator-invalid', 400)
+        super().__init__(message, 'event-location-invalid', 400)
 
 
-class TitleInvalid(HttpError):
+class EventDateInvalid(HttpError):
     def __init__(self, message=None):
         if not message:
-            message = 'Title is invalid'
+            message = 'Event date is invalid'
 
-        super().__init__(message, 'title-invalid', 400)
+        super().__init__(message, 'event-date-invalid', 400)
 
 
-class LocationInvalid(HttpError):
+class EventDescriptionInvalid(HttpError):
     def __init__(self, message=None):
         if not message:
-            message = 'Location is invalid'
+            message = 'Event description is invalid'
 
-        super().__init__(message, 'location-invalid', 400)
+        super().__init__(message, 'event-description-invalid', 400)
 
 
-class DateInvalid(HttpError):
+class EventVisibilityInvalid(HttpError):
     def __init__(self, message=None):
         if not message:
-            message = 'Date is invalid'
+            message = 'Event visibility type is invalid'
 
-        super().__init__(message, 'date-invalid', 400)
+        super().__init__(message, 'event-visibility-invalid', 400)
 
 
-class DescriptionInvalid(HttpError):
+class EventCategoryInvalid(HttpError):
     def __init__(self, message=None):
         if not message:
-            message = 'Description is invalid'
+            message = 'Event category is invalid'
 
-        super().__init__(message, 'description-invalid', 400)
-
-
-class PrivacyInvalid(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'Privacy type is invalid'
-
-        super().__init__(message, 'privacy-invalid', 400)
-
-
-class TypeInvalid(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'Event type is invalid'
-
-        super().__init__(message, 'type-invalid', 400)
-
-
-class AddEventFailed(HttpError):
-    def __init__(self):
-        super().__init__('Adding the event failed', 'add-event-failed', 401)
-
-
-class DeleteEventFailed(HttpError):
-    def __init__(self):
-        super().__init__('Deleting the event failed', 'delete-event-failed', 401)
-
-
-class ReadEventFailed(HttpError):
-    def __init__(self):
-        super().__init__('Loading the event failed', 'read-event-failed', 401)
-
-
-class UpdateEventFailed(HttpError):
-    def __init__(self):
-        super().__init__('Updating the event failed', 'update-event-failed', 401)
+        super().__init__(message, 'event-category-invalid', 400)

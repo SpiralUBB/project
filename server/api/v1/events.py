@@ -12,11 +12,13 @@ api = Blueprint('api_v1_events', __name__)
 def extract_event_properties():
     title = request.json.get('title')
     location = request.json.get('location')
+    location_point = request.json.get('location_point')
     date = request.json.get('date')
     description = request.json.get('description')
     visibility = request.json.get('visibility')
     category = request.json.get('category')
-    return title, location, date, description, visibility, category
+    return title, location, location_point, date, description, visibility, category
+
 
 @api.route('')
 def events_get(service: EventsService):
@@ -42,8 +44,8 @@ def events_post(user_service: UserService, events_service: EventsService):
     if user is None:
         raise UserDoesNotExist()
 
-    title, location, date, description, visibility, category = extract_event_properties()
-    event = events_service.add(user, title, location, date, description, visibility, category)
+    title, location, location_point, date, description, visibility, category = extract_event_properties()
+    event = events_service.add(user, title, location, location_point, date, description, visibility, category)
     return jsonify(event.to_dict())
 
 
@@ -69,8 +71,8 @@ def events_patch_event(user_service: UserService, events_service: EventsService,
     if event is None:
         raise EventDoesNotExist()
 
-    title, location, date, description, visibility, category = extract_event_properties()
-    event = events_service.update(event, title, location, date, description, visibility, category)
+    title, location, location_point, date, description, visibility, category = extract_event_properties()
+    event = events_service.update(event, title, location, location_point, date, description, visibility, category)
     return jsonify(event.to_dict())
 
 

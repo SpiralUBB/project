@@ -1,7 +1,9 @@
+from typing import List
+
 from models.Event import event_visibility_map, event_category_map
 from models.User import User
-from utils.errors import UserUsernameInvalid, EventTitleInvalid, EventLocationInvalid, EventDateInvalid, EventDescriptionInvalid, \
-    EventVisibilityInvalid, EventCategoryInvalid
+from utils.errors import UserUsernameInvalid, EventTitleInvalid, EventLocationInvalid, EventDateInvalid, \
+    EventDescriptionInvalid, EventCategoryInvalid, EventLocationPointInvalid
 
 
 class EventValidator:
@@ -16,6 +18,20 @@ class EventValidator:
     def validate_location(self, value: str):
         if not value:
             raise EventLocationInvalid(message='Event location cannot be empty')
+
+    def validate_location_point(self, value: List[int]):
+        if not value:
+            raise EventLocationPointInvalid(message='Event location point cannot be empty')
+
+        if type(value) != list:
+            raise EventLocationPointInvalid(message='Event location point must be a list')
+
+        if len(value) != 2:
+            raise EventLocationPointInvalid(message='Event location point must be a list with 2 values')
+
+        for x in value:
+            if type(x) != float:
+                raise EventLocationPointInvalid(message='Event location point must be a list with 2 floats')
 
     def validate_date(self, value: str):
         if not value:
@@ -52,9 +68,11 @@ class EventValidator:
 
         return value
 
-    def validate_parameters(self, user: User, title: str, location: str, date: str, description: str):
+    def validate_parameters(self, user: User, title: str, location: str, location_point: List[int],
+                            date: str, description: str):
         self.validate_user(user)
         self.validate_title(title)
         self.validate_location(location)
+        self.validate_location_point(location_point)
         self.validate_date(date)
         self.validate_description(description)

@@ -1,4 +1,4 @@
-from mongoengine import Document, ReferenceField, IntField, StringField
+from mongoengine import Document, ReferenceField, IntField, StringField, PointField
 
 from utils.DualMap import DualMap
 
@@ -38,6 +38,7 @@ class Event(Document):
     owner = ReferenceField('User')
     title = StringField()
     location = StringField()
+    location_point = PointField()
     date = StringField()
     description = StringField()
     visibility = IntField(min_value=event_visibility_map.minimum_key(),
@@ -51,6 +52,7 @@ class Event(Document):
             'owner': self.owner.to_dict(),
             'title': self.title,
             'location': self.location,
+            'location_point': self.location_point,
             'date': self.date,
             'description': self.description,
             'visibility': self.visibility,

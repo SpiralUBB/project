@@ -25,15 +25,15 @@ class EventsService:
 
         return filter_options
 
-    def add(self, owner: User, title: str, location: str, date: str, description: str,
+    def add(self, owner: User, title: str, location: str, location_point: List[int], date: str, description: str,
             visibility: Union[str, int], category: [str, int]) -> Event:
         visibility = self.validator.parse_visibility(visibility)
         category = self.validator.parse_category(category)
 
-        self.validator.validate_parameters(owner, title, location, date, description)
+        self.validator.validate_parameters(owner, title, location, location_point, date, description)
 
-        event = Event(owner=owner, title=title, location=location, date=date, description=description,
-                      visibility=visibility, category=category)
+        event = Event(owner=owner, title=title, location=location, location_point=location_point, date=date,
+                      description=description, visibility=visibility, category=category)
         event.save()
 
         return event
@@ -49,7 +49,7 @@ class EventsService:
     def find_all(self) -> List[Event]:
         return Event.objects()
 
-    def update(self, event, title: str, location: str, date: str, description: str,
+    def update(self, event, title: str, location: str, location_point: List[int], date: str, description: str,
                visibility: Union[str, int], category: [str, int]) -> Event:
         if title is not None:
             self.validator.validate_title(title)
@@ -58,6 +58,10 @@ class EventsService:
         if location is not None:
             self.validator.validate_location(location)
             event.location = location
+
+        if location_point is not None:
+            self.validator.validate_location_point(location_point)
+            event.location_point = location_point
 
         if date is not None:
             self.validator.validate_date(date)

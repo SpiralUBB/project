@@ -4,7 +4,7 @@ from mongoengine import DoesNotExist
 
 from models.User import User
 
-from utils.errors import UserAlreadyExistsError, UserDoesNotExist, UserLoginFailed
+from utils.errors import UserAlreadyExists, UserDoesNotExist, UserLoginFailed
 from validators.UserValidator import UserValidator
 
 
@@ -17,7 +17,7 @@ class UserService:
 
         try:
             User.objects.get(username__exact=username)
-            raise UserAlreadyExistsError(username)
+            raise UserAlreadyExists(username)
         except DoesNotExist:
             pass
 

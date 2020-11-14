@@ -5,7 +5,7 @@ from mongoengine import connect
 from config import DB_USERNAME, DB_NAME, DB_PASSWORD, DB_HOST
 from services.UserService import UserService
 from services.EventsService import EventsService
-from utils.errors import UserAlreadyExistsError
+from utils.errors import UserAlreadyExists
 from validators.UserValidator import UserValidator
 from validators.EventValidator import EventValidator
 
@@ -21,7 +21,7 @@ userService = UserService(userValidator)
 
 try:
     adminUser = userService.add("admin", "pass", "Admin", "Name")
-except UserAlreadyExistsError:
+except UserAlreadyExists:
     adminUser = userService.find_by(username="admin")
 
 eventValidator = EventValidator()

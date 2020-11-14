@@ -4,7 +4,7 @@ from mongoengine import DoesNotExist
 
 from models.User import User
 
-from utils.errors import UserAlreadyExistsError, UserDoesNotExist, LoginFailed
+from utils.errors import UserAlreadyExistsError, UserDoesNotExist, UserLoginFailed
 from validators.UserValidator import UserValidator
 
 
@@ -29,7 +29,7 @@ class UserService:
 
     def verify_password(self, user: User, password: str):
         if not user.is_correct_password(password):
-            raise LoginFailed()
+            raise UserLoginFailed()
 
     def find_by(self, username: str) -> Union[User, None]:
         try:

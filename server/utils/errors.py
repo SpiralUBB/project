@@ -13,11 +13,6 @@ class HttpError(Exception):
         }
 
 
-"""
-    User error messages
-"""
-
-
 class UserAlreadyExistsError(HttpError):
     def __init__(self, message=None):
         if not message:
@@ -34,46 +29,44 @@ class UserDoesNotExist(HttpError):
         super().__init__(message, 'user-not-exist', 404)
 
 
-class UsernameInvalid(HttpError):
+class UserUsernameInvalid(HttpError):
     def __init__(self, message=None):
         if not message:
-            message = 'Username is invalid'
+            message = 'User username is invalid'
 
-        super().__init__(message, 'username-invalid', 400)
+        super().__init__(message, 'user-username-invalid', 400)
 
 
-class PasswordInvalid(HttpError):
+class UserPasswordInvalid(HttpError):
     def __init__(self, message=None):
         if not message:
-            message = 'Password is invalid'
+            message = 'User password is invalid'
 
-        super().__init__(message, 'password-invalid', 400)
+        super().__init__(message, 'user-password-invalid', 400)
 
 
-class FirstNameInvalid(HttpError):
+class UserFirstNameInvalid(HttpError):
     def __init__(self, message=None):
         if not message:
-            message = 'First name is invalid'
+            message = 'User first name is invalid'
 
-        super().__init__(message, 'first-name-invalid', 400)
+        super().__init__(message, 'user-first-name-invalid', 400)
 
 
-class LastNameInvalid(HttpError):
+class UserLastNameInvalid(HttpError):
     def __init__(self, message=None):
         if not message:
-            message = 'Last name is invalid'
+            message = 'User last name is invalid'
 
-        super().__init__(message, 'last-name-invalid', 400)
-
-
-class LoginFailed(HttpError):
-    def __init__(self):
-        super().__init__('Login failed', 'login-failed', 401)
+        super().__init__(message, 'user-last-name-invalid', 400)
 
 
-"""
-    Event error messages
-"""
+class UserLoginFailed(HttpError):
+    def __init__(self, message=None):
+        if not message:
+            message = 'User login failed'
+
+        super().__init__(message, 'user-login-failed', 401)
 
 
 class EventAlreadyExistsError(HttpError):

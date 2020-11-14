@@ -40,10 +40,18 @@ def http_errorhandler(e):
 
 
 @app.errorhandler(Exception)
-def generic_errorhandler(e):
+def generic_errorhandler(e: Exception):
+    try:
+        raise e
+    except Exception:
+        trace = traceback.format_exc()
+
+    trace_lines = trace.split('\n')
+
     response = {
         'message': str(e),
         'code': 'unknown-error',
+        'stack': trace_lines,
     }
     return jsonify(response), 500
 

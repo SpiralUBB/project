@@ -11,7 +11,7 @@ class EventComment(Document):
 
     def to_dict(self, with_event=False):
         d = {
-            'id': self.id,
+            'id': str(self.id),
             'author': self.author.to_dict(),
             'text': self.text,
         }

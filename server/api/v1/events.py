@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, Flask, Response
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
-from models.Event import event_visibility_map, event_category_map
+from models.Event import event_visibility_map, event_category_map, EVENT_VISIBILITY_PUBLIC
 from services.EventCommentsService import EventCommentsService
 from services.EventsService import EventsService
 from services.UserService import UserService
@@ -28,7 +28,7 @@ def extract_event_comment_properties():
 
 @api.route('')
 def events_get(service: EventsService):
-    events = service.find_by()
+    events = service.find_by(visibility=event_visibility_map.to_key(EVENT_VISIBILITY_PUBLIC))
     return jsonify([event.to_dict() for event in events])
 
 

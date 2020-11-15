@@ -19,6 +19,10 @@ class EventsService:
         if event_id is not None:
             filter_options['id'] = event_id
 
+        visibility = kwargs.get('visibility', None)
+        if visibility is not None:
+            filter_options['visibility'] = visibility
+
         owner = kwargs.get('owner', None)
         if owner is not None:
             filter_options['owner'] = owner

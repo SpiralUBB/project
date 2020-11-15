@@ -11,7 +11,9 @@ from models.User import User
 
 class EventInvitationService:
     def add(self, event: Event, user: User,
-            status: int = event_invitation_status_map.to_key(EVENT_INVITATION_STATUS_PENDING)):
+            accepted: bool = False):
+        status = event_invitation_status_map.to_key(EVENT_INVITATION_STATUS_ACCEPTED) if accepted \
+            else event_invitation_status_map.to_key(EVENT_INVITATION_STATUS_PENDING)
         event_invitation = EventInvitation(event=event, user=user, status=status)
         event_invitation.save()
         return event_invitation

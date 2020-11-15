@@ -106,7 +106,7 @@ def events_get_event_comments(event_service: EventService, event_comments_servic
         raise EventDoesNotExist()
 
     event_comments = event_comments_service.find_by(event_id=event_id)
-    return jsonify([event_comment.to_dict() for event_comment in event_comments])
+    return get_paginated_items_from_qs(event_comments)
 
 
 @api.route('/<string:event_id>/comments', methods=['POST'])

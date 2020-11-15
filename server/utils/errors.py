@@ -196,3 +196,19 @@ class EventCommentTextInvalid(HttpError):
             message = 'Event comment text invalid'
 
         super().__init__(message, 'event-comment-text-invalid', 400)
+
+
+class PaginationLimitInvalid(HttpError):
+    def __init__(self, message=None):
+        if not message:
+            message = 'Pagination limit invalid'
+
+        super().__init__(message, 'pagination-limit-invalid', 400)
+
+
+class PaginationPageInvalid(HttpError):
+    def __init__(self, message=None):
+        if not message:
+            message = 'Pagination page invalid'
+
+        super().__init__(message, 'pagination-page-invalid', 400)

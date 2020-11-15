@@ -2,7 +2,7 @@ from typing import List
 
 from models.Event import event_visibility_map, event_category_map
 from models.User import User
-from utils.errors import UserUsernameInvalid, EventTitleInvalid, EventLocationInvalid, EventDateInvalid, \
+from utils.errors import EventTitleInvalid, EventLocationInvalid, EventDateInvalid, \
     EventDescriptionInvalid, EventCategoryInvalid, EventLocationPointInvalid, EventOwnerInvalid, EventVisibilityInvalid
 
 

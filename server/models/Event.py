@@ -11,7 +11,7 @@ event_visibility_map = DualMap({
     0: 'private',
     1: 'public',
     2: 'whitelist',
-})
+}, (-1, 'unknown'))
 
 
 event_category_map = DualMap({
@@ -31,7 +31,7 @@ event_category_map = DualMap({
     13: 'Social',
     14: 'Sport & Fitness',
     15: 'Tech',
-})
+}, (-1, 'Unknown'))
 
 
 class Event(Document):

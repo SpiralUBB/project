@@ -2,8 +2,10 @@ from bidict import bidict
 
 
 class DualMap:
-    def __init__(self, data):
+    def __init__(self, data, unknown=(None, None)):
         self.__map = bidict(data)
+        self.__unknown_key = unknown[0]
+        self.__unknown_value = unknown[1]
 
     def is_valid_key(self, key):
         return key in self.__map
@@ -21,10 +23,10 @@ class DualMap:
         return None
 
     def to_key(self, value):
-        return self.__map.inverse[value]
+        return self.__map.inverse.get(value, default=self.__unknown_key)
 
     def to_value(self, key):
-        return self.__map[key]
+        return self.__map.get(key, default=self.__unknown_value)
 
     def values(self):
         return self.__map.values()

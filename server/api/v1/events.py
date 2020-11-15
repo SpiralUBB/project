@@ -1,14 +1,8 @@
-from typing import List
-
-from bson import ObjectId
 from flask import Blueprint, jsonify, request, Flask
 from flask_jwt_extended import jwt_required, get_jwt_identity, jwt_optional
-from mongoengine import Q
 
 from models.Event import event_visibility_map, event_category_map, EVENT_VISIBILITY_WHITELIST, Event, \
     EVENT_VISIBILITY_PRIVATE, EVENT_VISIBILITY_PUBLIC
-from models.EventInvitation import event_invitation_status_map, EVENT_INVITATION_STATUS_ACCEPTED, EventInvitation
-from models.User import User
 from services.EventCommentService import EventCommentService
 from services.EventInvitationService import EventInvitationService
 from services.EventService import EventService

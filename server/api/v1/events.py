@@ -28,7 +28,7 @@ def extract_event_comment_properties():
 
 @api.route('')
 def events_get(service: EventsService):
-    events = service.find_all()
+    events = service.find_by()
     return jsonify([event.to_dict() for event in events])
 
 
@@ -46,7 +46,7 @@ def events_get_categories():
 @jwt_required
 def events_post(user_service: UserService, events_service: EventsService):
     username = get_jwt_identity()
-    user = user_service.find_by(username=username)
+    user = user_service.find_one_by(username=username)
     if user is None:
         raise UserDoesNotExist()
 
@@ -57,7 +57,7 @@ def events_post(user_service: UserService, events_service: EventsService):
 
 @api.route('/<string:event_id>')
 def events_get_event(events_service: EventsService, event_id: str):
-    event = events_service.find_by(event_id=event_id)
+    event = events_service.find_one_by(event_id=event_id)
     if event is None:
         raise EventDoesNotExist()
 
@@ -68,11 +68,11 @@ def events_get_event(events_service: EventsService, event_id: str):
 @jwt_required
 def events_patch_event(user_service: UserService, events_service: EventsService, event_id: str):
     username = get_jwt_identity()
-    user = user_service.find_by(username=username)
+    user = user_service.find_one_by(username=username)
     if user is None:
         raise UserDoesNotExist()
 
-    event = events_service.find_by(owner=user, event_id=event_id)
+    event = events_service.find_one_by(owner=user, event_id=event_id)
     if event is None:
         raise EventDoesNotExist()
 
@@ -85,11 +85,11 @@ def events_patch_event(user_service: UserService, events_service: EventsService,
 @jwt_required
 def events_delete_event(user_service: UserService, events_service: EventsService, event_id: str):
     username = get_jwt_identity()
-    user = user_service.find_by(username=username)
+    user = user_service.find_one_by(username=username)
     if user is None:
         raise UserDoesNotExist()
 
-    event = events_service.find_by(owner=user, event_id=event_id)
+    event = events_service.find_one_by(owner=user, event_id=event_id)
     if event is None:
         raise EventDoesNotExist()
 
@@ -101,7 +101,7 @@ def events_delete_event(user_service: UserService, events_service: EventsService
 @jwt_required
 def events_get_event_comments(events_service: EventsService, event_comments_service: EventCommentsService,
                               event_id: str):
-    event = events_service.find_by(event_id=event_id)
+    event = events_service.find_one_by(event_id=event_id)
     if event is None:
         raise EventDoesNotExist()
 
@@ -114,11 +114,11 @@ def events_get_event_comments(events_service: EventsService, event_comments_serv
 def events_post_event_comments(events_service: EventsService, event_comments_service: EventCommentsService,
                                user_service: UserService, event_id: str):
     username = get_jwt_identity()
-    user = user_service.find_by(username=username)
+    user = user_service.find_one_by(username=username)
     if user is None:
         raise UserDoesNotExist()
 
-    event = events_service.find_by(event_id=event_id)
+    event = events_service.find_one_by(event_id=event_id)
     if event is None:
         raise EventDoesNotExist()
 
@@ -133,15 +133,15 @@ def events_post_event_comments(events_service: EventsService, event_comments_ser
 def events_patch_event_comment(events_service: EventsService, event_comments_service: EventCommentsService,
                                user_service: UserService, event_id: str, comment_id: str):
     username = get_jwt_identity()
-    user = user_service.find_by(username=username)
+    user = user_service.find_one_by(username=username)
     if user is None:
         raise UserDoesNotExist()
 
-    event = events_service.find_by(event_id=event_id)
+    event = events_service.find_one_by(event_id=event_id)
     if event is None:
         raise EventDoesNotExist()
 
-    event_comment = event_comments_service.find_by(comment_id=comment_id)
+    event_comment = event_comments_service.find_one_by(author=user, event=event, ecomment_id=comment_id)
     if event_comment is None:
         raise EventCommentDoesNotExist()
 
@@ -156,15 +156,15 @@ def events_patch_event_comment(events_service: EventsService, event_comments_ser
 def events_delete_event_comment(events_service: EventsService, event_comments_service: EventCommentsService,
                                 user_service: UserService, event_id: str, comment_id: str):
     username = get_jwt_identity()
-    user = user_service.find_by(username=username)
+    user = user_service.find_one_by(username=username)
     if user is None:
         raise UserDoesNotExist()
 
-    event = events_service.find_by(event_id=event_id)
+    event = events_service.find_one_by(event_id=event_id)
     if event is None:
         raise EventDoesNotExist()
 
-    event_comment = event_comments_service.find_by(comment_id=comment_id)
+    event_comment = event_comments_service.find_one_by(author=user, event=event, comment_id=comment_id)
     if event_comment is None:
         raise EventCommentDoesNotExist()
 

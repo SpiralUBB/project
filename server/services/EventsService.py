@@ -38,7 +38,7 @@ class EventsService:
 
         return event
 
-    def find_by(self, **kwargs) -> Union[Event, None]:
+    def find_one_by(self, **kwargs) -> Union[Event, None]:
         filter_options = self.build_filter_options(**kwargs)
 
         try:
@@ -46,8 +46,9 @@ class EventsService:
         except DoesNotExist:
             return None
 
-    def find_all(self) -> List[Event]:
-        return Event.objects()
+    def find_by(self, **kwargs) -> List[Event]:
+        filter_options = self.build_filter_options(**kwargs)
+        return Event.objects(filter_options)
 
     def update(self, event: Event, title: str = None, location: str = None, location_point: List[int] = None,
                date: str = None, description: str = None, visibility: Union[str, int] = None,

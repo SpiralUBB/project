@@ -12,7 +12,7 @@ api = Blueprint('api_v1_user', __name__)
 @jwt_required
 def user_get(service: UserService):
     username = get_jwt_identity()
-    user = service.find_by(username=username)
+    user = service.find_one_by(username=username)
     if user is None:
         raise UserDoesNotExist()
 
@@ -24,7 +24,7 @@ def login_post(service: UserService):
     username = request.json.get('username')
     password = request.json.get('password')
 
-    user = service.find_by(username=username)
+    user = service.find_one_by(username=username)
     if user is None:
         raise UserLoginFailed()
 

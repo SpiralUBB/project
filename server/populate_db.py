@@ -22,7 +22,7 @@ userService = UserService(userValidator)
 try:
     adminUser = userService.add("admin", "pass", "Admin", "Name")
 except UserAlreadyExists:
-    adminUser = userService.find_by(username="admin")
+    adminUser = userService.find_one_by(username="admin")
 
 eventValidator = EventValidator()
 eventService = EventsService(eventValidator)

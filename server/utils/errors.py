@@ -70,6 +70,14 @@ class UserLoginFailed(HttpError):
         super().__init__(message, 'user-login-failed', 401)
 
 
+class UserAlreadyLoggedIn(HttpError):
+    def __init__(self, message=None):
+        if not message:
+            message = 'User already logged in'
+
+        super().__init__(message, 'user-already-logged-in', 401)
+
+
 class UserTokenExpired(HttpError):
     def __init__(self, token=None):
         if token:

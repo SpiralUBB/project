@@ -7,10 +7,14 @@ from utils.DualMap import DualMap
 # Do not modify the indices of the following dicts
 #
 
+EVENT_VISIBILITY_PUBLIC = 'public'
+EVENT_VISIBILITY_PRIVATE = 'private'
+EVENT_VISIBILITY_WHITELIST = 'whitelist'
+
 event_visibility_map = DualMap({
-    0: 'private',
-    1: 'public',
-    2: 'whitelist',
+    0: EVENT_VISIBILITY_PUBLIC,
+    1: EVENT_VISIBILITY_PRIVATE,
+    2: EVENT_VISIBILITY_WHITELIST,
 }, (-1, 'unknown'))
 
 

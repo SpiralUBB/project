@@ -21,14 +21,14 @@ class EventCommentService:
 
         return event_comment
 
-    def find_one_by(self, **kwargs) -> Union[EventComment, None]:
+    def find_one_by(self, *args, **kwargs) -> Union[EventComment, None]:
         try:
-            return EventComment.objects.get(**kwargs)
+            return EventComment.objects.get(*args, **kwargs)
         except DoesNotExist:
             return None
 
-    def find_by(self, **kwargs) -> List[EventComment]:
-        return EventComment.objects(**kwargs)
+    def find_by(self, *args, **kwargs) -> List[EventComment]:
+        return EventComment.objects(*args, **kwargs)
 
     def update(self, event_comment: EventComment, text: str = None) -> EventComment:
         if text is not None:

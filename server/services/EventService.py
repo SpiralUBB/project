@@ -25,14 +25,14 @@ class EventService:
 
         return event
 
-    def find_one_by(self, **kwargs) -> Union[Event, None]:
+    def find_one_by(self, *args, **kwargs) -> Union[Event, None]:
         try:
-            return Event.objects.get(**kwargs)
+            return Event.objects.get(*args, **kwargs)
         except DoesNotExist:
             return None
 
-    def find_by(self, **kwargs) -> List[Event]:
-        return Event.objects(**kwargs)
+    def find_by(self, *args, **kwargs) -> List[Event]:
+        return Event.objects(*args, **kwargs)
 
     def update(self, event: Event, title: str = None, location: str = None, location_point: List[int] = None,
                date: str = None, description: str = None, visibility: Union[str, int] = None,

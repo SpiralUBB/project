@@ -1,3 +1,5 @@
+from typing import Union
+
 from mongoengine import DoesNotExist
 
 from models.Event import Event
@@ -18,7 +20,7 @@ class EventInvitationService:
         event_invitation.status = event_invitation_status_map.to_key(EVENT_INVITATION_STATUS_ACCEPTED)
         event_invitation.save()
 
-    def find_one_by(self, *args, **kwargs):
+    def find_one_by(self, *args, **kwargs) -> Union[EventInvitation, None]:
         try:
             return EventInvitation.objects.get(*args, **kwargs)
         except DoesNotExist:

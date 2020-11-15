@@ -31,7 +31,7 @@ class EventService:
         except DoesNotExist:
             return None
 
-    def find_by(self, *args, **kwargs) -> List[Event]:
+    def find_by(self, *args, **kwargs):
         return Event.objects(*args, **kwargs)
 
     def find_visible_for_user(self, user: User = None, ids=None):
@@ -57,7 +57,7 @@ class EventService:
 
     def update(self, event: Event, title: str = None, location: str = None, location_point: List[int] = None,
                date: str = None, description: str = None, visibility: Union[str, int] = None,
-               category: [str, int] = None) -> Event:
+               category: [str, int] = None):
         if title is not None:
             self.validator.validate_title(title)
             event.title = title
@@ -87,8 +87,6 @@ class EventService:
             event.category = category
 
         event.save()
-
-        return event
 
     def delete(self, event: Event):
         event.delete()

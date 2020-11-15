@@ -27,17 +27,15 @@ class EventCommentService:
         except DoesNotExist:
             return None
 
-    def find_by(self, *args, **kwargs) -> List[EventComment]:
+    def find_by(self, *args, **kwargs):
         return EventComment.objects(*args, **kwargs)
 
-    def update(self, event_comment: EventComment, text: str = None) -> EventComment:
+    def update(self, event_comment: EventComment, text: str = None):
         if text is not None:
             self.validator.validate_text(text)
             event_comment.text = text
 
         event_comment.save()
-
-        return event_comment
 
     def delete(self, event_comment: EventComment):
         event_comment.delete()

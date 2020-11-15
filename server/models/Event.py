@@ -51,7 +51,7 @@ class Event(Document):
     category = IntField(min_value=event_category_map.minimum_key(),
                         max_value=event_category_map.maximum_key(), required=True)
 
-    def to_dict(self, limited_details: bool = False):
+    def to_dict(self, hide_details: bool = False):
         #
         # HACK: location point is list when the object was created, but gets saved
         # as a dict with a coordinates key containing the list
@@ -73,10 +73,10 @@ class Event(Document):
             'visibility_text': event_visibility_map.to_value(self.visibility),
             'category': self.category,
             'category_text': event_category_map.to_value(self.category),
-            'is_limited_details': limited_details,
+            'is_limited_details': hide_details,
         }
 
-        if limited_details:
+        if hide_details:
             d['location'] = self.location
             d['location_points'] = location_points
             d['location_points_radius_meters'] = None

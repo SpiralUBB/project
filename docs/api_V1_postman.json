@@ -201,7 +201,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events",
+					"raw": "http://localhost:5000/api/v1/events?limit=5&page=0",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -211,6 +211,16 @@
 						"api",
 						"v1",
 						"events"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "5"
+						},
+						{
+							"key": "page",
+							"value": "0"
+						}
 					]
 				}
 			},
@@ -222,7 +232,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events/5fafbc088cf0afec7bec4438",
+					"raw": "http://localhost:5000/api/v1/events/5faff0ff58a2dfdc1e7ca40d",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -232,7 +242,150 @@
 						"api",
 						"v1",
 						"events",
-						"5fafbc088cf0afec7bec4438"
+						"5faff0ff58a2dfdc1e7ca40d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get event comments",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/v1/events/5faff0ff58a2dfdc1e7ca40d/comments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"events",
+						"5faff0ff58a2dfdc1e7ca40d",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create event comment",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"text\": \"The beuta was awesome!\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/v1/events/5faff0ff58a2dfdc1e7ca40d/comments",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"events",
+						"5faff0ff58a2dfdc1e7ca40d",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update event comment",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"text\": \"The beuta was awesome x2!\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/v1/events/5faff0ff58a2dfdc1e7ca40d/comments/5fb106d1c23ada56baf29be8",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"events",
+						"5faff0ff58a2dfdc1e7ca40d",
+						"comments",
+						"5fb106d1c23ada56baf29be8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete event comment",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"text\": \"The beuta was awesome x2!\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/v1/events/5faff0ff58a2dfdc1e7ca40d/comments/5fb106d1c23ada56baf29be8",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"events",
+						"5faff0ff58a2dfdc1e7ca40d",
+						"comments",
+						"5fb106d1c23ada56baf29be8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete event",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/v1/events/5fafb66aca441a3926de19c6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"events",
+						"5fafb66aca441a3926de19c6"
 					]
 				}
 			},
@@ -245,7 +398,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"title\": \"Beuta x2\",\n  \"location\": \"Infinity, Piezisa\",\n  \"date\": \"This is a date I guess\",\n  \"description\": \"Let's drink you fuckers\",\n  \"visibility\": 0,\n  \"category\": 5\n}\n",
+					"raw": "{\n  \"title\": \"Beuta inf\",\n  \"location\": \"Infinity, Piezisa\",\n  \"location_point\": [-25.0, 32.0],\n  \"date\": \"This is a date I guess\",\n  \"description\": \"Let's drink you fuckers\",\n  \"visibility\": \"private\",\n  \"category\": 5\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -263,6 +416,37 @@
 						"api",
 						"v1",
 						"events"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update event",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Beuta x3\",\n  \"location_point\": [46.765294, 23.563921]\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/v1/events/5faff0ff58a2dfdc1e7ca40d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"events",
+						"5faff0ff58a2dfdc1e7ca40d"
 					]
 				}
 			},

@@ -50,7 +50,6 @@ def events_post(user_service: UserService, events_service: EventsService):
 
 
 @api.route('/<string:event_id>')
-@jwt_required
 def events_get_event(events_service: EventsService, event_id: str):
     event = events_service.find_by(event_id=event_id)
     if event is None:

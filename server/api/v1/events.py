@@ -57,7 +57,7 @@ def events_post(user_service: UserService, event_service: EventService):
 
 @api.route('/<string:event_id>')
 def events_get_event(event_service: EventService, event_id: str):
-    event = event_service.find_one_by(event_id=event_id)
+    event = event_service.find_one_by(id=event_id)
     if event is None:
         raise EventDoesNotExist()
 
@@ -72,7 +72,7 @@ def events_patch_event(user_service: UserService, event_service: EventService, e
     if user is None:
         raise UserDoesNotExist()
 
-    event = event_service.find_one_by(owner=user, event_id=event_id)
+    event = event_service.find_one_by(owner=user, id=event_id)
     if event is None:
         raise EventDoesNotExist()
 
@@ -89,7 +89,7 @@ def events_delete_event(user_service: UserService, event_service: EventService, 
     if user is None:
         raise UserDoesNotExist()
 
-    event = event_service.find_one_by(owner=user, event_id=event_id)
+    event = event_service.find_one_by(owner=user, id=event_id)
     if event is None:
         raise EventDoesNotExist()
 
@@ -101,7 +101,7 @@ def events_delete_event(user_service: UserService, event_service: EventService, 
 @jwt_required
 def events_get_event_comments(event_service: EventService, event_comments_service: EventCommentService,
                               event_id: str):
-    event = event_service.find_one_by(event_id=event_id)
+    event = event_service.find_one_by(id=event_id)
     if event is None:
         raise EventDoesNotExist()
 
@@ -118,7 +118,7 @@ def events_post_event_comments(event_service: EventService, event_comments_servi
     if user is None:
         raise UserDoesNotExist()
 
-    event = event_service.find_one_by(event_id=event_id)
+    event = event_service.find_one_by(id=event_id)
     if event is None:
         raise EventDoesNotExist()
 
@@ -137,11 +137,11 @@ def events_patch_event_comment(event_service: EventService, event_comments_servi
     if user is None:
         raise UserDoesNotExist()
 
-    event = event_service.find_one_by(event_id=event_id)
+    event = event_service.find_one_by(id=event_id)
     if event is None:
         raise EventDoesNotExist()
 
-    event_comment = event_comments_service.find_one_by(author=user, event=event, comment_id=comment_id)
+    event_comment = event_comments_service.find_one_by(author=user, event=event, id=comment_id)
     if event_comment is None:
         raise EventCommentDoesNotExist()
 
@@ -160,11 +160,11 @@ def events_delete_event_comment(event_service: EventService, event_comments_serv
     if user is None:
         raise UserDoesNotExist()
 
-    event = event_service.find_one_by(event_id=event_id)
+    event = event_service.find_one_by(id=event_id)
     if event is None:
         raise EventDoesNotExist()
 
-    event_comment = event_comments_service.find_one_by(author=user, event=event, comment_id=comment_id)
+    event_comment = event_comments_service.find_one_by(author=user, event=event, id=comment_id)
     if event_comment is None:
         raise EventCommentDoesNotExist()
 

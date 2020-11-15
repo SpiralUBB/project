@@ -12,23 +12,6 @@ class EventService:
     def __init__(self, validator: EventValidator):
         self.validator = validator
 
-    def build_filter_options(self, **kwargs):
-        filter_options = {}
-
-        event_id = kwargs.get('event_id', None)
-        if event_id is not None:
-            filter_options['id'] = event_id
-
-        visibility = kwargs.get('visibility', None)
-        if visibility is not None:
-            filter_options['visibility'] = visibility
-
-        owner = kwargs.get('owner', None)
-        if owner is not None:
-            filter_options['owner'] = owner
-
-        return filter_options
-
     def add(self, owner: User, title: str, location: str, location_point: List[int], date: str, description: str,
             visibility: Union[str, int], category: [str, int]) -> Event:
         visibility = self.validator.parse_visibility(visibility)
@@ -43,16 +26,13 @@ class EventService:
         return event
 
     def find_one_by(self, **kwargs) -> Union[Event, None]:
-        filter_options = self.build_filter_options(**kwargs)
-
         try:
-            return Event.objects.get(**filter_options)
+            return Event.objects.get(**kwargs)
         except DoesNotExist:
             return None
 
     def find_by(self, **kwargs) -> List[Event]:
-        filter_options = self.build_filter_options(**kwargs)
-        return Event.objects(**filter_options)
+        return Event.objects(**kwargs)
 
     def update(self, event: Event, title: str = None, location: str = None, location_point: List[int] = None,
                date: str = None, description: str = None, visibility: Union[str, int] = None,

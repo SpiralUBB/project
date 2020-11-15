@@ -7,10 +7,17 @@ from models.EventInvitation import EVENT_INVITATION_STATUS_PENDING, EVENT_INVITA
     EventInvitation, event_invitation_status_map
 
 from models.User import User
+from utils.errors import EventInvitationAlreadyExists
 
 
 class EventInvitationService:
     def add(self, event: Event, user: User, accepted: bool = False):
+        try:
+            EventInvitation.objects.get(user=user, event=event)
+            raise EventInvitationAlreadyExists()
+        except DoesNotExist:
+            pass
+
         status = event_invitation_status_map.to_key(EVENT_INVITATION_STATUS_ACCEPTED) if accepted \
             else event_invitation_status_map.to_key(EVENT_INVITATION_STATUS_PENDING)
         event_invitation = EventInvitation(event=event, user=user, status=status)

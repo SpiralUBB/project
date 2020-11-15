@@ -174,6 +174,14 @@ class EventCommentAuthorInvalid(HttpError):
         super().__init__(message, 'event-comment-author-invalid', 400)
 
 
+class EventInvitationAlreadyExists(HttpError):
+    def __init__(self, message=None):
+        if not message:
+            message = 'Event invitation already exists'
+
+        super().__init__(message, 'event-invitation-already-exists', 403)
+
+
 class EventInvitationDoesNotExist(HttpError):
     def __init__(self, message=None):
         if not message:

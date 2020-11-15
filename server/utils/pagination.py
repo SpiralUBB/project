@@ -7,11 +7,11 @@ from config import MAX_PAGINATED_LIMIT
 from utils.errors import PaginationPageInvalid, PaginationLimitInvalid
 
 
-def default_mapping_fn(item):
-    return item.to_dict()
+def default_mapping_fn(item, *args, **kwargs):
+    return item.to_dict(*args, **kwargs)
 
 
-def get_paginated_items_from_qs(qs: QuerySet, mapping_fn=default_mapping_fn):
+def get_paginated_items_from_qs(qs: QuerySet, mapping_fn=default_mapping_fn, *args, **kwargs):
     page = request.args.get('page', default='0')
     limit = request.args.get('limit', default='0')
 
@@ -44,5 +44,5 @@ def get_paginated_items_from_qs(qs: QuerySet, mapping_fn=default_mapping_fn):
         'no_items': no_items,
         'no_total_items': no_total_items,
         'no_pages': no_pages,
-        'items': [mapping_fn(item) for item in qs],
+        'items': [mapping_fn(item, *args, **kwargs) for item in qs],
     }

@@ -49,7 +49,7 @@ class EventsService:
     def find_all(self) -> List[Event]:
         return Event.objects()
 
-    def update(self, event, title: str, location: str, location_point: List[int], date: str, description: str,
+    def update(self, event: Event, title: str, location: str, location_point: List[int], date: str, description: str,
                visibility: Union[str, int], category: [str, int]) -> Event:
         if title is not None:
             self.validator.validate_title(title)
@@ -83,5 +83,5 @@ class EventsService:
 
         return event
 
-    def delete(self, event):
+    def delete(self, event: Event):
         event.delete()

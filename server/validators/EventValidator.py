@@ -3,13 +3,13 @@ from typing import List
 from models.Event import event_visibility_map, event_category_map
 from models.User import User
 from utils.errors import UserUsernameInvalid, EventTitleInvalid, EventLocationInvalid, EventDateInvalid, \
-    EventDescriptionInvalid, EventCategoryInvalid, EventLocationPointInvalid
+    EventDescriptionInvalid, EventCategoryInvalid, EventLocationPointInvalid, EventOwnerInvalid
 
 
 class EventValidator:
-    def validate_user(self, value: User):
+    def validate_owner(self, value: User):
         if not value:
-            raise UserUsernameInvalid(message='Event owner cannot be missing')
+            raise EventOwnerInvalid(message='Event owner cannot be missing')
 
     def validate_title(self, value: str):
         if not value:
@@ -68,9 +68,9 @@ class EventValidator:
 
         return value
 
-    def validate_parameters(self, user: User, title: str, location: str, location_point: List[int],
+    def validate_parameters(self, owner: User, title: str, location: str, location_point: List[int],
                             date: str, description: str):
-        self.validate_user(user)
+        self.validate_owner(owner)
         self.validate_title(title)
         self.validate_location(location)
         self.validate_location_point(location_point)

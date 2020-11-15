@@ -164,3 +164,35 @@ class EventCategoryInvalid(HttpError):
             message = 'Event category is invalid'
 
         super().__init__(message, 'event-category-invalid', 400)
+
+
+class EventCommentDoesNotExist(HttpError):
+    def __init__(self, message=None):
+        if not message:
+            message = 'Event comment does not exist'
+
+        super().__init__(message, 'event-comment-not-exist', 404)
+
+
+class EventCommentAuthorInvalid(HttpError):
+    def __init__(self, message=None):
+        if not message:
+            message = 'Event comment author invalid'
+
+        super().__init__(message, 'event-comment-author-invalid', 400)
+
+
+class EventCommentEventInvalid(HttpError):
+    def __init__(self, message=None):
+        if not message:
+            message = 'Event comment event invalid'
+
+        super().__init__(message, 'event-comment-event-invalid', 400)
+
+
+class EventCommentTextInvalid(HttpError):
+    def __init__(self, message=None):
+        if not message:
+            message = 'Event comment text invalid'
+
+        super().__init__(message, 'event-comment-text-invalid', 400)

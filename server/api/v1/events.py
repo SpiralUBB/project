@@ -55,7 +55,7 @@ def events_get(user_service: UserService, event_service: EventService,
                 and event.id not in event_ids and event.owner.id != user.id
         return event.to_dict(hide_details)
 
-    return get_paginated_items_from_qs(events, mapping_fn=event_mapping)
+    return jsonify(get_paginated_items_from_qs(events, mapping_fn=event_mapping))
 
 
 @api.route('/visibilities')
@@ -132,7 +132,7 @@ def events_get_event_comments(event_service: EventService, event_comments_servic
         raise EventDoesNotExist()
 
     event_comments = event_comments_service.find_by(id=event_id)
-    return get_paginated_items_from_qs(event_comments)
+    return jsonify(get_paginated_items_from_qs(event_comments))
 
 
 @api.route('/<string:event_id>/comments', methods=['POST'])

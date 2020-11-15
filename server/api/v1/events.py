@@ -38,9 +38,9 @@ def events_get(user_service: UserService, event_service: EventService,
     if username:
         user = user_service.find_one_by(username=username)
         accepted_event_invitations = event_invitation_service.find_by(
-                user=user,
-                status=event_invitation_status_map.to_key(EVENT_INVITATION_STATUS_ACCEPTED)
-            )
+            user=user,
+            status=event_invitation_status_map.to_key(EVENT_INVITATION_STATUS_ACCEPTED)
+        )
     else:
         user = None
         accepted_event_invitations = []
@@ -52,7 +52,7 @@ def events_get(user_service: UserService, event_service: EventService,
         # For whitelisted events for which the user doesn't have an accepted invite,
         # and for which the user isn't the owner, we need to restrict the information shown
         hide_details = event_visibility_map.to_key(EVENT_VISIBILITY_WHITELIST) == event.visibility \
-                and event.id not in event_ids and event.owner.id != user.id
+                       and event.id not in event_ids and event.owner.id != user.id
         return event.to_dict(hide_details)
 
     return jsonify(get_paginated_items_from_qs(events, mapping_fn=event_mapping))

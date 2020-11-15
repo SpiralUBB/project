@@ -1,9 +1,14 @@
+from typing import List
+
+from bson import ObjectId
 from flask import Blueprint, jsonify, request, Flask
 from flask_jwt_extended import jwt_required, get_jwt_identity, jwt_optional
+from mongoengine import Q
 
 from models.Event import event_visibility_map, event_category_map, EVENT_VISIBILITY_WHITELIST, Event, \
     EVENT_VISIBILITY_PRIVATE, EVENT_VISIBILITY_PUBLIC
 from models.EventInvitation import event_invitation_status_map, EVENT_INVITATION_STATUS_ACCEPTED, EventInvitation
+from models.User import User
 from services.EventCommentService import EventCommentService
 from services.EventInvitationService import EventInvitationService
 from services.EventService import EventService
@@ -39,22 +44,15 @@ def events_get(user_service: UserService, event_service: EventService,
 
     if username:
         user = user_service.find_one_by(username=username)
-        accepted_event_invitations = event_invitation_service.find_by(
-            user=user,
-            status=event_invitation_status_map.to_key(EVENT_INVITATION_STATUS_ACCEPTED)
-        )
+        visible_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
     else:
         user = None
-        accepted_event_invitations = []
+        visible_event_ids = []
 
-    event_ids = [ei.id for ei in accepted_event_invitations]
-    events = event_service.find_visible_for_user(user, event_ids)
+    events = event_service.find_visible_for_user(user, visible_event_ids)
 
     def event_mapping(event: Event):
-        # For whitelisted events for which the user doesn't have an accepted invite,
-        # and for which the user isn't the owner, we need to restrict the information shown
-        hide_details = event_visibility_map.to_key(EVENT_VISIBILITY_WHITELIST) == event.visibility \
-                       and event.id not in event_ids and event.owner.id != user.id
+        hide_details = event_service.is_details_hidden(user, event, visible_event_ids)
         return event.to_dict(hide_details)
 
     return jsonify(get_paginated_items_from_qs(events, mapping_fn=event_mapping))
@@ -84,12 +82,25 @@ def events_post(user_service: UserService, event_service: EventService):
 
 
 @api.route('/<string:event_id>')
-def events_get_event(event_service: EventService, event_id: str):
-    event = event_service.find_one_by(id=event_id)
+@jwt_optional
+def events_get_event(user_service: UserService, event_service: EventService,
+                     event_invitation_service: EventInvitationService, event_id: str):
+    username = get_jwt_identity()
+
+    if username:
+        user = user_service.find_one_by(username=username)
+        visible_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
+    else:
+        user = None
+        visible_event_ids = []
+
+    event = event_service.find_one_visible_for_user(user, event_id, visible_event_ids)
     if event is None:
         raise EventDoesNotExist()
 
-    return jsonify(event.to_dict())
+    hide_details = event_service.is_details_hidden(user, event, visible_event_ids)
+
+    return jsonify(event.to_dict(hide_details))
 
 
 @api.route('/<string:event_id>', methods=['PATCH'])

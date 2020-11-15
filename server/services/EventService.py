@@ -1,5 +1,6 @@
 from typing import Union, List
 
+from bson import ObjectId
 from mongoengine import DoesNotExist, Q
 
 from models.Event import Event, event_visibility_map, EVENT_VISIBILITY_PUBLIC, EVENT_VISIBILITY_WHITELIST
@@ -34,7 +35,7 @@ class EventService:
     def find_by(self, *args, **kwargs):
         return Event.objects(*args, **kwargs)
 
-    def find_visible_for_user(self, user: User = None, ids=None):
+    def build_query_visible_for_user(self, user: User = None, ids=None):
         if ids is None:
             ids = []
 
@@ -53,7 +54,19 @@ class EventService:
             # Add events owned by the logged in user
             query |= Q(owner=user)
 
-        return self.find_by(query)
+        return query
+
+    def is_details_hidden(self, user: User, event: Event, visible_ids: List[ObjectId]):
+        # For whitelisted events for which the user doesn't have an accepted invite,
+        # and for which the user isn't the owner, we need to restrict the information shown
+        return event_visibility_map.to_key(EVENT_VISIBILITY_WHITELIST) == event.visibility \
+               and event.id not in visible_ids and event.owner.id != user.id
+
+    def find_visible_for_user(self, user: User, ids):
+        return self.find_by(self.build_query_visible_for_user(user, ids))
+
+    def find_one_visible_for_user(self, user: User, event_id: str, ids):
+        return self.find_one_by(Q(id=event_id) & self.build_query_visible_for_user(user, ids))
 
     def update(self, event: Event, title: str = None, location: str = None, location_point: List[int] = None,
                date: str = None, description: str = None, visibility: Union[str, int] = None,

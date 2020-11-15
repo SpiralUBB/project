@@ -30,3 +30,10 @@ class EventInvitationService:
 
     def find_by(self, *args, **kwargs):
         return EventInvitation.objects(*args, **kwargs)
+
+    def find_accepted_user_invitations_event_ids(self, user: User):
+        accepted_event_invitations = self.find_by(
+            user=user,
+            status=event_invitation_status_map.to_key(EVENT_INVITATION_STATUS_ACCEPTED)
+        )
+        return [ei.id for ei in accepted_event_invitations]

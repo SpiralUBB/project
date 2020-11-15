@@ -12,8 +12,8 @@ def default_mapping_fn(item, *args, **kwargs):
 
 
 def get_paginated_items_from_qs(qs: QuerySet, mapping_fn=default_mapping_fn, *args, **kwargs):
-    page = request.args.get('page', default='0')
-    limit = request.args.get('limit', default='0')
+    page = request.args.get('page', default=0)
+    limit = request.args.get('limit', default=MAX_PAGINATED_LIMIT)
 
     try:
         page = int(page)

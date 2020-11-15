@@ -37,6 +37,13 @@ class EventInvitationService:
     def find_by(self, *args, **kwargs):
         return EventInvitation.objects(*args, **kwargs)
 
+    def find_visible_for_user(self, user: User, event: Event):
+        if event.owner.id == user.id:
+            return self.find_by()
+        else:
+            return self.find_by(status=event_invitation_status_map.to_key(EVENT_INVITATION_STATUS_ACCEPTED))
+
+
     def find_accepted_user_invitations_event_ids(self, user: User):
         accepted_event_invitations = self.find_by(
             user=user,

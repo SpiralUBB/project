@@ -274,12 +274,7 @@ def events_get_event_invitations(event_service: EventService, event_invitation_s
     if event is None:
         raise EventDoesNotExist()
 
-    if event.owner.id == user.id:
-        status = None
-    else:
-        status = event_invitation_status_map.to_key(EVENT_INVITATION_STATUS_ACCEPTED)
-
-    event_invitations = event_invitation_service.find_by(status=status)
+    event_invitations = event_invitation_service.find_visible_for_user(user, event)
 
     return jsonify(get_paginated_items_from_qs(event_invitations, with_user=True))
 

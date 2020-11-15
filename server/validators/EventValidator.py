@@ -3,7 +3,7 @@ from typing import List
 from models.Event import event_visibility_map, event_category_map
 from models.User import User
 from utils.errors import UserUsernameInvalid, EventTitleInvalid, EventLocationInvalid, EventDateInvalid, \
-    EventDescriptionInvalid, EventCategoryInvalid, EventLocationPointInvalid, EventOwnerInvalid
+    EventDescriptionInvalid, EventCategoryInvalid, EventLocationPointInvalid, EventOwnerInvalid, EventVisibilityInvalid
 
 
 class EventValidator:
@@ -43,7 +43,7 @@ class EventValidator:
 
     def parse_visibility(self, value):
         if value is None:
-            raise EventCategoryInvalid(message='Event visibility cannot be empty')
+            raise EventVisibilityInvalid(message='Event visibility cannot be empty')
 
         try:
             value = int(value)
@@ -52,11 +52,14 @@ class EventValidator:
 
         value = event_visibility_map.to_key_either(value)
         if value < 0:
-            raise EventCategoryInvalid(message='Event category cannot be found inside the predefined list')
+            raise EventVisibilityInvalid(message='Event visibility cannot be found inside the predefined list')
 
         return value
 
     def parse_category(self, value):
+        if value is None:
+            raise EventCategoryInvalid(message='Event category cannot be empty')
+
         try:
             value = int(value)
         except ValueError:

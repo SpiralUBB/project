@@ -49,8 +49,9 @@ class EventsService:
     def find_all(self) -> List[Event]:
         return Event.objects()
 
-    def update(self, event: Event, title: str, location: str, location_point: List[int], date: str, description: str,
-               visibility: Union[str, int], category: [str, int]) -> Event:
+    def update(self, event: Event, title: str = None, location: str = None, location_point: List[int] = None,
+               date: str = None, description: str = None, visibility: Union[str, int] = None,
+               category: [str, int] = None) -> Event:
         if title is not None:
             self.validator.validate_title(title)
             event.title = title

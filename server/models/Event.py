@@ -47,7 +47,13 @@ class Event(Document):
                         max_value=event_category_map.maximum_key(), required=True)
 
     def to_dict(self):
-        if self.location_point is not None:
+        #
+        # HACK: location point is list when the object was created, but gets saved
+        # as a dict with a coordinates key containing the list
+        #
+        if type(self.location_point) is list:
+            location_points = self.location_point
+        elif self.location_point is dict:
             location_points = self.location_point['coordinates']
         else:
             location_points = None

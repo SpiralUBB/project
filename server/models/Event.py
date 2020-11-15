@@ -47,12 +47,17 @@ class Event(Document):
                         max_value=event_category_map.maximum_key(), required=True)
 
     def to_dict(self):
+        if self.location_point is not None:
+            location_points = self.location_point['coordinates']
+        else:
+            location_points = None
+
         return {
             'id': str(self.id),
             'owner': self.owner.to_dict(),
             'title': self.title,
             'location': self.location,
-            'location_point': self.location_point,
+            'location_points': location_points,
             'date': self.date,
             'description': self.description,
             'visibility': self.visibility,

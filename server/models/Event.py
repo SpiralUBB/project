@@ -55,9 +55,9 @@ class Event(Document):
         # HACK: location point is list when the object was created, but gets saved
         # as a dict with a coordinates key containing the list
         #
-        if type(self.location_point) is list:
+        if isinstance(self.location_point, list):
             location_points = self.location_point
-        elif self.location_point is dict:
+        elif isinstance(self.location_point, dict):
             location_points = self.location_point['coordinates']
         else:
             location_points = None

@@ -141,7 +141,7 @@ def events_patch_event_comment(events_service: EventsService, event_comments_ser
     if event is None:
         raise EventDoesNotExist()
 
-    event_comment = event_comments_service.find_one_by(author=user, event=event, ecomment_id=comment_id)
+    event_comment = event_comments_service.find_one_by(author=user, event=event, comment_id=comment_id)
     if event_comment is None:
         raise EventCommentDoesNotExist()
 

@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request, Flask, Response
 from flask_jwt_extended import create_access_token, set_access_cookies, jwt_required, get_jwt_identity, \
-    unset_access_cookies, create_refresh_token, jwt_refresh_token_required, unset_refresh_cookies
+    unset_access_cookies, create_refresh_token, jwt_refresh_token_required, unset_refresh_cookies, set_refresh_cookies
 
 from services.UserService import UserService
 from utils.errors import UserDoesNotExist, UserLoginFailed
@@ -34,7 +34,7 @@ def login_post(service: UserService):
     access_token = create_access_token(identity=username)
     refresh_token = create_refresh_token(identity=username)
     set_access_cookies(response, access_token)
-    set_access_cookies(response, refresh_token)
+    set_refresh_cookies(response, refresh_token)
     return response
 
 

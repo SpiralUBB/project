@@ -1,13 +1,15 @@
 from flask import Blueprint, jsonify, request, Flask
 from flask_jwt_extended import jwt_required, get_jwt_identity, jwt_optional
 
-from models.Event import event_visibility_map, event_category_map, EVENT_VISIBILITY_WHITELIST, Event
-from models.EventInvitation import event_invitation_status_map, EVENT_INVITATION_STATUS_ACCEPTED
+from models.Event import event_visibility_map, event_category_map, EVENT_VISIBILITY_WHITELIST, Event, \
+    EVENT_VISIBILITY_PRIVATE, EVENT_VISIBILITY_PUBLIC
+from models.EventInvitation import event_invitation_status_map, EVENT_INVITATION_STATUS_ACCEPTED, EventInvitation
 from services.EventCommentService import EventCommentService
 from services.EventInvitationService import EventInvitationService
 from services.EventService import EventService
 from services.UserService import UserService
-from utils.errors import UserDoesNotExist, EventDoesNotExist, EventCommentDoesNotExist
+from utils.errors import UserDoesNotExist, EventDoesNotExist, EventCommentDoesNotExist, EventInvitationCannotJoinOwn, \
+    EventInvitationCannotJoinPrivate, EventInvitationStatusInvalid, EventInvitationDoesNotExist
 from utils.pagination import get_paginated_items_from_qs
 
 api = Blueprint('api_v1_events', __name__)
@@ -197,6 +199,100 @@ def events_delete_event_comment(event_service: EventService, event_comments_serv
     event_comments_service.delete(event_comment)
 
     return jsonify(event_comment.to_dict())
+
+
+@api.route('/<string:event_id>/join', methods=['PUT'])
+@jwt_required
+def events_put_event_join(event_service: EventService, event_invitation_service: EventInvitationService,
+                          user_service: UserService, event_id: str):
+    username = get_jwt_identity()
+    user = user_service.find_one_by(username=username)
+    if user is None:
+        raise UserDoesNotExist()
+
+    event = event_service.find_one_by(id=event_id)
+    if event is None:
+        raise EventDoesNotExist()
+
+    if event.owner.id == user.id:
+        raise EventInvitationCannotJoinOwn()
+
+    if event.visibility == event_visibility_map.to_key(EVENT_VISIBILITY_PRIVATE):
+        raise EventInvitationCannotJoinPrivate()
+
+    if event.visibility == event_visibility_map.to_key(EVENT_VISIBILITY_WHITELIST):
+        event_invitation = event_invitation_service.add(event, user)
+    elif event.visibility == event_visibility_map.to_key(EVENT_VISIBILITY_PUBLIC):
+        event_invitation = event_invitation_service.add(event, user, True)
+    else:
+        raise EventInvitationStatusInvalid()
+
+    return jsonify(event_invitation.to_dict())
+
+
+@api.route('/<string:event_id>/invitation')
+@jwt_required
+def events_get_event_invitation(event_service: EventService, event_invitation_service: EventInvitationService,
+                                user_service: UserService, event_id: str):
+    username = get_jwt_identity()
+    user = user_service.find_one_by(username=username)
+    if user is None:
+        raise UserDoesNotExist()
+
+    event = event_service.find_one_by(id=event_id)
+    if event is None:
+        raise EventDoesNotExist()
+
+    event_invitation = event_invitation_service.find_one_by(user=user, event=event)
+    if event_invitation is None:
+        raise EventInvitationDoesNotExist()
+
+    return jsonify(event_invitation.to_dict())
+
+
+@api.route('/<string:event_id>/invitations')
+@jwt_required
+def events_get_event_invitations(event_service: EventService, event_invitation_service: EventInvitationService,
+                                 user_service: UserService, event_id: str):
+    username = get_jwt_identity()
+    user = user_service.find_one_by(username=username)
+    if user is None:
+        raise UserDoesNotExist()
+
+    event = event_service.find_one_by(id=event_id)
+    if event is None:
+        raise EventDoesNotExist()
+
+    if event.owner.id == user.id:
+        status = None
+    else:
+        status = event_invitation_status_map.to_key(EVENT_INVITATION_STATUS_ACCEPTED)
+
+    event_invitations = event_invitation_service.find_by(status=status)
+
+    return jsonify(get_paginated_items_from_qs(event_invitations, with_user=True))
+
+
+@api.route('/<string:event_id>/invitations/<string:invitation_id>/accept', methods=['PUT'])
+@jwt_required
+def events_put_event_invitation_accept(event_service: EventService, event_invitation_service: EventInvitationService,
+                                       user_service: UserService, event_id: str, invitation_id: str):
+    username = get_jwt_identity()
+    user = user_service.find_one_by(username=username)
+    if user is None:
+        raise UserDoesNotExist()
+
+    event = event_service.find_one_by(id=event_id, owner=user)
+    if event is None:
+        raise EventDoesNotExist()
+
+    event_invitation = event_invitation_service.find_one_by(id=invitation_id, event=event)
+    if event_invitation is None:
+        raise EventInvitationDoesNotExist()
+
+    event_invitation_service.accept(event_invitation)
+
+    return jsonify(event_invitation.to_dict(with_user=True))
 
 
 def register_blueprint(app: Flask, prefix: str):

@@ -182,6 +182,38 @@ class EventCommentAuthorInvalid(HttpError):
         super().__init__(message, 'event-comment-author-invalid', 400)
 
 
+class EventInvitationDoesNotExist(HttpError):
+    def __init__(self, message=None):
+        if not message:
+            message = 'Event invitation does not exist'
+
+        super().__init__(message, 'event-invitation-not-exist', 404)
+
+
+class EventInvitationStatusInvalid(HttpError):
+    def __init__(self, message=None):
+        if not message:
+            message = 'Event invitation status is invalid'
+
+        super().__init__(message, 'event-invitation-status-invalid', 400)
+
+
+class EventInvitationCannotJoinOwn(HttpError):
+    def __init__(self, message=None):
+        if not message:
+            message = 'Cannot join an event owned by yourself'
+
+        super().__init__(message, 'event-invitation-cannot-join-own', 400)
+
+
+class EventInvitationCannotJoinPrivate(HttpError):
+    def __init__(self, message=None):
+        if not message:
+            message = 'Cannot join a private event'
+
+        super().__init__(message, 'event-invitation-cannot-join-private', 400)
+
+
 class EventCommentEventInvalid(HttpError):
     def __init__(self, message=None):
         if not message:

@@ -77,13 +77,13 @@ class Event(Document):
         }
 
         if hide_details:
-            d['location'] = self.location
-            d['location_points'] = location_points
-            d['location_points_radius_meters'] = None
-        else:
             approximate, radius_meters = approximate_location(location_points)
             d['location'] = None
             d['location_points'] = approximate
             d['location_points_radius_meters'] = radius_meters
+        else:
+            d['location'] = self.location
+            d['location_points'] = location_points
+            d['location_points_radius_meters'] = None
 
         return d

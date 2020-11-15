@@ -12,7 +12,7 @@ class EventService:
     def __init__(self, validator: EventValidator):
         self.validator = validator
 
-    def add(self, owner: User, title: str, location: str, location_point: List[int], date: str, description: str,
+    def add(self, owner: User, title: str, location: str, location_point: List[float], date: str, description: str,
             visibility: Union[str, int], category: [str, int]) -> Event:
         visibility = self.validator.parse_visibility(visibility)
         category = self.validator.parse_category(category)

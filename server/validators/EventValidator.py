@@ -19,7 +19,7 @@ class EventValidator:
         if not value:
             raise EventLocationInvalid(message='Event location cannot be empty')
 
-    def validate_location_point(self, value: List[int]):
+    def validate_location_point(self, value: List[float]):
         if not value:
             raise EventLocationPointInvalid(message='Event location point cannot be empty')
 
@@ -68,7 +68,7 @@ class EventValidator:
 
         return value
 
-    def validate_parameters(self, owner: User, title: str, location: str, location_point: List[int],
+    def validate_parameters(self, owner: User, title: str, location: str, location_point: List[float],
                             date: str, description: str):
         self.validate_owner(owner)
         self.validate_title(title)

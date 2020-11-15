@@ -201,7 +201,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events?limit=5&page=0",
+					"raw": "http://localhost:5000/api/v1/events?limit=5&page=2",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -219,7 +219,7 @@
 						},
 						{
 							"key": "page",
-							"value": "0"
+							"value": "2"
 						}
 					]
 				}
@@ -398,7 +398,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"title\": \"Beuta inf\",\n  \"location\": \"Infinity, Piezisa\",\n  \"location_point\": [-25.0, 32.0],\n  \"date\": \"This is a date I guess\",\n  \"description\": \"Let's drink you fuckers\",\n  \"visibility\": \"private\",\n  \"category\": 5\n}\n",
+					"raw": "{\n  \"title\": \"Beuta inf newnewnew\",\n  \"location\": \"Infinity, Piezisa\",\n  \"location_point\": [-25.0, 32.0],\n  \"date\": \"This is a date I guess\",\n  \"description\": \"Let's drink you fuckers\",\n  \"visibility\": \"private\",\n  \"category\": \"Arts\"\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -491,6 +491,100 @@
 						"v1",
 						"events",
 						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Join event",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/v1/events/5fb16570761d93da42d7cc3d/join",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"events",
+						"5fb16570761d93da42d7cc3d",
+						"join"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get event invitation for user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/v1/events/5fb16570761d93da42d7cc3d/invitation",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"events",
+						"5fb16570761d93da42d7cc3d",
+						"invitation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Accept event invitation",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/v1/events/5fb16570761d93da42d7cc3d/invitations/5fb17038dadd6649d0d538d7/accept",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"events",
+						"5fb16570761d93da42d7cc3d",
+						"invitations",
+						"5fb17038dadd6649d0d538d7",
+						"accept"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get event invitations",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/v1/events/5fb16570761d93da42d7cc3d/invitations",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"events",
+						"5fb16570761d93da42d7cc3d",
+						"invitations"
 					]
 				}
 			},

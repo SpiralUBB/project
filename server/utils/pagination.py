@@ -32,7 +32,10 @@ def get_paginated_items_from_qs(qs: QuerySet, mapping_fn=default_mapping_fn):
 
     no_total_items = qs.count()
     no_items = qs.count(with_limit_and_skip=True)
-    no_pages = ceil(no_total_items / limit)
+    if no_total_items:
+        no_pages = ceil(no_total_items / limit)
+    else:
+        no_pages = 0
 
     return {
         'limit': limit,

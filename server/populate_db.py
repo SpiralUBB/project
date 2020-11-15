@@ -26,4 +26,5 @@ except UserAlreadyExists:
 
 eventValidator = EventValidator()
 eventService = EventService(eventValidator)
-eventService.add(adminUser, "Beuta", "Infinity", "27/11/2020-22:00", "Hai cu noi la bere", "private", "Food & Drink")
+eventService.add(adminUser, "Beuta", "Infinity", [-23, 54], "27/11/2020-22:00", "Hai cu noi la bere", "private",
+                 "Food & Drink")

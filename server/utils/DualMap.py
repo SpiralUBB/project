@@ -20,7 +20,7 @@ class DualMap:
         if value in self.__map.inverse:
             return self.to_key(value)
 
-        return None
+        return self.__unknown_key
 
     def to_key(self, value):
         return self.__map.inverse.get(value, default=self.__unknown_key)

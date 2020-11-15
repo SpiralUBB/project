@@ -52,7 +52,7 @@ class EventValidator:
 
         value = event_visibility_map.to_key_either(value)
         if value < 0:
-            raise EventCategoryInvalid(message='Event visibility cannot be found inside the predefined list')
+            raise EventCategoryInvalid(message='Event category cannot be found inside the predefined list')
 
         return value
 

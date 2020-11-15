@@ -86,14 +86,6 @@ class UserTokenInvalid(HttpError):
         super().__init__(message, 'user-token-invalid', 422)
 
 
-class EventAlreadyExists(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'Event already exists'
-
-        super().__init__(message, 'event-already-exists', 403)
-
-
 class EventDoesNotExist(HttpError):
     def __init__(self, message=None):
         if not message:

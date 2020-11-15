@@ -23,6 +23,8 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
 import { SidenavComponent } from './components/shared/sidenav/sidenav.component';
 import { SidenavContentComponent } from './components/shared/sidenav/sidenav-content/sidenav-content.component';
 import { NavigationService } from './services/navigation.service';
+import { MapComponent } from './components/map/map.component';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,7 @@ import { NavigationService } from './services/navigation.service';
     LandingPageComponent,
     SidenavComponent,
     SidenavContentComponent,
+    MapComponent,
   ],
   imports: [
     MaterialModule,
@@ -42,6 +45,7 @@ import { NavigationService } from './services/navigation.service';
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
+    LeafletModule,
   ],
   providers: [
     AuthService,
@@ -55,7 +59,7 @@ import { NavigationService } from './services/navigation.service';
       useClass: HttpErrorInterceptorService,
       multi: true,
     },
-    NavigationService
+    NavigationService,
   ],
   bootstrap: [AppComponent],
 })

@@ -9,7 +9,7 @@ class EventComment(Document):
     time = DateTimeField(default=datetime.now)
     text = StringField(required=True)
 
-    def to_dict(self, with_event=False):
+    def to_dict(self, with_event: bool = False):
         d = {
             'id': str(self.id),
             'author': self.author.to_dict(),

@@ -1,10 +1,10 @@
 from flask_injector import request
 
-from services.EventCommentsService import EventCommentsService
+from services.EventCommentService import EventCommentService
 from services.UserService import UserService
 from validators.EventCommentValidator import EventCommentValidator
 from validators.UserValidator import UserValidator
-from services.EventsService import EventsService
+from services.EventService import EventService
 from validators.EventValidator import EventValidator
 
 
@@ -14,9 +14,9 @@ def configure_services(binder):
     binder.bind(UserService, to=user_service, scope=request)
 
     event_validator = EventValidator()
-    events_service = EventsService(event_validator)
-    binder.bind(EventsService, to=events_service, scope=request)
+    events_service = EventService(event_validator)
+    binder.bind(EventService, to=events_service, scope=request)
 
     event_comment_validator = EventCommentValidator()
-    events_comments_service = EventCommentsService(event_comment_validator)
-    binder.bind(EventCommentsService, to=events_comments_service, scope=request)
+    events_comments_service = EventCommentService(event_comment_validator)
+    binder.bind(EventCommentService, to=events_comments_service, scope=request)

@@ -9,7 +9,7 @@ from models.User import User
 from validators.EventCommentValidator import EventCommentValidator
 
 
-class EventCommentsService:
+class EventCommentService:
     def __init__(self, validator: EventCommentValidator):
         self.validator = validator
 

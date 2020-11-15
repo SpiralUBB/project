@@ -14,8 +14,9 @@ export class NavigationService {
 
   constructor() {}
   menuEntries: MenuEntry[] = [
-    {title: "Landing Page", url: "/landing-page"},
-    {title: "Events", url: "/app/events"}
+    { title: 'Landing Page', url: '/landing-page' },
+    { title: 'Events', url: '/app/events' },
+    { title: 'Map', url: '/app/map' },
   ];
 
   public toggleSidenav() {

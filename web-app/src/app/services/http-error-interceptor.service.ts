@@ -40,7 +40,9 @@ export class HttpErrorInterceptorService implements HttpInterceptor {
         errorMsg = errorMsg.concat(
           `\n${backendCustomError.code}\n${backendCustomError.message}`
         );
-        let snackBarRef = this.snackbar.open(errorMsg);
+        let snackBarRef = this.snackbar.open(errorMsg, null, {
+          duration: 5000,
+        });
         return throwError(errorMsg);
       })
     ) as Observable<HttpEvent<any>>;

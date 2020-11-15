@@ -73,7 +73,7 @@ class UserLoginFailed(HttpError):
 class UserTokenExpired(HttpError):
     def __init__(self, token=None):
         if token:
-            message = 'User {} token expired'
+            message = 'User {} token expired'.format(token)
         else:
             message = 'User token expired'
 

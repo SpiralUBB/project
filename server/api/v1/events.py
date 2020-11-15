@@ -131,7 +131,7 @@ def events_get_event_comments(event_service: EventService, event_comments_servic
     if event is None:
         raise EventDoesNotExist()
 
-    event_comments = event_comments_service.find_by(event_id=event_id)
+    event_comments = event_comments_service.find_by(id=event_id)
     return get_paginated_items_from_qs(event_comments)
 
 

@@ -1,8 +1,8 @@
 from typing import Union, List
 
-from mongoengine import DoesNotExist
+from mongoengine import DoesNotExist, Q
 
-from models.Event import Event
+from models.Event import Event, event_visibility_map, EVENT_VISIBILITY_PUBLIC, EVENT_VISIBILITY_WHITELIST
 
 from models.User import User
 from validators.EventValidator import EventValidator
@@ -33,6 +33,27 @@ class EventService:
 
     def find_by(self, *args, **kwargs) -> List[Event]:
         return Event.objects(*args, **kwargs)
+
+    def find_visible_for_user(self, user: User = None, ids=None):
+        if ids is None:
+            ids = []
+
+        query = Q()
+
+        # Add public events
+        query |= Q(visibility=event_visibility_map.to_key(EVENT_VISIBILITY_PUBLIC))
+
+        # Add whitelisted events
+        query |= Q(visibility=event_visibility_map.to_key(EVENT_VISIBILITY_WHITELIST))
+
+        # Add events for which the user has an accepted invite
+        query |= Q(id__in=ids)
+
+        if user:
+            # Add events owned by the logged in user
+            query |= Q(owner=user)
+
+        return self.find_by(query)
 
     def update(self, event: Event, title: str = None, location: str = None, location_point: List[int] = None,
                date: str = None, description: str = None, visibility: Union[str, int] = None,

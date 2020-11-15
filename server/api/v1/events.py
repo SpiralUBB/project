@@ -1,11 +1,14 @@
-from flask import Blueprint, jsonify, request, Flask, Response
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask import Blueprint, jsonify, request, Flask
+from flask_jwt_extended import jwt_required, get_jwt_identity, jwt_optional
 
-from models.Event import event_visibility_map, event_category_map, EVENT_VISIBILITY_PUBLIC
+from models.Event import event_visibility_map, event_category_map, EVENT_VISIBILITY_WHITELIST, Event
+from models.EventInvitation import event_invitation_status_map, EVENT_INVITATION_STATUS_ACCEPTED
 from services.EventCommentService import EventCommentService
+from services.EventInvitationService import EventInvitationService
 from services.EventService import EventService
 from services.UserService import UserService
 from utils.errors import UserDoesNotExist, EventDoesNotExist, EventCommentDoesNotExist
+from utils.pagination import get_paginated_items_from_qs
 
 api = Blueprint('api_v1_events', __name__)
 
@@ -27,9 +30,32 @@ def extract_event_comment_properties():
 
 
 @api.route('')
-def events_get(event_service: EventService):
-    events = event_service.find_by(visibility=event_visibility_map.to_key(EVENT_VISIBILITY_PUBLIC))
-    return jsonify([event.to_dict() for event in events])
+@jwt_optional
+def events_get(user_service: UserService, event_service: EventService,
+               event_invitation_service: EventInvitationService):
+    username = get_jwt_identity()
+
+    if username:
+        user = user_service.find_one_by(username=username)
+        accepted_event_invitations = event_invitation_service.find_by(
+                user=user,
+                status=event_invitation_status_map.to_key(EVENT_INVITATION_STATUS_ACCEPTED)
+            )
+    else:
+        user = None
+        accepted_event_invitations = []
+
+    event_ids = [ei.id for ei in accepted_event_invitations]
+    events = event_service.find_visible_for_user(user, event_ids)
+
+    def event_mapping(event: Event):
+        # For whitelisted events for which the user doesn't have an accepted invite,
+        # and for which the user isn't the owner, we need to restrict the information shown
+        hide_details = event_visibility_map.to_key(EVENT_VISIBILITY_WHITELIST) == event.visibility \
+                and event.id not in event_ids and event.owner.id != user.id
+        return event.to_dict(hide_details)
+
+    return get_paginated_items_from_qs(events, mapping_fn=event_mapping)
 
 
 @api.route('/visibilities')

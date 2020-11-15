@@ -6,6 +6,7 @@ from utils.DualMap import DualMap
 # WARNING
 # Do not modify the indices of the following dicts
 #
+from utils.geo import approximate_location
 
 EVENT_VISIBILITY_PUBLIC = 'public'
 EVENT_VISIBILITY_PRIVATE = 'private'
@@ -50,7 +51,7 @@ class Event(Document):
     category = IntField(min_value=event_category_map.minimum_key(),
                         max_value=event_category_map.maximum_key(), required=True)
 
-    def to_dict(self):
+    def to_dict(self, limited_details: bool = False):
         #
         # HACK: location point is list when the object was created, but gets saved
         # as a dict with a coordinates key containing the list
@@ -60,18 +61,29 @@ class Event(Document):
         elif isinstance(self.location_point, dict):
             location_points = self.location_point['coordinates']
         else:
-            location_points = None
+            location_points = []
 
-        return {
+        d = {
             'id': str(self.id),
             'owner': self.owner.to_dict(),
             'title': self.title,
-            'location': self.location,
-            'location_points': location_points,
             'date': self.date,
             'description': self.description,
             'visibility': self.visibility,
             'visibility_text': event_visibility_map.to_value(self.visibility),
             'category': self.category,
-            'category_text': event_category_map.to_value(self.category)
+            'category_text': event_category_map.to_value(self.category),
+            'is_limited_details': limited_details,
         }
+
+        if limited_details:
+            d['location'] = self.location
+            d['location_points'] = location_points
+            d['location_points_radius_meters'] = None
+        else:
+            approximate, radius_meters = approximate_location(location_points)
+            d['location'] = None
+            d['location_points'] = approximate
+            d['location_points_radius_meters'] = radius_meters
+
+        return d

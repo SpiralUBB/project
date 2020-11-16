@@ -96,7 +96,7 @@ def events_get_event(user_service: UserService, event_service: EventService,
         user = None
         visible_event_ids = []
 
-    event = event_service.find_one_visible_for_user(user, event_id, visible_event_ids)
+    event = event_service.find_one_visible_for_user(user, event_id, visible_event_ids, show_private=True)
     if event is None:
         raise EventDoesNotExist()
 

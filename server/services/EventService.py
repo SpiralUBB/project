@@ -39,7 +39,7 @@ class EventService:
     def find_by(self, *args, **kwargs):
         return Event.objects(*args, **kwargs)
 
-    def build_query_visible_for_user(self, user: User = None, ids=None):
+    def build_query_visible_for_user(self, user: User = None, ids=None, show_private: bool = False):
         if ids is None:
             ids = []
 
@@ -50,6 +50,10 @@ class EventService:
 
         # Add whitelisted events
         query |= Q(visibility=event_visibility_map.to_key(EVENT_VISIBILITY_WHITELIST))
+
+        if show_private:
+            # Add private events
+            query |= Q(visibility=event_visibility_map.to_key(EVENT_VISIBILITY_PRIVATE))
 
         # Add events for which the user has an accepted invite
         query |= Q(id__in=ids)
@@ -82,11 +86,11 @@ class EventService:
         if event.no_max_participants != 0 and event.no_participants >= event.no_max_participants:
             raise EventInvitationCannotJoinFull()
 
-    def find_visible_for_user(self, user: User, ids):
-        return self.find_by(self.build_query_visible_for_user(user, ids))
+    def find_visible_for_user(self, user: User, ids: List[ObjectId], show_private: bool = False):
+        return self.find_by(self.build_query_visible_for_user(user, ids, show_private))
 
-    def find_one_visible_for_user(self, user: User, event_id: str, ids):
-        return self.find_one_by(Q(id=event_id) & self.build_query_visible_for_user(user, ids))
+    def find_one_visible_for_user(self, user: User, event_id: str, ids: List[ObjectId], show_private: bool = False):
+        return self.find_one_by(Q(id=event_id) & self.build_query_visible_for_user(user, ids, show_private))
 
     def update(self, event: Event, title: str = None, location: str = None, location_point: List[int] = None,
                date: str = None, no_max_participants: int = None, description: str = None,

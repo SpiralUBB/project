@@ -201,7 +201,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events?limit=5&page=2",
+					"raw": "http://localhost:5000/api/v1/events?limit=5",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -216,10 +216,6 @@
 						{
 							"key": "limit",
 							"value": "5"
-						},
-						{
-							"key": "page",
-							"value": "2"
 						}
 					]
 				}
@@ -398,7 +394,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"title\": \"Beuta inf newnewnew\",\n  \"location\": \"Infinity, Piezisa\",\n  \"location_point\": [-25.0, 32.0],\n  \"date\": \"This is a date I guess\",\n  \"description\": \"Let's drink you fuckers\",\n  \"visibility\": \"private\",\n  \"category\": \"Arts\"\n}\n",
+					"raw": "{\n  \"title\": \"Beuta inf newnewnew\",\n  \"location\": \"Infinity, Piezisa\",\n  \"location_point\": [-25.0, 32.0],\n  \"date\": \"This is a date I guess\",\n  \"description\": \"Let's drink you fuckers\",\n  \"visibility\": \"whitelist\",\n  \"category\": \"Arts\",\n  \"no_max_participants\": 10\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -502,7 +498,7 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events/5fb16570761d93da42d7cc3d/join",
+					"raw": "http://localhost:5000/api/v1/events/5fb274d839369e43e33a049a/join",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -512,7 +508,7 @@
 						"api",
 						"v1",
 						"events",
-						"5fb16570761d93da42d7cc3d",
+						"5fb274d839369e43e33a049a",
 						"join"
 					]
 				}
@@ -525,7 +521,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events/5fb16570761d93da42d7cc3d/invitation",
+					"raw": "http://localhost:5000/api/v1/events/5fb274d839369e43e33a049a/invitation",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -535,7 +531,7 @@
 						"api",
 						"v1",
 						"events",
-						"5fb16570761d93da42d7cc3d",
+						"5fb274d839369e43e33a049a",
 						"invitation"
 					]
 				}
@@ -548,7 +544,7 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events/5fb16570761d93da42d7cc3d/invitations/5fb272fa39369e43e33a0498/accept",
+					"raw": "http://localhost:5000/api/v1/events/5fb274d839369e43e33a049a/invitations/5fb2750439369e43e33a049b/accept",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -558,9 +554,9 @@
 						"api",
 						"v1",
 						"events",
-						"5fb16570761d93da42d7cc3d",
+						"5fb274d839369e43e33a049a",
 						"invitations",
-						"5fb272fa39369e43e33a0498",
+						"5fb2750439369e43e33a049b",
 						"accept"
 					]
 				}
@@ -573,7 +569,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events/5fb16570761d93da42d7cc3d/invitations",
+					"raw": "http://localhost:5000/api/v1/events/5fb274d839369e43e33a049a/invitations",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -583,7 +579,7 @@
 						"api",
 						"v1",
 						"events",
-						"5fb16570761d93da42d7cc3d",
+						"5fb274d839369e43e33a049a",
 						"invitations"
 					]
 				}

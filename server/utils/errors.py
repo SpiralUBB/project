@@ -222,14 +222,6 @@ class EventInvitationCannotJoinFull(HttpError):
         super().__init__(message, 'event-invitation-cannot-join-full', 400)
 
 
-class EventInvitationCannotJoinPrivate(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'Cannot join a private event'
-
-        super().__init__(message, 'event-invitation-cannot-join-private', 400)
-
-
 class EventCommentEventInvalid(HttpError):
     def __init__(self, message=None):
         if not message:

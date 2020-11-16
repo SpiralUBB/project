@@ -9,13 +9,13 @@ from utils.DualMap import DualMap
 from utils.geo import approximate_location
 
 EVENT_VISIBILITY_PUBLIC = 'public'
-EVENT_VISIBILITY_PRIVATE = 'private'
-EVENT_VISIBILITY_WHITELIST = 'whitelist'
+EVENT_VISIBILITY_UNLISTED = 'unlisted'
+EVENT_VISIBILITY_WHITELISTED = 'whitelisted'
 
 event_visibility_map = DualMap({
     0: EVENT_VISIBILITY_PUBLIC,
-    1: EVENT_VISIBILITY_PRIVATE,
-    2: EVENT_VISIBILITY_WHITELIST,
+    1: EVENT_VISIBILITY_UNLISTED,
+    2: EVENT_VISIBILITY_WHITELISTED,
 }, (-1, 'unknown-visibility'))
 
 

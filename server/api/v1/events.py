@@ -34,8 +34,8 @@ def extract_event_comment_properties():
 
 
 def event_to_restricted_dict(event: Event, event_service: EventService,
-                             user: User, visible_event_ids: List[ObjectId]):
-    with_details = event_service.is_details_visible(event, user, visible_event_ids)
+                             user: User, full_details_event_ids: List[ObjectId]):
+    with_details = event_service.is_details_visible(event, user, full_details_event_ids)
     return event.to_dict(with_details=with_details)
 
 
@@ -43,19 +43,18 @@ def event_to_restricted_dict(event: Event, event_service: EventService,
 @jwt_optional
 def events_get(user_service: UserService, event_service: EventService,
                event_invitation_service: EventInvitationService):
+    # An user can see public events with full details
+    # An user can see whitelisted events with limited details
+    # An user that is logged in can see events that he owns
+    # An user that is logged in can see events for which he has an accepted invite with full details
+
     username = get_jwt_identity()
-
-    if username:
-        user = user_service.find_one_by(username=username)
-        visible_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
-    else:
-        user = None
-        visible_event_ids = []
-
-    events = event_service.find_visible_for_user(user, visible_event_ids)
+    user = user_service.find_one_by(username=username)
+    full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
+    events = event_service.find_visible_for_user(user, full_details_event_ids, show_whitelist=True)
 
     return jsonify(get_paginated_items_from_qs(events, event_to_restricted_dict, event_service, user,
-                                               visible_event_ids))
+                                               full_details_event_ids))
 
 
 @api.route('/visibilities')
@@ -87,20 +86,23 @@ def events_post(user_service: UserService, event_service: EventService):
 @jwt_optional
 def events_get_event(user_service: UserService, event_service: EventService,
                      event_invitation_service: EventInvitationService, event_id: str):
+    # An user can see public events with full details
+    # An user can see whitelisted events with limited details
+    # An user that is logged in can see events that he owns
+    # An user that is logged in can see events for which he has an accepted invite with full details
+    # An user that is logged in can see unlisted events with limited details. Since an unlisted event is not
+    # visible within the events route, this means that the owner needs to share the link to it with people
+    # that he wants to let join
+
     username = get_jwt_identity()
-
-    if username:
-        user = user_service.find_one_by(username=username)
-        visible_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
-    else:
-        user = None
-        visible_event_ids = []
-
-    event = event_service.find_one_visible_for_user(user, event_id, visible_event_ids, show_private=True)
+    user = user_service.find_one_by(username=username)
+    full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
+    event = event_service.find_one_visible_for_user(user, event_id, full_details_event_ids, show_whitelist=True,
+                                                    show_unlisted=user is not None)
     if event is None:
         raise EventDoesNotExist()
 
-    return jsonify(event_to_restricted_dict(event, event_service, user, visible_event_ids))
+    return jsonify(event_to_restricted_dict(event, event_service, user, full_details_event_ids))
 
 
 @api.route('/<string:event_id>', methods=['PATCH'])
@@ -134,14 +136,21 @@ def events_delete_event(user_service: UserService, event_service: EventService, 
         raise EventDoesNotExist()
 
     event_service.delete(event)
-    return jsonify(event.to_dict())
+    return jsonify(event.to_dict(with_details=True))
 
 
 @api.route('/<string:event_id>/comments')
 @jwt_required
-def events_get_event_comments(event_service: EventService, event_comments_service: EventCommentService,
-                              event_id: str):
-    event = event_service.find_one_by(id=event_id)
+def events_get_event_comments(user_service: UserService, event_service: EventService,
+                              event_invitation_service: EventInvitationService,
+                              event_comments_service: EventCommentService, event_id: str):
+    username = get_jwt_identity()
+    user = user_service.find_one_by(username=username)
+    if user is None:
+        raise UserDoesNotExist()
+
+    full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
+    event = event_service.find_one_visible_for_user(user, event_id, full_details_event_ids)
     if event is None:
         raise EventDoesNotExist()
 
@@ -151,14 +160,16 @@ def events_get_event_comments(event_service: EventService, event_comments_servic
 
 @api.route('/<string:event_id>/comments', methods=['POST'])
 @jwt_required
-def events_post_event_comments(event_service: EventService, event_comments_service: EventCommentService,
-                               user_service: UserService, event_id: str):
+def events_post_event_comments(user_service: UserService, event_service: EventService,
+                               event_invitation_service: EventInvitationService,
+                               event_comments_service: EventCommentService, event_id: str):
     username = get_jwt_identity()
     user = user_service.find_one_by(username=username)
     if user is None:
         raise UserDoesNotExist()
 
-    event = event_service.find_one_by(id=event_id)
+    full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
+    event = event_service.find_one_visible_for_user(user, event_id, full_details_event_ids)
     if event is None:
         raise EventDoesNotExist()
 
@@ -170,14 +181,16 @@ def events_post_event_comments(event_service: EventService, event_comments_servi
 
 @api.route('/<string:event_id>/comments/<string:comment_id>', methods=['PATCH'])
 @jwt_required
-def events_patch_event_comment(event_service: EventService, event_comments_service: EventCommentService,
-                               user_service: UserService, event_id: str, comment_id: str):
+def events_patch_event_comment(user_service: UserService, event_service: EventService,
+                               event_invitation_service: EventInvitationService,
+                               event_comments_service: EventCommentService, event_id: str, comment_id: str):
     username = get_jwt_identity()
     user = user_service.find_one_by(username=username)
     if user is None:
         raise UserDoesNotExist()
 
-    event = event_service.find_one_by(id=event_id)
+    full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
+    event = event_service.find_one_visible_for_user(user, event_id, full_details_event_ids)
     if event is None:
         raise EventDoesNotExist()
 
@@ -193,14 +206,16 @@ def events_patch_event_comment(event_service: EventService, event_comments_servi
 
 @api.route('/<string:event_id>/comments/<string:comment_id>', methods=['DELETE'])
 @jwt_required
-def events_delete_event_comment(event_service: EventService, event_comments_service: EventCommentService,
-                                user_service: UserService, event_id: str, comment_id: str):
+def events_delete_event_comment(user_service: UserService, event_service: EventService,
+                                event_invitation_service: EventInvitationService,
+                                event_comments_service: EventCommentService, event_id: str, comment_id: str):
     username = get_jwt_identity()
     user = user_service.find_one_by(username=username)
     if user is None:
         raise UserDoesNotExist()
 
-    event = event_service.find_one_by(id=event_id)
+    full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
+    event = event_service.find_one_visible_for_user(user, event_id, full_details_event_ids)
     if event is None:
         raise EventDoesNotExist()
 
@@ -222,7 +237,9 @@ def events_put_event_join(event_service: EventService, event_invitation_service:
     if user is None:
         raise UserDoesNotExist()
 
-    event = event_service.find_one_by(id=event_id)
+    full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
+    event = event_service.find_one_visible_for_user(user, event_id, full_details_event_ids, show_unlisted=True,
+                                                    show_whitelist=True)
     if event is None:
         raise EventDoesNotExist()
 
@@ -234,14 +251,17 @@ def events_put_event_join(event_service: EventService, event_invitation_service:
 
 @api.route('/<string:event_id>/invitation')
 @jwt_required
-def events_get_event_invitation(event_service: EventService, event_invitation_service: EventInvitationService,
-                                user_service: UserService, event_id: str):
+def events_get_event_invitation(user_service: UserService, event_service: EventService,
+                                event_invitation_service: EventInvitationService,
+                                event_id: str):
     username = get_jwt_identity()
     user = user_service.find_one_by(username=username)
     if user is None:
         raise UserDoesNotExist()
 
-    event = event_service.find_one_by(id=event_id)
+    full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
+    event = event_service.find_one_visible_for_user(user, event_id, full_details_event_ids, show_unlisted=True,
+                                                    show_whitelist=True)
     if event is None:
         raise EventDoesNotExist()
 
@@ -261,7 +281,8 @@ def events_get_event_invitations(event_service: EventService, event_invitation_s
     if user is None:
         raise UserDoesNotExist()
 
-    event = event_service.find_one_by(id=event_id)
+    full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
+    event = event_service.find_one_visible_for_user(user, event_id, full_details_event_ids)
     if event is None:
         raise EventDoesNotExist()
 

@@ -1,6 +1,6 @@
 from typing import Union
 
-from mongoengine import DoesNotExist
+from mongoengine import DoesNotExist, Q
 
 from models.Event import Event, event_visibility_map, EVENT_VISIBILITY_PUBLIC
 from models.EventInvitation import EVENT_INVITATION_STATUS_PENDING, EVENT_INVITATION_STATUS_ACCEPTED, \
@@ -44,10 +44,12 @@ class EventInvitationService:
         return EventInvitation.objects(*args, **kwargs)
 
     def find_visible_for_user(self, user: User, event: Event):
-        if event.owner.id == user.id:
-            return self.find_by()
-        else:
-            return self.find_by(status=event_invitation_status_map.to_key(EVENT_INVITATION_STATUS_ACCEPTED))
+        query = Q(event=event)
+
+        if event.owner.id != user.id:
+            query &= Q(status=event_invitation_status_map.to_key(EVENT_INVITATION_STATUS_ACCEPTED))
+
+        return self.find_by(query)
 
     def find_accepted_user_invitations_event_ids(self, user: User):
         accepted_event_invitations = self.find_by(

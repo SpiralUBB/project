@@ -75,7 +75,7 @@ class Event(Document):
             'visibility_text': event_visibility_map.to_value(self.visibility),
             'category': self.category,
             'category_text': event_category_map.to_value(self.category),
-            'is_limited_details': with_details,
+            'is_limited_details': not with_details,
             'is_unlimited_participants': self.no_max_participants == 0,
         }
 

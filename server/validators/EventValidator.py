@@ -3,7 +3,8 @@ from typing import List
 from models.Event import event_visibility_map, event_category_map
 from models.User import User
 from utils.errors import EventTitleInvalid, EventLocationInvalid, EventDateInvalid, \
-    EventDescriptionInvalid, EventCategoryInvalid, EventLocationPointInvalid, EventOwnerInvalid, EventVisibilityInvalid
+    EventDescriptionInvalid, EventCategoryInvalid, EventLocationPointInvalid, EventOwnerInvalid, EventVisibilityInvalid, \
+    EventMaxNoParticipantsInvalid
 
 
 class EventValidator:
@@ -36,6 +37,16 @@ class EventValidator:
     def validate_date(self, value: str):
         if not value:
             raise EventDateInvalid(message='Event date cannot be empty')
+
+    def validate_no_max_participants(self, value: int):
+        if value is not None:
+            if type(value) != int:
+                raise EventMaxNoParticipantsInvalid(
+                    message='Event max number of participants must either be omitted or be a number')
+
+            if value < 0:
+                raise EventMaxNoParticipantsInvalid(
+                    message='Event max number of participants must be a number greater or equal to 0')
 
     def validate_description(self, value: str):
         if not value:
@@ -72,10 +83,11 @@ class EventValidator:
         return value
 
     def validate_parameters(self, owner: User, title: str, location: str, location_point: List[float],
-                            date: str, description: str):
+                            date: str, no_max_participants: int, description: str):
         self.validate_owner(owner)
         self.validate_title(title)
         self.validate_location(location)
         self.validate_location_point(location_point)
         self.validate_date(date)
+        self.validate_no_max_participants(no_max_participants)
         self.validate_description(description)

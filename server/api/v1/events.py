@@ -1,8 +1,12 @@
+from typing import List
+
+from bson import ObjectId
 from flask import Blueprint, jsonify, request, Flask
 from flask_jwt_extended import jwt_required, get_jwt_identity, jwt_optional
 
 from models.Event import event_visibility_map, event_category_map, EVENT_VISIBILITY_WHITELIST, Event, \
     EVENT_VISIBILITY_PRIVATE, EVENT_VISIBILITY_PUBLIC
+from models.User import User
 from services.EventCommentService import EventCommentService
 from services.EventInvitationService import EventInvitationService
 from services.EventService import EventService
@@ -19,15 +23,22 @@ def extract_event_properties():
     location = request.json.get('location')
     location_point = request.json.get('location_point')
     date = request.json.get('date')
+    no_max_participants = request.json.get('no_max_participants')
     description = request.json.get('description')
     visibility = request.json.get('visibility')
     category = request.json.get('category')
-    return title, location, location_point, date, description, visibility, category
+    return title, location, location_point, date, no_max_participants, description, visibility, category
 
 
 def extract_event_comment_properties():
     text = request.json.get('text')
     return text
+
+
+def event_to_restricted_dict(event: Event, event_service: EventService,
+                             user: User, visible_event_ids: List[ObjectId]):
+    with_details = event_service.is_details_visible(event, user, visible_event_ids)
+    return event.to_dict(with_details=with_details)
 
 
 @api.route('')
@@ -45,11 +56,8 @@ def events_get(user_service: UserService, event_service: EventService,
 
     events = event_service.find_visible_for_user(user, visible_event_ids)
 
-    def event_mapping(event: Event):
-        hide_details = event_service.is_details_hidden(user, event, visible_event_ids)
-        return event.to_dict(hide_details)
-
-    return jsonify(get_paginated_items_from_qs(events, mapping_fn=event_mapping))
+    return jsonify(get_paginated_items_from_qs(events, event_to_restricted_dict, event_service, user,
+                                               visible_event_ids))
 
 
 @api.route('/visibilities')
@@ -70,9 +78,11 @@ def events_post(user_service: UserService, event_service: EventService):
     if user is None:
         raise UserDoesNotExist()
 
-    title, location, location_point, date, description, visibility, category = extract_event_properties()
-    event = event_service.add(user, title, location, location_point, date, description, visibility, category)
-    return jsonify(event.to_dict())
+    title, location, location_point, date, no_max_participants, description, visibility, category \
+        = extract_event_properties()
+    event = event_service.add(user, title, location, location_point, date, no_max_participants, description, visibility,
+                              category)
+    return jsonify(event.to_dict(with_details=True))
 
 
 @api.route('/<string:event_id>')
@@ -92,9 +102,7 @@ def events_get_event(user_service: UserService, event_service: EventService,
     if event is None:
         raise EventDoesNotExist()
 
-    hide_details = event_service.is_details_hidden(user, event, visible_event_ids)
-
-    return jsonify(event.to_dict(hide_details))
+    return jsonify(event_to_restricted_dict(event, event_service, user, visible_event_ids))
 
 
 @api.route('/<string:event_id>', methods=['PATCH'])
@@ -109,9 +117,10 @@ def events_patch_event(user_service: UserService, event_service: EventService, e
     if event is None:
         raise EventDoesNotExist()
 
-    title, location, location_point, date, description, visibility, category = extract_event_properties()
-    event = event_service.update(event, title, location, location_point, date, description, visibility, category)
-    return jsonify(event.to_dict())
+    title, location, location_point, date, no_max_participants, description, visibility, category = \
+        extract_event_properties()
+    event_service.update(event, title, location, location_point, date, description, visibility, category)
+    return jsonify(event.to_dict(with_details=True))
 
 
 @api.route('/<string:event_id>', methods=['DELETE'])
@@ -219,18 +228,8 @@ def events_put_event_join(event_service: EventService, event_invitation_service:
     if event is None:
         raise EventDoesNotExist()
 
-    if event.owner.id == user.id:
-        raise EventInvitationCannotJoinOwn()
-
-    if event.visibility == event_visibility_map.to_key(EVENT_VISIBILITY_PRIVATE):
-        raise EventInvitationCannotJoinPrivate()
-
-    if event.visibility == event_visibility_map.to_key(EVENT_VISIBILITY_WHITELIST):
-        event_invitation = event_invitation_service.add(event, user)
-    elif event.visibility == event_visibility_map.to_key(EVENT_VISIBILITY_PUBLIC):
-        event_invitation = event_invitation_service.add(event, user, True)
-    else:
-        raise EventInvitationStatusInvalid()
+    event_service.check_can_user_join_event(event, user)
+    event_invitation = event_invitation_service.join(event, user)
 
     return jsonify(event_invitation.to_dict())
 

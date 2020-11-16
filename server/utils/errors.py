@@ -134,6 +134,14 @@ class EventDateInvalid(HttpError):
         super().__init__(message, 'event-date-invalid', 400)
 
 
+class EventMaxNoParticipantsInvalid(HttpError):
+    def __init__(self, message=None):
+        if not message:
+            message = 'Event max number of participants is invalid'
+
+        super().__init__(message, 'event-max-no-participants-invalid', 400)
+
+
 class EventDescriptionInvalid(HttpError):
     def __init__(self, message=None):
         if not message:
@@ -204,6 +212,14 @@ class EventInvitationCannotJoinOwn(HttpError):
             message = 'Cannot join an event owned by yourself'
 
         super().__init__(message, 'event-invitation-cannot-join-own', 400)
+
+
+class EventInvitationCannotJoinFull(HttpError):
+    def __init__(self, message=None):
+        if not message:
+            message = 'Cannot join a full event'
+
+        super().__init__(message, 'event-invitation-cannot-join-full', 400)
 
 
 class EventInvitationCannotJoinPrivate(HttpError):

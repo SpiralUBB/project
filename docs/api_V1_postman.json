@@ -228,7 +228,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events/5faff0ff58a2dfdc1e7ca40d",
+					"raw": "http://localhost:5000/api/v1/events/5fb274c739369e43e33a0499",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -238,7 +238,7 @@
 						"api",
 						"v1",
 						"events",
-						"5faff0ff58a2dfdc1e7ca40d"
+						"5fb274c739369e43e33a0499"
 					]
 				}
 			},
@@ -250,7 +250,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events/5faff0ff58a2dfdc1e7ca40d/comments",
+					"raw": "http://localhost:5000/api/v1/events/5fb274d839369e43e33a049a/comments",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -260,7 +260,7 @@
 						"api",
 						"v1",
 						"events",
-						"5faff0ff58a2dfdc1e7ca40d",
+						"5fb274d839369e43e33a049a",
 						"comments"
 					]
 				}
@@ -498,7 +498,7 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events/5fb274d839369e43e33a049a/join",
+					"raw": "http://localhost:5000/api/v1/events/5fb274d839369e43e33a049a/invitation",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -509,7 +509,7 @@
 						"v1",
 						"events",
 						"5fb274d839369e43e33a049a",
-						"join"
+						"invitation"
 					]
 				}
 			},

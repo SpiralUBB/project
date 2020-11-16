@@ -2,12 +2,12 @@ from typing import Union
 
 from mongoengine import DoesNotExist
 
-from models.Event import Event, event_visibility_map, EVENT_VISIBILITY_WHITELIST, EVENT_VISIBILITY_PUBLIC
+from models.Event import Event, event_visibility_map, EVENT_VISIBILITY_PUBLIC
 from models.EventInvitation import EVENT_INVITATION_STATUS_PENDING, EVENT_INVITATION_STATUS_ACCEPTED, \
     EventInvitation, event_invitation_status_map
 
 from models.User import User
-from utils.errors import EventInvitationAlreadyExists, EventInvitationCannotJoinPrivate
+from utils.errors import EventInvitationAlreadyExists
 
 
 class EventInvitationService:
@@ -18,7 +18,8 @@ class EventInvitationService:
         except DoesNotExist:
             pass
 
-        event_invitation = EventInvitation(event=event, user=user)
+        event_invitation = EventInvitation(event=event, user=user,
+                                           status=event_invitation_status_map.to_key(EVENT_INVITATION_STATUS_PENDING))
         event_invitation.save()
 
         if event.visibility == event_visibility_map.to_key(EVENT_VISIBILITY_PUBLIC):

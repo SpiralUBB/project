@@ -4,15 +4,13 @@ from bson import ObjectId
 from flask import Blueprint, jsonify, request, Flask
 from flask_jwt_extended import jwt_required, get_jwt_identity, jwt_optional
 
-from models.Event import event_visibility_map, event_category_map, EVENT_VISIBILITY_WHITELIST, Event, \
-    EVENT_VISIBILITY_PRIVATE, EVENT_VISIBILITY_PUBLIC
+from models.Event import event_visibility_map, event_category_map, Event
 from models.User import User
 from services.EventCommentService import EventCommentService
 from services.EventInvitationService import EventInvitationService
 from services.EventService import EventService
 from services.UserService import UserService
-from utils.errors import UserDoesNotExist, EventDoesNotExist, EventCommentDoesNotExist, EventInvitationCannotJoinOwn, \
-    EventInvitationCannotJoinPrivate, EventInvitationStatusInvalid, EventInvitationDoesNotExist
+from utils.errors import UserDoesNotExist, EventDoesNotExist, EventCommentDoesNotExist, EventInvitationDoesNotExist
 from utils.pagination import get_paginated_items_from_qs
 
 api = Blueprint('api_v1_events', __name__)

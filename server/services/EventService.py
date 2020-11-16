@@ -58,7 +58,7 @@ class EventService:
         # Add events for which the user has an accepted invite
         query |= Q(id__in=ids)
 
-        if user:
+        if user is not None:
             # Add events owned by the logged in user
             query |= Q(owner=user)
 

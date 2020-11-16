@@ -86,13 +86,14 @@ def events_post(user_service: UserService, event_service: EventService):
 @jwt_optional
 def events_get_event(user_service: UserService, event_service: EventService,
                      event_invitation_service: EventInvitationService, event_id: str):
-    # An user can see public events with full details
-    # An user can see whitelisted events with limited details
-    # An user that is logged in can see events that he owns
-    # An user that is logged in can see events for which he has an accepted invite with full details
-    # An user that is logged in can see unlisted events with limited details. Since an unlisted event is not
+    # An user can see a whitelisted event with limited details
+    # An user can see a public event with full details
+    # An user that is logged in can see an unlisted event with limited details. Since an unlisted event is not
     # visible within the events route, this means that the owner needs to share the link to it with people
     # that he wants to let join
+    # An user that is logged in can see an event that he owns with full details
+    # An user that is logged in can see a whitelisted event for which he has an accepted invite with full details
+    # An user that is logged in can see an unlisted event for which he has an accepted invite with full details
 
     username = get_jwt_identity()
     user = user_service.find_one_by(username=username)
@@ -113,6 +114,7 @@ def events_patch_event(user_service: UserService, event_service: EventService, e
     if user is None:
         raise UserDoesNotExist()
 
+    # Restrict to owner
     event = event_service.find_one_by(owner=user, id=event_id)
     if event is None:
         raise EventDoesNotExist()
@@ -131,6 +133,7 @@ def events_delete_event(user_service: UserService, event_service: EventService, 
     if user is None:
         raise UserDoesNotExist()
 
+    # Restrict to owner
     event = event_service.find_one_by(owner=user, id=event_id)
     if event is None:
         raise EventDoesNotExist()
@@ -144,6 +147,11 @@ def events_delete_event(user_service: UserService, event_service: EventService, 
 def events_get_event_comments(user_service: UserService, event_service: EventService,
                               event_invitation_service: EventInvitationService,
                               event_comments_service: EventCommentService, event_id: str):
+    # A logged in user can access the comments for a public event
+    # A logged in user can access the comments for an event that he owns
+    # A logged in user can access the comments for a whitelisted event that he has an accepted invite for
+    # A logged in user can access the comments for an unlisted event that he has an accepted invite for
+
     username = get_jwt_identity()
     user = user_service.find_one_by(username=username)
     if user is None:
@@ -163,6 +171,11 @@ def events_get_event_comments(user_service: UserService, event_service: EventSer
 def events_post_event_comments(user_service: UserService, event_service: EventService,
                                event_invitation_service: EventInvitationService,
                                event_comments_service: EventCommentService, event_id: str):
+    # A logged in user can access the comments for a public event
+    # A logged in user can access the comments for an event that he owns
+    # A logged in user can access the comments for a whitelisted event that he has an accepted invite for
+    # A logged in user can access the comments for an unlisted event that he has an accepted invite for
+
     username = get_jwt_identity()
     user = user_service.find_one_by(username=username)
     if user is None:
@@ -184,6 +197,11 @@ def events_post_event_comments(user_service: UserService, event_service: EventSe
 def events_patch_event_comment(user_service: UserService, event_service: EventService,
                                event_invitation_service: EventInvitationService,
                                event_comments_service: EventCommentService, event_id: str, comment_id: str):
+    # A logged in user can access the comments for a public event
+    # A logged in user can access the comments for an event that he owns
+    # A logged in user can access the comments for a whitelisted event that he has an accepted invite for
+    # A logged in user can access the comments for an unlisted event that he has an accepted invite for
+
     username = get_jwt_identity()
     user = user_service.find_one_by(username=username)
     if user is None:
@@ -194,6 +212,7 @@ def events_patch_event_comment(user_service: UserService, event_service: EventSe
     if event is None:
         raise EventDoesNotExist()
 
+    # Restrict to author
     event_comment = event_comments_service.find_one_by(author=user, event=event, id=comment_id)
     if event_comment is None:
         raise EventCommentDoesNotExist()
@@ -209,6 +228,11 @@ def events_patch_event_comment(user_service: UserService, event_service: EventSe
 def events_delete_event_comment(user_service: UserService, event_service: EventService,
                                 event_invitation_service: EventInvitationService,
                                 event_comments_service: EventCommentService, event_id: str, comment_id: str):
+    # A logged in user can access the comments for a public event
+    # A logged in user can access the comments for an event that he owns
+    # A logged in user can access the comments for a whitelisted event that he has an accepted invite for
+    # A logged in user can access the comments for an unlisted event that he has an accepted invite for
+
     username = get_jwt_identity()
     user = user_service.find_one_by(username=username)
     if user is None:
@@ -219,6 +243,7 @@ def events_delete_event_comment(user_service: UserService, event_service: EventS
     if event is None:
         raise EventDoesNotExist()
 
+    # Restrict to author
     event_comment = event_comments_service.find_one_by(author=user, event=event, id=comment_id)
     if event_comment is None:
         raise EventCommentDoesNotExist()
@@ -228,32 +253,15 @@ def events_delete_event_comment(user_service: UserService, event_service: EventS
     return jsonify(event_comment.to_dict())
 
 
-@api.route('/<string:event_id>/join', methods=['PUT'])
-@jwt_required
-def events_put_event_join(event_service: EventService, event_invitation_service: EventInvitationService,
-                          user_service: UserService, event_id: str):
-    username = get_jwt_identity()
-    user = user_service.find_one_by(username=username)
-    if user is None:
-        raise UserDoesNotExist()
-
-    full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
-    event = event_service.find_one_visible_for_user(user, event_id, full_details_event_ids, show_unlisted=True,
-                                                    show_whitelist=True)
-    if event is None:
-        raise EventDoesNotExist()
-
-    event_service.check_can_user_join_event(event, user)
-    event_invitation = event_invitation_service.join(event, user)
-
-    return jsonify(event_invitation.to_dict())
-
-
 @api.route('/<string:event_id>/invitation')
 @jwt_required
 def events_get_event_invitation(user_service: UserService, event_service: EventService,
                                 event_invitation_service: EventInvitationService,
                                 event_id: str):
+    # A logged in user can get his invitation status for a public event
+    # A logged in user can get his invitation status for a whitelisted event
+    # A logged in user can get his invitation status for an unlisted event
+
     username = get_jwt_identity()
     user = user_service.find_one_by(username=username)
     if user is None:
@@ -272,10 +280,40 @@ def events_get_event_invitation(user_service: UserService, event_service: EventS
     return jsonify(event_invitation.to_dict())
 
 
+@api.route('/<string:event_id>/invitation', methods=['PUT'])
+@jwt_required
+def events_put_event_join(event_service: EventService, event_invitation_service: EventInvitationService,
+                          user_service: UserService, event_id: str):
+    # A logged in user can join a public event
+    # A logged in user can join a whitelisted event, the invitation will be marked pending
+    # A logged in user can join an unlisted event, the invitation will be marked pending
+
+    username = get_jwt_identity()
+    user = user_service.find_one_by(username=username)
+    if user is None:
+        raise UserDoesNotExist()
+
+    full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
+    event = event_service.find_one_visible_for_user(user, event_id, full_details_event_ids, show_unlisted=True,
+                                                    show_whitelist=True)
+    if event is None:
+        raise EventDoesNotExist()
+
+    event_service.check_can_user_join_event(event, user)
+    event_invitation = event_invitation_service.join(event, user)
+
+    return jsonify(event_invitation.to_dict())
+
+
 @api.route('/<string:event_id>/invitations')
 @jwt_required
 def events_get_event_invitations(event_service: EventService, event_invitation_service: EventInvitationService,
                                  user_service: UserService, event_id: str):
+    # A logged in user can see the accepted invitations for a public event
+    # A logged in user can see the accepted invitations for a whitelisted event for which he has an accepted invite
+    # A logged in user can see the accepted invitations for an unlisted event for which he has an accepted invite
+    # A logged in user can see the all the invitations for an event that he owns
+
     username = get_jwt_identity()
     user = user_service.find_one_by(username=username)
     if user is None:
@@ -300,6 +338,7 @@ def events_put_event_invitation_accept(event_service: EventService, event_invita
     if user is None:
         raise UserDoesNotExist()
 
+    # Restrict to owner
     event = event_service.find_one_by(id=event_id, owner=user)
     if event is None:
         raise EventDoesNotExist()

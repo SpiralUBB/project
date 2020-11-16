@@ -64,7 +64,7 @@ class EventService:
         if event_visibility_map.to_key(EVENT_VISIBILITY_PUBLIC) == event.visibility:
             return True
 
-        if event.owner.id == user.id:
+        if user is not None and event.owner.id == user.id:
             return True
 
         if event.id in visible_ids:

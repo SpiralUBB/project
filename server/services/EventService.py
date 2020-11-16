@@ -79,7 +79,7 @@ class EventService:
         if event.visibility == event_visibility_map.to_key(EVENT_VISIBILITY_PRIVATE):
             raise EventInvitationCannotJoinPrivate()
 
-        if event.no_participants >= event.no_max_participants:
+        if event.no_max_participants != 0 and event.no_participants >= event.no_max_participants:
             raise EventInvitationCannotJoinFull()
 
     def find_visible_for_user(self, user: User, ids):

@@ -548,7 +548,7 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events/5fb16570761d93da42d7cc3d/invitations/5fb17038dadd6649d0d538d7/accept",
+					"raw": "http://localhost:5000/api/v1/events/5fb16570761d93da42d7cc3d/invitations/5fb272fa39369e43e33a0498/accept",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -560,7 +560,7 @@
 						"events",
 						"5fb16570761d93da42d7cc3d",
 						"invitations",
-						"5fb17038dadd6649d0d538d7",
+						"5fb272fa39369e43e33a0498",
 						"accept"
 					]
 				}
@@ -585,6 +585,28 @@
 						"events",
 						"5fb16570761d93da42d7cc3d",
 						"invitations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/v1/user/refresh",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"refresh"
 					]
 				}
 			},

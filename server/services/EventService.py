@@ -7,7 +7,7 @@ from models.Event import Event, event_visibility_map, EVENT_VISIBILITY_PUBLIC, E
     EVENT_VISIBILITY_UNLISTED
 
 from models.User import User
-from utils.errors import EventInvitationCannotJoinOwn, EventInvitationCannotJoinUnlisted, EventInvitationCannotJoinFull
+from utils.errors import EventInvitationCannotJoinOwn, EventInvitationCannotJoinFull
 from validators.EventValidator import EventValidator
 
 

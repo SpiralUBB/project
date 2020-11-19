@@ -7,7 +7,7 @@ import { ApiService } from './api.service';
   providedIn: 'root',
 })
 export class MapService {
-  private events: AppEvent[];
+  private events: AppEvent[] = [];
   public eventsLayer: Marker[];
 
   public map = {
@@ -42,7 +42,9 @@ export class MapService {
     }
 
     this.apiService.getAllEvents().subscribe((eventsRes) => {
-      this.events = eventsRes;
+      Object.keys(eventsRes.items).forEach(key => {
+        this.events.push(eventsRes.items[key])
+      })
       console.log(this.events);
       this.eventsLayer = Object.values(this.events).map((event) =>
         marker(latLng(event.locationPoints[0], event.locationPoints[1]), {

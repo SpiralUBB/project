@@ -25,6 +25,8 @@ import { SidenavContentComponent } from './components/shared/sidenav/sidenav-con
 import { NavigationService } from './services/navigation.service';
 import { MapComponent } from './components/map/map.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { EventCardComponent } from './components/shared/event-card/event-card.component';
+import { EventListComponent } from './components/shared/event-list/event-list.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,8 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     SidenavComponent,
     SidenavContentComponent,
     MapComponent,
+    EventCardComponent,
+    EventListComponent,
   ],
   imports: [
     MaterialModule,

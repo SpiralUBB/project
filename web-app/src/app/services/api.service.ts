@@ -24,7 +24,7 @@ export class ApiService {
     return this.http.post<RegisterUser>('/user/register', user);
   }
 
-  getAllEvents(): Observable<AppEvent[]> {
+  getAllEvents(): Observable<any> {
     return this.http.get<AppEvent[]>('/events');
   }
 

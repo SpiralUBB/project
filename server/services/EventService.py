@@ -134,3 +134,20 @@ class EventService:
 
     def delete(self, event: Event):
         event.delete()
+
+    def get_filter_query(self, user: User = None, ids=None, show_whitelist: bool = False,
+                         show_unlisted: bool = False, filter_object_title=None, filter_object_category=None,
+                         filter_object_date=None):
+
+        query = self.find_visible_for_user(user, ids, show_whitelist, show_unlisted)
+
+        if filter_object_title is not None:
+            query &= Q(title=filter_object_title)
+
+        if filter_object_category is not None:
+            query &= Q(category=filter_object_category)
+
+        if filter_object_date is not None:
+            query &= Q(date=filter_object_date)
+
+        return query

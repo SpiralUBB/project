@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
+import { EventPageComponent } from './components/event-page/event-page.component';
 import { EventsComponent } from './components/events/events.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { MapComponent } from './components/map/map.component';
@@ -27,6 +28,10 @@ const routes: Routes = [
       {
         path: 'map',
         component: MapComponent,
+      },
+      {
+        path: 'event/:id',
+        component: EventPageComponent,
       },
     ],
   },

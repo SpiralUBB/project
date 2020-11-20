@@ -27,6 +27,7 @@ import { MapComponent } from './components/map/map.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { EventCardComponent } from './components/shared/event-card/event-card.component';
 import { EventListComponent } from './components/shared/event-list/event-list.component';
+import { EventPageComponent } from './components/event-page/event-page.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { EventListComponent } from './components/shared/event-list/event-list.co
     MapComponent,
     EventCardComponent,
     EventListComponent,
+    EventPageComponent,
   ],
   imports: [
     MaterialModule,

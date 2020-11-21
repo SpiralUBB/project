@@ -162,7 +162,7 @@ def events_get_event_comments(user_service: UserService, event_service: EventSer
     if event is None:
         raise EventDoesNotExist()
 
-    event_comments = event_comments_service.find_by(id=event_id)
+    event_comments = event_comments_service.find_by(event=event)
     return jsonify(get_paginated_items_from_qs(event_comments))
 
 

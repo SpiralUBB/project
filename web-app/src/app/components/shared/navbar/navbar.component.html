@@ -4,6 +4,7 @@
             <mat-icon>menu</mat-icon>
         </button>
         <span>HypΣvent</span>
+        
     </div>
     <div>
         <button *ngIf = "this.isLoggedIn === false" (click)="openLoginDialog()" mat-button color="secondary" class="example-icon favorite-icon" >
@@ -11,6 +12,9 @@
         </button>
         <button *ngIf = "this.isLoggedIn === false" (click)="openRegisterDialog()" mat-button color="secondary" class="example-icon" >
             Register
+        </button>
+        <button *ngIf = "this.isLoggedIn === true " (click)="openProfile()" mat-button color="secondary" class="example-icon">
+            Profile
         </button>
         <button *ngIf = "this.isLoggedIn === true" (click)="logout()" mat-button color="secondary" class="example-icon" >
             Logout

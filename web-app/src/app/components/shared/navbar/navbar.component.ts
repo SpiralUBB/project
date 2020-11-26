@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { NavigationService } from 'src/app/services/navigation.service';
 import { LoginFormComponent } from '../login-form/login-form.component';
 import { RegisterFormComponent } from '../register-form/register-form.component';
+import { ProfileFormComponent } from '../profile-form/profile-form.component';
 
 @Component({
   selector: 'app-navbar',
@@ -15,7 +16,8 @@ export class NavbarComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private navigationService: NavigationService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router,
   ) {}
   isLoggedIn: boolean;
 
@@ -32,6 +34,10 @@ export class NavbarComponent implements OnInit {
 
   openRegisterDialog() {
     const dialogRef = this.dialog.open(RegisterFormComponent);
+  }
+
+  openProfile(){
+    this.router.navigateByUrl('/app/profile');
   }
 
   logout(){

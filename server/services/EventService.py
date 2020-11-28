@@ -98,7 +98,7 @@ class EventService:
         return self.find_one_by(Q(id=event_id) & query)
 
     def update(self, event: Event, title: str = None, location: str = None, location_point: List[int] = None,
-               date: str = None, no_max_participants: int = None, description: str = None,
+               start_time: str = None, end_time: str = None, no_max_participants: int = None, description: str = None,
                visibility: Union[str, int] = None, category: [str, int] = None):
         if title is not None:
             self.validator.validate_title(title)
@@ -112,9 +112,13 @@ class EventService:
             self.validator.validate_location_point(location_point)
             event.location_point = location_point
 
-        if date is not None:
-            self.validator.validate_date(date)
-            event.date = date
+        if start_time is not None:
+            start_time = self.validator.parse_time(start_time)
+            event.start_time = start_time
+
+        if end_time is not None:
+            end_time = self.validator.parse_time(end_time)
+            event.end_time = end_time
 
         if no_max_participants is not None:
             self.validator.validate_no_max_participants(no_max_participants)

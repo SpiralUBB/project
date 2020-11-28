@@ -15,17 +15,19 @@ class EventService:
     def __init__(self, validator: EventValidator):
         self.validator = validator
 
-    def add(self, owner: User, title: str, location: str, location_point: List[float], date: str,
+    def add(self, owner: User, title: str, location: str, location_point: List[float], start_time: str, end_time: str,
             no_max_participants: int, description: str, visibility: Union[str, int], category: [str, int]) -> Event:
         visibility = self.validator.parse_visibility(visibility)
         category = self.validator.parse_category(category)
+        start_time = self.validator.parse_time(start_time)
+        end_time = self.validator.parse_time(end_time)
 
-        self.validator.validate_parameters(owner, title, location, location_point, date, no_max_participants,
-                                           description)
+        self.validator.validate_parameters(owner, title, location, location_point, start_time, end_time,
+                                           no_max_participants, description)
 
-        event = Event(owner=owner, title=title, location=location, location_point=location_point, date=date,
-                      no_max_participants=no_max_participants, description=description, visibility=visibility,
-                      category=category)
+        event = Event(owner=owner, title=title, location=location, location_point=location_point, start_time=start_time,
+                      end_time=end_time, no_max_participants=no_max_participants, description=description,
+                      visibility=visibility, category=category)
         event.save()
 
         return event

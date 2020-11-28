@@ -13,7 +13,7 @@ class EventComment(Document):
         d = {
             'id': str(self.id),
             'author': self.author.to_dict(),
-            'time': self.time,
+            'time': self.time.isoformat(),
             'text': self.text,
         }
 

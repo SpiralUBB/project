@@ -1,4 +1,4 @@
-from mongoengine import Document, ReferenceField, IntField, StringField, PointField
+from mongoengine import Document, ReferenceField, IntField, StringField, PointField, DateTimeField
 
 from utils.DualMap import DualMap
 
@@ -44,7 +44,8 @@ class Event(Document):
     title = StringField(required=True)
     location = StringField()
     location_point = PointField()
-    date = StringField(required=True)
+    start_time = DateTimeField()
+    end_time = DateTimeField()
     no_participants = IntField(min_value=0, default=0)
     no_max_participants = IntField(min_value=0, default=0)
     description = StringField(required=True)
@@ -69,7 +70,8 @@ class Event(Document):
             'id': str(self.id),
             'owner': self.owner.to_dict(),
             'title': self.title,
-            'date': self.date,
+            'start_time': self.start_time.isoformat(),
+            'end_time': self.end_time.isoformat(),
             'description': self.description,
             'visibility': self.visibility,
             'visibility_text': event_visibility_map.to_value(self.visibility),

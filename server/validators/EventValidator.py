@@ -1,8 +1,13 @@
-from typing import List
+import arrow
+
+from datetime import datetime
+from typing import List, Union
+
+from arrow import ParserError
 
 from models.Event import event_visibility_map, event_category_map
 from models.User import User
-from utils.errors import EventTitleInvalid, EventLocationInvalid, EventDateInvalid, \
+from utils.errors import EventTitleInvalid, EventLocationInvalid, EventTimeInvalid, \
     EventDescriptionInvalid, EventCategoryInvalid, EventLocationPointInvalid, EventOwnerInvalid, EventVisibilityInvalid, \
     EventMaxNoParticipantsInvalid
 
@@ -34,9 +39,24 @@ class EventValidator:
             if type(x) != float:
                 raise EventLocationPointInvalid(message='Event location point must be a list with 2 floats')
 
-    def validate_date(self, value: str):
-        if not value:
-            raise EventDateInvalid(message='Event date cannot be empty')
+    def validate_time(self, start, end):
+        if not start:
+            raise EventTimeInvalid(message='Event start time cannot be empty')
+
+        if not end:
+            raise EventTimeInvalid(message='Event end time cannot be empty')
+
+        if not isinstance(start, datetime):
+            raise EventTimeInvalid(message='Event start time must be a datetime object')
+
+        if not isinstance(end, datetime):
+            raise EventTimeInvalid(message='Event end time must be a datetime object')
+
+        if start.date() < arrow.utcnow().date():
+            raise EventTimeInvalid(message='Event start time cannot be in the past')
+
+        if end.date() < start.date():
+            raise EventTimeInvalid(message='Event end time cannot be before event start time')
 
     def validate_no_max_participants(self, value: int):
         if value is not None:
@@ -82,12 +102,21 @@ class EventValidator:
 
         return value
 
+    def parse_time(self, value: str) -> Union[datetime, None]:
+        if not value:
+            return None
+
+        try:
+            return arrow.get(value).to('utc').datetime
+        except ParserError:
+            raise EventTimeInvalid("Event time couldn't be parsed into a valid date-time format")
+
     def validate_parameters(self, owner: User, title: str, location: str, location_point: List[float],
-                            date: str, no_max_participants: int, description: str):
+                            start_time: datetime, end_time: datetime, no_max_participants: int, description: str):
         self.validate_owner(owner)
         self.validate_title(title)
         self.validate_location(location)
         self.validate_location_point(location_point)
-        self.validate_date(date)
+        self.validate_time(start_time, end_time)
         self.validate_no_max_participants(no_max_participants)
         self.validate_description(description)

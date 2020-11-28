@@ -126,12 +126,12 @@ class EventLocationPointInvalid(HttpError):
         super().__init__(message, 'event-location-point-invalid', 400)
 
 
-class EventDateInvalid(HttpError):
+class EventTimeInvalid(HttpError):
     def __init__(self, message=None):
         if not message:
-            message = 'Event date is invalid'
+            message = 'Event time is invalid'
 
-        super().__init__(message, 'event-date-invalid', 400)
+        super().__init__(message, 'event-time-invalid', 400)
 
 
 class EventMaxNoParticipantsInvalid(HttpError):

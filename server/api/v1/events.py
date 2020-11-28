@@ -145,7 +145,6 @@ def events_delete_event(user_service: UserService, event_service: EventService, 
 @api.route('/<string:event_id>/comments')
 @jwt_required
 def events_get_event_comments(user_service: UserService, event_service: EventService,
-                              event_invitation_service: EventInvitationService,
                               event_comments_service: EventCommentService, event_id: str):
     # A logged in user can access the comments for an event
 
@@ -165,7 +164,6 @@ def events_get_event_comments(user_service: UserService, event_service: EventSer
 @api.route('/<string:event_id>/comments', methods=['POST'])
 @jwt_required
 def events_post_event_comments(user_service: UserService, event_service: EventService,
-                               event_invitation_service: EventInvitationService,
                                event_comments_service: EventCommentService, event_id: str):
     # A logged in user can access the comments for an event
 
@@ -187,7 +185,6 @@ def events_post_event_comments(user_service: UserService, event_service: EventSe
 @api.route('/<string:event_id>/comments/<string:comment_id>', methods=['PATCH'])
 @jwt_required
 def events_patch_event_comment(user_service: UserService, event_service: EventService,
-                               event_invitation_service: EventInvitationService,
                                event_comments_service: EventCommentService, event_id: str, comment_id: str):
     # A logged in user can access the comments for an event
 
@@ -214,7 +211,6 @@ def events_patch_event_comment(user_service: UserService, event_service: EventSe
 @api.route('/<string:event_id>/comments/<string:comment_id>', methods=['DELETE'])
 @jwt_required
 def events_delete_event_comment(user_service: UserService, event_service: EventService,
-                                event_invitation_service: EventInvitationService,
                                 event_comments_service: EventCommentService, event_id: str, comment_id: str):
     # A logged in user can access the comments for an event
 

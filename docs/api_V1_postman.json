@@ -250,7 +250,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events/5fb274d839369e43e33a049a/comments",
+					"raw": "http://localhost:5000/api/v1/events/5fb274c739369e43e33a0499/comments",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -260,7 +260,7 @@
 						"api",
 						"v1",
 						"events",
-						"5fb274d839369e43e33a049a",
+						"5fb274c739369e43e33a0499",
 						"comments"
 					]
 				}
@@ -282,7 +282,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events/5faff0ff58a2dfdc1e7ca40d/comments",
+					"raw": "http://localhost:5000/api/v1/events/5fb274c739369e43e33a0499/comments",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -292,7 +292,7 @@
 						"api",
 						"v1",
 						"events",
-						"5faff0ff58a2dfdc1e7ca40d",
+						"5fb274c739369e43e33a0499",
 						"comments"
 					]
 				}
@@ -394,7 +394,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"title\": \"Beuta inf newnewnew\",\n  \"location\": \"Infinity, Piezisa\",\n  \"location_point\": [-25.0, 32.0],\n  \"date\": \"This is a date I guess\",\n  \"description\": \"Let's drink you fuckers\",\n  \"visibility\": \"whitelist\",\n  \"category\": \"Arts\",\n  \"no_max_participants\": 10\n}\n",
+					"raw": "{\n  \"title\": \"Beuta inf newnewnew\",\n  \"location\": \"Infinity, Piezisa\",\n  \"location_point\": [-25.0, 32.0],\n  \"start_time\": \"2021-11-29T00:00:00.000000+02:00\",\n  \"end_time\": \"2021-11-29T08:30:00.000000Z\",\n  \"description\": \"Let's drink you fuckers\",\n  \"visibility\": \"whitelisted\",\n  \"category\": \"Arts\",\n  \"no_max_participants\": 10\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"

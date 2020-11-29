@@ -5,7 +5,8 @@ from services.EventInvitationService import EventInvitationService
 from services.EventService import EventService
 from services.UserFeedbackService import UserFeedbackService
 from services.UserService import UserService
-from utils.errors import UserDoesNotExist, EventDoesNotExist, UserFeedbackAlreadyExists, UserFeedbackDoesNotExist
+from utils.errors import UserDoesNotExist, EventDoesNotExist, UserFeedbackAlreadyExists, UserFeedbackDoesNotExist, \
+    UserFeedbackCannotGiveOwn
 
 api = Blueprint('api_v1_feedbacks', __name__)
 
@@ -62,6 +63,9 @@ def feedbacks_put_feedback(user_service: UserService, event_service: EventServic
     to_user = user_service.find_one_by(id=to_user_id)
     if not to_user:
         raise UserDoesNotExist()
+
+    if user.id == to_user.id:
+        raise UserFeedbackCannotGiveOwn()
 
     event_id = request.args.get('event_id')
     if event_id is None:

@@ -355,7 +355,7 @@ def events_patch_event_invitation(event_service: EventService, event_invitation_
     if event_invitation is None:
         raise EventInvitationDoesNotExist()
 
-    if event_invitation.user == user:
+    if event_invitation.user.id == user.id:
         raise EventInvitationCannotModifyOwn()
 
     status, attend_status = extract_event_invitation_properties()

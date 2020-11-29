@@ -48,11 +48,15 @@ def events_get(user_service: UserService, event_service: EventService,
     # An user can see whitelisted events with limited details
     # An user that is logged in can see events that he owns
     # An user that is logged in can see events for which he has an accepted invite with full details
+    categories = request.args.getlist('category')
+    date_start = request.args.get('date_start')
+    date_end = request.args.get('date_end')
 
     username = get_jwt_identity()
     user = user_service.find_one_by(username=username)
     full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
-    events = event_service.find_visible_for_user(user, full_details_event_ids, show_whitelist=True)
+    events = event_service.find_visible_for_user(user, full_details_event_ids, show_whitelist=True,
+                                                 categories=categories, date_start=date_start, date_end=date_end)
 
     return jsonify(get_paginated_items_from_qs(events, event_to_restricted_dict, event_service, user,
                                                full_details_event_ids))

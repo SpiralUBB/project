@@ -41,6 +41,30 @@ class EventService:
     def find_by(self, *args, **kwargs):
         return Event.objects(*args, **kwargs)
 
+    def build_query_filters(self, categories: List[Union[int, str]] = None, date_start: str = None,
+                            date_end: str = None):
+        query = Q()
+
+        if categories is not None and len(categories) != 0:
+            categories = [self.validator.parse_category(c) for c in categories]
+            query &= Q(category__in=categories)
+
+        if date_start is not None:
+            if date_end is None:
+                date_end = self.validator.parse_time(date_start, end=True)
+            date_start = self.validator.parse_time(date_start, start=True)
+
+        if date_end is not None:
+            if date_start is None:
+                date_start = self.validator.parse_time(date_end, start=True)
+            date_end = self.validator.parse_time(date_end, end=True)
+
+        if date_start is not None and date_start is not None:
+            query &= Q(start_time__gte=date_start)
+            query &= Q(start_time__lte=date_end)
+
+        return query
+
     def build_query_visible_for_user(self, user: User = None, ids=None, show_whitelist: bool = False,
                                      show_unlisted: bool = False):
         if ids is None:
@@ -88,8 +112,11 @@ class EventService:
             raise EventInvitationCannotJoinFull()
 
     def find_visible_for_user(self, user: User, ids: List[ObjectId], show_whitelist: bool = False,
-                              show_unlisted: bool = False):
-        query = self.build_query_visible_for_user(user, ids, show_whitelist, show_unlisted)
+                              show_unlisted: bool = False, categories: List[Union[int, str]] = None,
+                              date_start: str = None, date_end: str = None):
+        query = Q()
+        query &= self.build_query_filters(categories, date_start, date_end)
+        query &= self.build_query_visible_for_user(user, ids, show_whitelist, show_unlisted)
         return self.find_by(query)
 
     def find_one_visible_for_user(self, user: User, event_id: str, ids: List[ObjectId], show_whitelist: bool = False,

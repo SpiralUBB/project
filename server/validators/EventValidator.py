@@ -111,11 +111,11 @@ class EventValidator:
             if start:
                 time = time.replace(hour=0, minute=0)
             elif end:
-                time = time.replace(hour=24, minute=59)
+                time = time.replace(hour=23, minute=59)
 
             return time.to('utc').datetime
         except ParserError:
-            raise EventTimeInvalid("Event time couldn't be parsed into a valid date-time format")
+            raise EventTimeInvalid(message="Event time couldn't be parsed into a valid date-time format")
 
     def validate_parameters(self, owner: User, title: str, location: str, location_point: List[float],
                             start_time: datetime, end_time: datetime, no_max_participants: int, description: str):

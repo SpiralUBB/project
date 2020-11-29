@@ -34,7 +34,7 @@ class EventInvitationService:
             status = self.validator.parse_status(status)
             event_invitation.status = status
 
-        if status is not None:
+        if attend_status is not None:
             attend_status = self.validator.parse_attend_status(attend_status)
             event_invitation.attend_status = attend_status
 

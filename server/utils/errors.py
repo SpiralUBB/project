@@ -211,7 +211,7 @@ class EventInvitationAttendStatusInvalid(HttpError):
         if not message:
             message = 'Event invitation attend status is invalid'
 
-        super().__init__(message, 'event-invitation-atted-status-invalid', 400)
+        super().__init__(message, 'event-invitation-attend-status-invalid', 400)
 
 
 class EventInvitationCannotJoinOwn(HttpError):

@@ -246,6 +246,38 @@ class EventCommentTextInvalid(HttpError):
         super().__init__(message, 'event-comment-text-invalid', 400)
 
 
+class UserFeedbackAlreadyExists(HttpError):
+    def __init__(self, message=None):
+        if not message:
+            message = 'User feedback already exists'
+
+        super().__init__(message, 'user-feedback-already-exists', 400)
+
+
+class UserFeedbackDoesNotExist(HttpError):
+    def __init__(self, message=None):
+        if not message:
+            message = 'User feedback does not exist'
+
+        super().__init__(message, 'user-feedback-not-exist', 400)
+
+
+class UserFeedbackPointsInvalid(HttpError):
+    def __init__(self, message=None):
+        if not message:
+            message = 'User feedback points invalid'
+
+        super().__init__(message, 'user-feedback-points-invalid', 400)
+
+
+class UserFeedbackCannotGiveOwn(HttpError):
+    def __init__(self, message=None):
+        if not message:
+            message = 'Cannot give user feedback to yourself'
+
+        super().__init__(message, 'user-feedback-cannot-give-own', 400)
+
+
 class PaginationLimitInvalid(HttpError):
     def __init__(self, message=None):
         if not message:

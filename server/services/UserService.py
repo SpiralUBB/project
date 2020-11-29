@@ -60,8 +60,8 @@ class UserService:
         if not user.is_correct_password(password):
             raise UserLoginFailed()
 
-    def find_one_by(self, username: str) -> Union[User, None]:
+    def find_one_by(self, *args, **kwargs) -> Union[User, None]:
         try:
-            return User.objects.get(username__exact=username)
+            return User.objects.get(*args, **kwargs)
         except DoesNotExist:
             return None

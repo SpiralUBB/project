@@ -223,6 +223,49 @@
 			"response": []
 		},
 		{
+			"name": "Get events with filtering",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/v1/events?limit=5&category=Learning&category=Music&date_start=2020-11-29&date_end=2020-11-30",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"events"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "5"
+						},
+						{
+							"key": "category",
+							"value": "Learning"
+						},
+						{
+							"key": "category",
+							"value": "Music"
+						},
+						{
+							"key": "date_start",
+							"value": "2020-11-29"
+						},
+						{
+							"key": "date_end",
+							"value": "2020-11-30"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get event",
 			"request": {
 				"method": "GET",
@@ -394,7 +437,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"title\": \"Beuta inf newnewnew\",\n  \"location\": \"Infinity, Piezisa\",\n  \"location_point\": [-25.0, 32.0],\n  \"start_time\": \"2021-11-29T00:00:00.000000+02:00\",\n  \"end_time\": \"2021-11-29T08:30:00.000000Z\",\n  \"description\": \"Let's drink you fuckers\",\n  \"visibility\": \"whitelisted\",\n  \"category\": \"Arts\",\n  \"no_max_participants\": 10\n}\n",
+					"raw": "{\n  \"title\": \"Beuta inf newnewnew\",\n  \"location\": \"Infinity, Piezisa\",\n  \"location_point\": [-25.0, 32.0],\n  \"start_time\": \"2020-11-30T15:19:59+0000\",\n  \"end_time\": \"2020-11-30T15:19:59+0000\",\n  \"description\": \"Let's drink you fuckers\",\n  \"visibility\": \"whitelisted\",\n  \"category\": \"Music\",\n  \"no_max_participants\": 10\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"

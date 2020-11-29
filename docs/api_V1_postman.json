@@ -414,7 +414,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events/5fafb66aca441a3926de19c6",
+					"raw": "http://localhost:5000/api/v1/events/5fc3e63963706d5bb79633c9",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -424,7 +424,7 @@
 						"api",
 						"v1",
 						"events",
-						"5fafb66aca441a3926de19c6"
+						"5fc3e63963706d5bb79633c9"
 					]
 				}
 			},
@@ -541,7 +541,7 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events/5fb274d839369e43e33a049a/invitation",
+					"raw": "http://localhost:5000/api/v1/events/5fc3e65e63706d5bb79633ca/invitation",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -551,7 +551,7 @@
 						"api",
 						"v1",
 						"events",
-						"5fb274d839369e43e33a049a",
+						"5fc3e65e63706d5bb79633ca",
 						"invitation"
 					]
 				}
@@ -564,7 +564,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events/5fb274d839369e43e33a049a/invitation",
+					"raw": "http://localhost:5000/api/v1/events/5fc3e65e63706d5bb79633ca/invitation",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -574,7 +574,7 @@
 						"api",
 						"v1",
 						"events",
-						"5fb274d839369e43e33a049a",
+						"5fc3e65e63706d5bb79633ca",
 						"invitation"
 					]
 				}
@@ -584,10 +584,19 @@
 		{
 			"name": "Accept event invitation",
 			"request": {
-				"method": "PUT",
+				"method": "PATCH",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\": \"accepted\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events/5fb274d839369e43e33a049a/invitations/5fb2750439369e43e33a049b/accept",
+					"raw": "http://localhost:5000/api/v1/events/5fc3e65e63706d5bb79633ca/invitations/5fc3e72563706d5bb79633cb",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -597,10 +606,49 @@
 						"api",
 						"v1",
 						"events",
-						"5fb274d839369e43e33a049a",
+						"5fc3e65e63706d5bb79633ca",
 						"invitations",
-						"5fb2750439369e43e33a049b",
-						"accept"
+						"5fc3e72563706d5bb79633cb"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "accepted",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mark event invitation as attended",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"attend_status\": \"unchecked\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/v1/events/5fc3e65e63706d5bb79633ca/invitations/5fc3e72563706d5bb79633cb",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"events",
+						"5fc3e65e63706d5bb79633ca",
+						"invitations",
+						"5fc3e72563706d5bb79633cb"
 					]
 				}
 			},
@@ -612,7 +660,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events/5fb274d839369e43e33a049a/invitations",
+					"raw": "http://localhost:5000/api/v1/events/5fc3e65e63706d5bb79633ca/invitations",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -622,7 +670,7 @@
 						"api",
 						"v1",
 						"events",
-						"5fb274d839369e43e33a049a",
+						"5fc3e65e63706d5bb79633ca",
 						"invitations"
 					]
 				}

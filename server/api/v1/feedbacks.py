@@ -34,7 +34,7 @@ def feedbacks_get_feedback(user_service: UserService, event_service: EventServic
     else:
         # User must have an accepted invite to the event this feedback is tied to
         full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
-        event = event_service.find_one_visible_within(event_id, full_details_event_ids)
+        event = event_service.find_one_visible_for_user(user, event_id, full_details_event_ids)
         if event is None:
             raise EventDoesNotExist()
 
@@ -69,12 +69,12 @@ def feedbacks_put_feedback(user_service: UserService, event_service: EventServic
     else:
         # Both users must have an accepted invite to the event this feedback is tied to
         full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
-        event = event_service.find_one_visible_within(event_id, full_details_event_ids)
+        event = event_service.find_one_visible_for_user(user, event_id, full_details_event_ids)
         if event is None:
             raise EventDoesNotExist()
 
         full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(to_user)
-        event = event_service.find_one_visible_within(event_id, full_details_event_ids)
+        event = event_service.find_one_visible_for_user(to_user, event_id, full_details_event_ids)
         if event is None:
             raise EventDoesNotExist()
 

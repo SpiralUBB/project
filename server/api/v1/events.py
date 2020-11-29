@@ -55,7 +55,8 @@ def events_get(user_service: UserService, event_service: EventService,
                event_invitation_service: EventInvitationService):
     # An user can see whitelisted events with limited details
     # An user can see public events with full details
-    # An user that is logged in can see events for which he has an accepted invite with full details
+    # A logged in user can see events that he owns with full details
+    # A logged in user can see events for which he has an accepted invite with full details
     categories = request.args.getlist('category')
     date_start = request.args.get('date_start')
     date_end = request.args.get('date_end')
@@ -63,8 +64,8 @@ def events_get(user_service: UserService, event_service: EventService,
     username = get_jwt_identity()
     user = user_service.find_one_by(username=username)
     full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
-    events = event_service.find_visible_within(full_details_event_ids, show_public=True, show_whitelist=True,
-                                               categories=categories, date_start=date_start, date_end=date_end)
+    events = event_service.find_visible_for_user(user, full_details_event_ids, show_public=True, show_whitelist=True,
+                                                 categories=categories, date_start=date_start, date_end=date_end)
 
     return jsonify(get_paginated_items_from_qs(events, event_to_restricted_dict, event_service, user,
                                                full_details_event_ids))
@@ -105,18 +106,19 @@ def events_post(user_service: UserService, event_service: EventService,
 def events_get_event(user_service: UserService, event_service: EventService,
                      event_invitation_service: EventInvitationService, event_id: str):
     # An user can see a whitelisted event with limited details
-    # An user that is logged in can see an unlisted event with limited details. Since an unlisted event is not
+    # An user can see a public event with full details
+    # A logged in user can see an unlisted event with limited details. Since an unlisted event is not
     # visible within the events route, this means that the owner needs to share the link to it with people
     # that he wants to let join
-    # An user can see a public event with full details
-    # An user that is logged in can see a whitelisted or unlisted event for which he has an accepted invite with full
+    # A logged in user can see a whitelisted or unlisted event for which he has an accepted invite with full
     # details
+    # A logged in user can see events that he owns with full details
 
     username = get_jwt_identity()
     user = user_service.find_one_by(username=username)
     full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
-    event = event_service.find_one_visible_within(event_id, full_details_event_ids, show_public=True,
-                                                  show_whitelist=True, show_unlisted=user is not None)
+    event = event_service.find_one_visible_for_user(user, event_id, full_details_event_ids, show_public=True,
+                                                    show_whitelist=True, show_unlisted=user is not None)
     if event is None:
         raise EventDoesNotExist()
 
@@ -317,6 +319,7 @@ def events_put_event_join(event_service: EventService, event_invitation_service:
 def events_get_event_invitations(event_service: EventService, event_invitation_service: EventInvitationService,
                                  user_service: UserService, event_id: str):
     # A logged in user can see the accepted invitations for an event for which he has an accepted invite
+    # A logged in user can see events that he owns with full details
 
     username = get_jwt_identity()
     user = user_service.find_one_by(username=username)
@@ -324,7 +327,7 @@ def events_get_event_invitations(event_service: EventService, event_invitation_s
         raise UserDoesNotExist()
 
     full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
-    event = event_service.find_one_visible_within(event_id, full_details_event_ids)
+    event = event_service.find_one_visible_for_user(user, event_id, full_details_event_ids)
     if event is None:
         raise EventDoesNotExist()
 

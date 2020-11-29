@@ -84,12 +84,17 @@ class EventService:
 
         return query
 
-    def build_query_visible(self, ids=None, show_public: bool = False,
+    def build_query_visible(self, user: User, ids: List[ObjectId] = None, show_public: bool = False,
                             show_whitelist: bool = False, show_unlisted: bool = False):
-        if ids is None:
-            ids = []
-
         query = Q()
+
+        if user is not None:
+            # Add events owned by the logged in user
+            query |= Q(owner=user)
+
+        if ids is not None and len(ids):
+            # Add events for which the user has an accepted invite
+            query |= Q(id__in=ids)
 
         if show_public:
             # Add public events
@@ -102,9 +107,6 @@ class EventService:
         if show_unlisted:
             # Add unlisted events
             query |= Q(visibility=EVENT_VISIBILITY_UNLISTED_KEY)
-
-        # Add events for which the user has an accepted invite
-        query |= Q(id__in=ids)
 
         return query
 
@@ -120,17 +122,17 @@ class EventService:
 
         return False
 
-    def find_visible_within(self, ids: List[ObjectId], show_public: bool = False,
-                            show_whitelist: bool = False, show_unlisted: bool = False,
-                            categories: List[Union[int, str]] = None, date_start: str = None, date_end: str = None):
+    def find_visible_for_user(self, user: User, ids: List[ObjectId], show_public: bool = False,
+                              show_whitelist: bool = False, show_unlisted: bool = False,
+                              categories: List[Union[int, str]] = None, date_start: str = None, date_end: str = None):
         query = Q()
         query &= self.build_query_filters(categories, date_start, date_end)
-        query &= self.build_query_visible(ids, show_public, show_whitelist, show_unlisted)
+        query &= self.build_query_visible(user, ids, show_public, show_whitelist, show_unlisted)
         return self.find_by(query)
 
-    def find_one_visible_within(self, event_id: str, ids: List[ObjectId], show_public: bool = False,
-                                show_whitelist: bool = False, show_unlisted: bool = False):
-        query = self.build_query_visible(ids, show_public, show_whitelist, show_unlisted)
+    def find_one_visible_for_user(self, user: User, event_id: str, ids: List[ObjectId], show_public: bool = False,
+                                  show_whitelist: bool = False, show_unlisted: bool = False):
+        query = self.build_query_visible(user, ids, show_public, show_whitelist, show_unlisted)
         return self.find_one_by(Q(id=event_id) & query)
 
     def update(self, event: Event, title: str = None, location: str = None, location_point: List[int] = None,

@@ -59,14 +59,10 @@ def generic_errorhandler(e: Exception):
 
 @jwt.expired_token_loader
 def expired_token_loader(expired_token):
-    return http_errorhandler(UserTokenExpired(expired_token['type']))
+    return http_errorhandler(UserTokenExpired('User {} token expired'.format(expired_token['type'])))
 
 
 @jwt.invalid_token_loader
-def invalid_token_loader(reason):
-    return http_errorhandler(UserTokenInvalid(reason))
-
-
 @jwt.unauthorized_loader
-def expired_token_loader(reason):
-    return http_errorhandler(UserTokenInvalid(reason))
+def invalid_token_loader(reason):
+    return http_errorhandler(UserTokenInvalid('User token is invalid: {}'.format(reason)))

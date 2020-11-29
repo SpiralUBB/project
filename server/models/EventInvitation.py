@@ -39,6 +39,18 @@ class EventInvitation(Document):
     attend_status = IntField(min_value=event_invitation_attend_status_map.minimum_key(),
                              max_value=event_invitation_attend_status_map.maximum_key(), required=True)
 
+    meta = {
+        'indexes': [
+            {
+                'fields': [
+                    'user',
+                    'event',
+                ],
+                'unique': True,
+            },
+        ],
+    }
+
     def to_dict(self, with_user: bool = False, with_event: bool = False):
         d = {
             'id': str(self.id),

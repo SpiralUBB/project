@@ -1,6 +1,6 @@
 from typing import Union
 
-from mongoengine import DoesNotExist, Q
+from mongoengine import DoesNotExist, Q, NotUniqueError
 
 from models.Event import Event
 from models.EventInvitation import EventInvitation, EVENT_INVITATION_STATUS_PENDING_KEY,\
@@ -16,15 +16,12 @@ class EventInvitationService:
         self.validator = validator
 
     def add(self, event: Event, user: User):
-        try:
-            EventInvitation.objects.get(user=user, event=event)
-            raise EventInvitationAlreadyExists()
-        except DoesNotExist:
-            pass
-
         event_invitation = EventInvitation(event=event, user=user, status=EVENT_INVITATION_STATUS_PENDING_KEY,
                                            attend_status=EVENT_INVITATION_ATTEND_STATUS_UNCHECKED_KEY)
-        event_invitation.save()
+        try:
+            event_invitation.save()
+        except NotUniqueError:
+            raise EventInvitationAlreadyExists()
 
         return event_invitation
 

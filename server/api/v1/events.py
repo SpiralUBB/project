@@ -12,7 +12,8 @@ from services.EventCommentService import EventCommentService
 from services.EventInvitationService import EventInvitationService
 from services.EventService import EventService
 from services.UserService import UserService
-from utils.errors import UserDoesNotExist, EventDoesNotExist, EventCommentDoesNotExist, EventInvitationDoesNotExist
+from utils.errors import UserDoesNotExist, EventDoesNotExist, EventCommentDoesNotExist, EventInvitationDoesNotExist, \
+    EventInvitationAlreadyExists
 from utils.pagination import get_paginated_items_from_qs
 
 api = Blueprint('api_v1_events', __name__)
@@ -293,15 +294,18 @@ def events_put_event_join(event_service: EventService, event_invitation_service:
         raise EventDoesNotExist()
 
     event_service.check_can_user_join_event(event, user)
-    event_invitation = event_invitation_service.add(event, user)
-    if event.visibility == EVENT_VISIBILITY_PUBLIC_KEY:
-        old_invitation_status = event_invitation.status
-        event_invitation_service.update(event_invitation, status=EVENT_INVITATION_STATUS_ACCEPTED)
-        new_invitation_status = event_invitation.status
-        event_service.add_participants(event, old_invitation_status=old_invitation_status,
-                                       new_invitation_status=new_invitation_status)
+    try:
+        event_invitation = event_invitation_service.add(event, user)
+        if event.visibility == EVENT_VISIBILITY_PUBLIC_KEY:
+            old_invitation_status = event_invitation.status
+            event_invitation_service.update(event_invitation, status=EVENT_INVITATION_STATUS_ACCEPTED)
+            new_invitation_status = event_invitation.status
+            event_service.add_participants(event, old_invitation_status=old_invitation_status,
+                                           new_invitation_status=new_invitation_status)
 
-    user_service.add_points(event.owner, PredefinedPoints.JOIN_EVENT_FOR_OWNER.value);
+        user_service.add_points(event.owner, PredefinedPoints.JOIN_EVENT_FOR_OWNER.value)
+    except EventInvitationAlreadyExists:
+        event_invitation = event_invitation_service.find_one_by(user=user, event=event)
 
     return jsonify(event_invitation.to_dict())
 

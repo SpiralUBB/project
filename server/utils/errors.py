@@ -230,6 +230,13 @@ class EventInvitationCannotJoinFull(HttpError):
         super().__init__(message, 'event-invitation-cannot-join-full', 400)
 
 
+class EventInvitationCannotModifyOwn(HttpError):
+    def __init__(self, message=None):
+        if not message:
+            message = 'Cannot modify invitation for own event'
+
+        super().__init__(message, 'event-invitation-cannot-modify own', 400)
+
 class EventCommentEventInvalid(HttpError):
     def __init__(self, message=None):
         if not message:

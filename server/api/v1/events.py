@@ -13,7 +13,7 @@ from services.EventInvitationService import EventInvitationService
 from services.EventService import EventService
 from services.UserService import UserService
 from utils.errors import UserDoesNotExist, EventDoesNotExist, EventCommentDoesNotExist, EventInvitationDoesNotExist, \
-    EventInvitationAlreadyExists, EventInvitationCannotJoinFull
+    EventInvitationAlreadyExists, EventInvitationCannotJoinFull, EventInvitationCannotModifyOwn
 from utils.pagination import get_paginated_items_from_qs
 
 api = Blueprint('api_v1_events', __name__)
@@ -354,6 +354,9 @@ def events_patch_event_invitation(event_service: EventService, event_invitation_
     event_invitation = event_invitation_service.find_one_by(id=invitation_id, event=event)
     if event_invitation is None:
         raise EventInvitationDoesNotExist()
+
+    if event_invitation.user == user:
+        raise EventInvitationCannotModifyOwn()
 
     status, attend_status = extract_event_invitation_properties()
     old_invitation_status, old_invitation_attend_status = event_invitation.status, event_invitation.attend_status

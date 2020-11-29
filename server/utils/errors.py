@@ -206,6 +206,14 @@ class EventInvitationStatusInvalid(HttpError):
         super().__init__(message, 'event-invitation-status-invalid', 400)
 
 
+class EventInvitationAttendStatusInvalid(HttpError):
+    def __init__(self, message=None):
+        if not message:
+            message = 'Event invitation attend status is invalid'
+
+        super().__init__(message, 'event-invitation-atted-status-invalid', 400)
+
+
 class EventInvitationCannotJoinOwn(HttpError):
     def __init__(self, message=None):
         if not message:

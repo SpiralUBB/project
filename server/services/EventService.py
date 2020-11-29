@@ -3,8 +3,10 @@ from typing import Union, List
 from bson import ObjectId
 from mongoengine import DoesNotExist, Q
 
-from models.Event import Event, event_visibility_map, EVENT_VISIBILITY_PUBLIC, EVENT_VISIBILITY_WHITELISTED, \
-    EVENT_VISIBILITY_UNLISTED
+from models.Event import Event, EVENT_VISIBILITY_PUBLIC_KEY, EVENT_VISIBILITY_WHITELISTED_KEY, \
+    EVENT_VISIBILITY_UNLISTED_KEY
+from models.EventInvitation import EVENT_INVITATION_STATUS_PENDING_KEY, \
+    EVENT_INVITATION_STATUS_ACCEPTED_KEY, EVENT_INVITATION_STATUS_DENIED_KEY
 
 from models.User import User
 from utils.errors import EventInvitationCannotJoinOwn, EventInvitationCannotJoinFull
@@ -31,6 +33,23 @@ class EventService:
         event.save()
 
         return event
+
+    def add_participants(self, event: Event, no_participants: int = 0, old_invitation_status: int = None,
+                         new_invitation_status: int = None):
+        event_transition_participants = [
+            (EVENT_INVITATION_STATUS_DENIED_KEY, EVENT_INVITATION_STATUS_ACCEPTED_KEY, 1),
+            (EVENT_INVITATION_STATUS_ACCEPTED_KEY, EVENT_INVITATION_STATUS_DENIED_KEY, -1),
+            (EVENT_INVITATION_STATUS_PENDING_KEY, EVENT_INVITATION_STATUS_ACCEPTED_KEY, 1),
+            (EVENT_INVITATION_STATUS_ACCEPTED_KEY, EVENT_INVITATION_STATUS_PENDING_KEY, -1),
+        ]
+
+        if old_invitation_status is not None and new_invitation_status is not None:
+            for from_key, to_key, change in event_transition_participants:
+                if old_invitation_status == from_key and new_invitation_status == to_key:
+                    no_participants += change
+
+        Event.objects(id=event.id).update_one(inc__no_participants=no_participants)
+        event.reload()
 
     def find_one_by(self, *args, **kwargs) -> Union[Event, None]:
         try:
@@ -73,15 +92,15 @@ class EventService:
         query = Q()
 
         # Add public events
-        query |= Q(visibility=event_visibility_map.to_key(EVENT_VISIBILITY_PUBLIC))
+        query |= Q(visibility=EVENT_VISIBILITY_PUBLIC_KEY)
 
         if show_whitelist:
             # Add whitelisted events
-            query |= Q(visibility=event_visibility_map.to_key(EVENT_VISIBILITY_WHITELISTED))
+            query |= Q(visibility=EVENT_VISIBILITY_WHITELISTED_KEY)
 
         if show_unlisted:
             # Add unlisted events
-            query |= Q(visibility=event_visibility_map.to_key(EVENT_VISIBILITY_UNLISTED))
+            query |= Q(visibility=EVENT_VISIBILITY_UNLISTED_KEY)
 
         # Add events for which the user has an accepted invite
         query |= Q(id__in=ids)
@@ -93,7 +112,7 @@ class EventService:
         return query
 
     def is_details_visible(self, event: Event, user: User, visible_ids: List[ObjectId]):
-        if event_visibility_map.to_key(EVENT_VISIBILITY_PUBLIC) == event.visibility:
+        if EVENT_VISIBILITY_PUBLIC_KEY == event.visibility:
             return True
 
         if user is not None and event.owner.id == user.id:

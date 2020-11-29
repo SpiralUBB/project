@@ -4,8 +4,10 @@ from bson import ObjectId
 from flask import Blueprint, jsonify, request, Flask
 from flask_jwt_extended import jwt_required, get_jwt_identity, jwt_optional
 
-from models.Event import event_visibility_map, event_category_map, Event, EVENT_VISIBILITY_PUBLIC
-from models.User import User
+from models.Event import event_visibility_map, event_category_map, Event, EVENT_VISIBILITY_PUBLIC, \
+    EVENT_VISIBILITY_PUBLIC_KEY
+from models.EventInvitation import EVENT_INVITATION_STATUS_ACCEPTED
+from models.User import User, PredefinedPoints
 from services.EventCommentService import EventCommentService
 from services.EventInvitationService import EventInvitationService
 from services.EventService import EventService
@@ -32,6 +34,12 @@ def extract_event_properties():
 def extract_event_comment_properties():
     text = request.json.get('text')
     return text
+
+
+def extract_event_invitation_properties():
+    status = request.json.get('status')
+    attend_status = request.json.get('attend_status')
+    return status, attend_status
 
 
 def event_to_restricted_dict(event: Event, event_service: EventService,
@@ -84,6 +92,9 @@ def events_post(user_service: UserService, event_service: EventService):
         = extract_event_properties()
     event = event_service.add(user, title, location, location_point, start_time, end_time, no_max_participants,
                               description, visibility, category)
+
+    user_service.add_points(user, PredefinedPoints.CREATE_EVENT.value)
+
     return jsonify(event.to_dict(with_details=True))
 
 
@@ -145,6 +156,9 @@ def events_delete_event(user_service: UserService, event_service: EventService, 
         raise EventDoesNotExist()
 
     event_service.delete(event)
+
+    user_service.add_points(user, -PredefinedPoints.CREATE_EVENT.value)
+
     return jsonify(event.to_dict(with_details=True))
 
 
@@ -279,9 +293,15 @@ def events_put_event_join(event_service: EventService, event_invitation_service:
         raise EventDoesNotExist()
 
     event_service.check_can_user_join_event(event, user)
-    event_invitation = event_invitation_service.join(event, user)
-    if event.visibility == event_visibility_map.to_key(EVENT_VISIBILITY_PUBLIC):
-        event_invitation_service.accept(event_invitation)
+    event_invitation = event_invitation_service.add(event, user)
+    if event.visibility == EVENT_VISIBILITY_PUBLIC_KEY:
+        old_invitation_status = event_invitation.status
+        event_invitation_service.update(event_invitation, status=EVENT_INVITATION_STATUS_ACCEPTED)
+        new_invitation_status = event_invitation.status
+        event_service.add_participants(event, old_invitation_status=old_invitation_status,
+                                       new_invitation_status=new_invitation_status)
+
+    user_service.add_points(event.owner, PredefinedPoints.JOIN_EVENT_FOR_OWNER.value);
 
     return jsonify(event_invitation.to_dict())
 
@@ -310,10 +330,10 @@ def events_get_event_invitations(event_service: EventService, event_invitation_s
     return jsonify(get_paginated_items_from_qs(event_invitations, with_user=True))
 
 
-@api.route('/<string:event_id>/invitations/<string:invitation_id>/accept', methods=['PUT'])
+@api.route('/<string:event_id>/invitations/<string:invitation_id>', methods=['PATCH'])
 @jwt_required
-def events_put_event_invitation_accept(event_service: EventService, event_invitation_service: EventInvitationService,
-                                       user_service: UserService, event_id: str, invitation_id: str):
+def events_patch_event_invitation(event_service: EventService, event_invitation_service: EventInvitationService,
+                                  user_service: UserService, event_id: str, invitation_id: str):
     username = get_jwt_identity()
     user = user_service.find_one_by(username=username)
     if user is None:
@@ -328,7 +348,14 @@ def events_put_event_invitation_accept(event_service: EventService, event_invita
     if event_invitation is None:
         raise EventInvitationDoesNotExist()
 
-    event_invitation_service.accept(event_invitation)
+    status, attend_status = extract_event_invitation_properties()
+    old_invitation_status, old_invitation_attend_status = event_invitation.status, event_invitation.attend_status
+    event_invitation_service.update(event_invitation, status=status, attend_status=attend_status)
+    new_invitation_status, new_invitation_attend_status = event_invitation.status, event_invitation.attend_status
+    event_service.add_participants(event, old_invitation_status=old_invitation_status,
+                                   new_invitation_status=new_invitation_status)
+    user_service.add_points(event_invitation.user, old_invitation_attend_status=old_invitation_attend_status,
+                            new_invitation_attend_status=new_invitation_attend_status)
 
     return jsonify(event_invitation.to_dict(with_user=True))
 

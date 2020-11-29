@@ -4,6 +4,7 @@ from services.EventCommentService import EventCommentService
 from services.EventInvitationService import EventInvitationService
 from services.UserService import UserService
 from validators.EventCommentValidator import EventCommentValidator
+from validators.EventInvitationValidator import EventInvitationValidator
 from validators.UserValidator import UserValidator
 from services.EventService import EventService
 from validators.EventValidator import EventValidator
@@ -22,5 +23,6 @@ def configure_services(binder):
     events_comments_service = EventCommentService(event_comment_validator)
     binder.bind(EventCommentService, to=events_comments_service, scope=request)
 
-    event_invitation_service = EventInvitationService()
+    event_invitation_validator = EventInvitationValidator()
+    event_invitation_service = EventInvitationService(event_invitation_validator)
     binder.bind(EventInvitationService, to=event_invitation_service, scope=request)

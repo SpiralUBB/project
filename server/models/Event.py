@@ -1,25 +1,20 @@
 from mongoengine import Document, ReferenceField, IntField, StringField, PointField, DateTimeField
 
 from utils.DualMap import DualMap
+from utils.geo import approximate_location
 
 #
 # WARNING
 # Do not modify the indices of the following dicts
 #
-from utils.geo import approximate_location
-
 EVENT_VISIBILITY_PUBLIC_KEY = 0
 EVENT_VISIBILITY_UNLISTED_KEY = 1
 EVENT_VISIBILITY_WHITELISTED_KEY = 2
 
-EVENT_VISIBILITY_PUBLIC = 'public'
-EVENT_VISIBILITY_UNLISTED = 'unlisted'
-EVENT_VISIBILITY_WHITELISTED = 'whitelisted'
-
 event_visibility_map = DualMap({
-    EVENT_VISIBILITY_PUBLIC_KEY: EVENT_VISIBILITY_PUBLIC,
-    EVENT_VISIBILITY_UNLISTED_KEY: EVENT_VISIBILITY_UNLISTED,
-    EVENT_VISIBILITY_WHITELISTED_KEY: EVENT_VISIBILITY_WHITELISTED,
+    EVENT_VISIBILITY_PUBLIC_KEY: 'public',
+    EVENT_VISIBILITY_UNLISTED_KEY: 'unlisted',
+    EVENT_VISIBILITY_WHITELISTED_KEY: 'whitelisted',
 }, (-1, 'unknown-visibility'))
 
 

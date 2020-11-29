@@ -4,9 +4,9 @@ from bson import ObjectId
 from flask import Blueprint, jsonify, request, Flask
 from flask_jwt_extended import jwt_required, get_jwt_identity, jwt_optional
 
-from models.Event import event_visibility_map, event_category_map, Event, EVENT_VISIBILITY_PUBLIC, \
+from models.Event import event_visibility_map, event_category_map, Event, \
     EVENT_VISIBILITY_PUBLIC_KEY
-from models.EventInvitation import EVENT_INVITATION_STATUS_ACCEPTED
+from models.EventInvitation import EVENT_INVITATION_STATUS_ACCEPTED_KEY
 from models.User import User, PredefinedPoints
 from services.EventCommentService import EventCommentService
 from services.EventInvitationService import EventInvitationService
@@ -83,7 +83,8 @@ def events_get_categories():
 
 @api.route('', methods=['POST'])
 @jwt_required
-def events_post(user_service: UserService, event_service: EventService):
+def events_post(user_service: UserService, event_service: EventService,
+                event_invitation_service: EventInvitationService):
     username = get_jwt_identity()
     user = user_service.find_one_by(username=username)
     if user is None:
@@ -93,6 +94,7 @@ def events_post(user_service: UserService, event_service: EventService):
         = extract_event_properties()
     event = event_service.add(user, title, location, location_point, start_time, end_time, no_max_participants,
                               description, visibility, category)
+    event_invitation_service.add(event, user, status=EVENT_INVITATION_STATUS_ACCEPTED_KEY)
 
     user_service.add_points(user, PredefinedPoints.CREATE_EVENT.value)
 
@@ -298,7 +300,7 @@ def events_put_event_join(event_service: EventService, event_invitation_service:
         event_invitation = event_invitation_service.add(event, user)
         if event.visibility == EVENT_VISIBILITY_PUBLIC_KEY:
             old_invitation_status = event_invitation.status
-            event_invitation_service.update(event_invitation, status=EVENT_INVITATION_STATUS_ACCEPTED)
+            event_invitation_service.update(event_invitation, status=EVENT_INVITATION_STATUS_ACCEPTED_KEY)
             new_invitation_status = event_invitation.status
             event_service.add_participants(event, old_invitation_status=old_invitation_status,
                                            new_invitation_status=new_invitation_status)

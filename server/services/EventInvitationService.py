@@ -3,7 +3,7 @@ from typing import Union
 from mongoengine import DoesNotExist, Q, NotUniqueError
 
 from models.Event import Event
-from models.EventInvitation import EventInvitation, EVENT_INVITATION_STATUS_PENDING_KEY,\
+from models.EventInvitation import EventInvitation, EVENT_INVITATION_STATUS_PENDING_KEY, \
     EVENT_INVITATION_STATUS_ACCEPTED_KEY, EVENT_INVITATION_ATTEND_STATUS_UNCHECKED_KEY
 
 from models.User import User
@@ -15,8 +15,10 @@ class EventInvitationService:
     def __init__(self, validator: EventInvitationValidator):
         self.validator = validator
 
-    def add(self, event: Event, user: User):
-        event_invitation = EventInvitation(event=event, user=user, status=EVENT_INVITATION_STATUS_PENDING_KEY,
+    def add(self, event: Event, user: User, status: Union[str, int] = EVENT_INVITATION_STATUS_PENDING_KEY):
+        status = self.validator.parse_status(status)
+
+        event_invitation = EventInvitation(event=event, user=user, status=status,
                                            attend_status=EVENT_INVITATION_ATTEND_STATUS_UNCHECKED_KEY)
         try:
             event_invitation.save()

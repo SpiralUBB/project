@@ -15,11 +15,11 @@ class EventInvitationService:
     def __init__(self, validator: EventInvitationValidator):
         self.validator = validator
 
-    def add(self, event: Event, user: User, status: Union[str, int] = EVENT_INVITATION_STATUS_PENDING_KEY):
+    def add(self, event: Event, user: User, status: Union[str, int] = EVENT_INVITATION_STATUS_PENDING_KEY,
+            attend_status: Union[str, int] = EVENT_INVITATION_ATTEND_STATUS_UNCHECKED_KEY):
         status = self.validator.parse_status(status)
 
-        event_invitation = EventInvitation(event=event, user=user, status=status,
-                                           attend_status=EVENT_INVITATION_ATTEND_STATUS_UNCHECKED_KEY)
+        event_invitation = EventInvitation(event=event, user=user, status=status, attend_status=attend_status)
         try:
             event_invitation.save()
         except NotUniqueError:

@@ -4,7 +4,7 @@ from bson import ObjectId
 from flask import Blueprint, jsonify, request, Flask
 from flask_jwt_extended import jwt_required, get_jwt_identity, jwt_optional
 
-from models.Event import event_visibility_map, event_category_map, Event
+from models.Event import event_visibility_map, event_category_map, Event, EVENT_VISIBILITY_PUBLIC
 from models.User import User
 from services.EventCommentService import EventCommentService
 from services.EventInvitationService import EventInvitationService
@@ -280,6 +280,8 @@ def events_put_event_join(event_service: EventService, event_invitation_service:
 
     event_service.check_can_user_join_event(event, user)
     event_invitation = event_invitation_service.join(event, user)
+    if event.visibility == event_visibility_map.to_key(EVENT_VISIBILITY_PUBLIC):
+        event_invitation_service.accept(event_invitation)
 
     return jsonify(event_invitation.to_dict())
 

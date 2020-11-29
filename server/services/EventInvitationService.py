@@ -2,7 +2,7 @@ from typing import Union
 
 from mongoengine import DoesNotExist, Q
 
-from models.Event import Event, event_visibility_map, EVENT_VISIBILITY_PUBLIC
+from models.Event import Event
 from models.EventInvitation import EVENT_INVITATION_STATUS_PENDING, EVENT_INVITATION_STATUS_ACCEPTED, \
     EventInvitation, event_invitation_status_map
 
@@ -21,9 +21,6 @@ class EventInvitationService:
         event_invitation = EventInvitation(event=event, user=user,
                                            status=event_invitation_status_map.to_key(EVENT_INVITATION_STATUS_PENDING))
         event_invitation.save()
-
-        if event.visibility == event_visibility_map.to_key(EVENT_VISIBILITY_PUBLIC):
-            self.accept(event_invitation)
 
         return event_invitation
 

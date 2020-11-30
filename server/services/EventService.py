@@ -111,6 +111,9 @@ class EventService:
         return query
 
     def is_details_visible(self, event: Event, user: User, visible_ids: List[ObjectId]):
+        if event.min_trust_level > user.get_trust_level():
+            return False
+
         if EVENT_VISIBILITY_PUBLIC_KEY == event.visibility:
             return True
 

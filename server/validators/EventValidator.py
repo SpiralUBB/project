@@ -39,18 +39,16 @@ class EventValidator:
             if type(x) != float:
                 raise EventLocationPointInvalid(message='Event location point must be a list with 2 floats')
 
-    def validate_time(self, start, end):
-        if not start:
-            raise EventTimeInvalid(message='Event start time cannot be empty')
+    def validate_time(self, value, name):
+        if not value:
+            raise EventTimeInvalid(message='Event {} time cannot be empty'.format(name))
 
-        if not end:
-            raise EventTimeInvalid(message='Event end time cannot be empty')
+        if not isinstance(value, datetime):
+            raise EventTimeInvalid(message='Event {} time must be a datetime object'.format(name))
 
-        if not isinstance(start, datetime):
-            raise EventTimeInvalid(message='Event start time must be a datetime object')
-
-        if not isinstance(end, datetime):
-            raise EventTimeInvalid(message='Event end time must be a datetime object')
+    def validate_times(self, start, end):
+        self.validate_time(start, 'start')
+        self.validate_time(end, 'end')
 
         if start.date() < arrow.utcnow().date():
             raise EventTimeInvalid(message='Event start time cannot be in the past')
@@ -123,6 +121,6 @@ class EventValidator:
         self.validate_title(title)
         self.validate_location(location)
         self.validate_location_point(location_point)
-        self.validate_time(start_time, end_time)
+        self.validate_times(start_time, end_time)
         self.validate_no_max_participants(no_max_participants)
         self.validate_description(description)

@@ -1,7 +1,9 @@
+from typing import List
+
 from mongoengine import Document, ReferenceField, IntField, StringField, PointField, DateTimeField
 
+from config import GEOGRAPHICAL_APPROXIMATION_DIGITS, GEOGRAPHICAL_APPROXIMATION_METERS
 from utils.DualMap import DualMap
-from utils.geo import approximate_location
 
 #
 # WARNING
@@ -100,10 +102,9 @@ class Event(Document):
             d['no_max_participants'] = self.no_max_participants
             d['allows_more_participants'] = self.allows_more_participants()
         else:
-            approximate, radius_meters = approximate_location(location_points)
             d['location'] = None
-            d['location_points'] = approximate
-            d['location_points_radius_meters'] = radius_meters
+            d['location_points'] = [round(p, GEOGRAPHICAL_APPROXIMATION_DIGITS) for p in location_points]
+            d['location_points_radius_meters'] = GEOGRAPHICAL_APPROXIMATION_METERS
             d['no_participants'] = None
             d['no_max_participants'] = None
             d['allows_more_participants'] = None

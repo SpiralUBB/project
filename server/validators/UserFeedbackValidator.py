@@ -1,5 +1,6 @@
 from utils.errors import UserFeedbackPointsInvalid
 
+
 class UserFeedbackValidator:
     def parse_points(self, value):
         if value is None:

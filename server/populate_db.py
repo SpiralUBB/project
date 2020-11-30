@@ -37,13 +37,13 @@ eventService = EventService(eventValidator)
 events = []
 
 event = eventService.add(adminUser, "Beuta unlisted", "Infinity", [-23.0, 54.0], "2021-11-29T00:00:00.000000+02:00",
-                         "2021-11-29T08:30:00.000000Z", 30, "Hai cu noi la bere", "unlisted", "Food & Drink")
+                         "2021-11-29T08:30:00.000000Z", 0, 30, "Hai cu noi la bere", "unlisted", "Food & Drink")
 events.append(event)
 event = eventService.add(adminUser, "Beuta publica", "Infinity", [-23.0, 54.0], "2021-11-29T00:00:00.000000+02:00",
-                         "2021-11-29T08:30:00.000000Z", 30, "Hai cu noi la bere", "public", "Food & Drink")
+                         "2021-11-29T08:30:00.000000Z", 1, 30, "Hai cu noi la bere", "public", "Food & Drink")
 events.append(event)
 event = eventService.add(adminUser, "Beuta cu whitelist", "Infinity", [-23.0, 54.0], "2021-11-29T00:00:00.000000+02:00",
-                         "2021-11-29T08:30:00.000000Z", 30, "Hai cu noi la bere", "whitelisted", "Food & Drink")
+                         "2021-11-29T08:30:00.000000Z", 2, 30, "Hai cu noi la bere", "whitelisted", "Food & Drink")
 events.append(event)
 
 for i, event in enumerate(events):

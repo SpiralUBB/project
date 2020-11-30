@@ -25,11 +25,13 @@ def extract_event_properties():
     location_point = request.json.get('location_point')
     start_time = request.json.get('start_time')
     end_time = request.json.get('end_time')
+    min_trust_level = request.json.get('min_trust_level')
     no_max_participants = request.json.get('no_max_participants')
     description = request.json.get('description')
     visibility = request.json.get('visibility')
     category = request.json.get('category')
-    return title, location, location_point, start_time, end_time, no_max_participants, description, visibility, category
+    return title, location, location_point, start_time, end_time, min_trust_level, no_max_participants, description, \
+           visibility, category
 
 
 def extract_event_comment_properties():
@@ -90,10 +92,10 @@ def events_post(user_service: UserService, event_service: EventService,
     if user is None:
         raise UserDoesNotExist()
 
-    title, location, location_point, start_time, end_time, no_max_participants, description, visibility, category \
-        = extract_event_properties()
-    event = event_service.add(user, title, location, location_point, start_time, end_time, no_max_participants,
-                              description, visibility, category)
+    title, location, location_point, start_time, end_time, min_trust_level, no_max_participants, description, \
+        visibility, category = extract_event_properties()
+    event = event_service.add(user, title, location, location_point, start_time, end_time, min_trust_level,
+                              no_max_participants, description, visibility, category)
     event_invitation_service.add(event, user, status=EVENT_INVITATION_STATUS_ACCEPTED_KEY,
                                  attend_status=EVENT_INVITATION_ATTEND_STATUS_ATTENDED_KEY)
 
@@ -139,10 +141,10 @@ def events_patch_event(user_service: UserService, event_service: EventService, e
     if event is None:
         raise EventDoesNotExist()
 
-    title, location, location_point, start_time, end_time, no_max_participants, description, visibility, category = \
-        extract_event_properties()
-    event_service.update(event, title, location, location_point, start_time, end_time, description, visibility,
-                         category)
+    title, location, location_point, start_time, end_time, min_trust_level, no_max_participants, description, \
+        visibility, category = extract_event_properties()
+    event_service.update(event, title, location, location_point, start_time, end_time, min_trust_level,
+                         no_max_participants, description, visibility, category)
     return jsonify(event.to_dict(with_details=True))
 
 

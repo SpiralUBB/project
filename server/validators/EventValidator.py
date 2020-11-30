@@ -9,7 +9,7 @@ from models.Event import event_visibility_map, event_category_map
 from models.User import User
 from utils.errors import EventTitleInvalid, EventLocationInvalid, EventTimeInvalid, \
     EventDescriptionInvalid, EventCategoryInvalid, EventLocationPointInvalid, EventOwnerInvalid, EventVisibilityInvalid, \
-    EventMaxNoParticipantsInvalid
+    EventMaxNoParticipantsInvalid, EventMinTrustLevelInvalid
 
 
 class EventValidator:
@@ -66,6 +66,20 @@ class EventValidator:
                 raise EventMaxNoParticipantsInvalid(
                     message='Event max number of participants must be a number greater or equal to 0')
 
+    def validate_min_trust_level(self, value: int, owner: User):
+        if value is not None:
+            if type(value) != int:
+                raise EventMinTrustLevelInvalid(
+                    message='Event min trust level must either be omitted or be a number')
+
+            if value < 0:
+                raise EventMinTrustLevelInvalid(
+                    message='Event min trust level must be a number greater or equal to 0')
+
+            if value > owner.get_trust_level():
+                raise EventMinTrustLevelInvalid(
+                    message='Event trust level cannot be greater than owner trust level')
+
     def validate_description(self, value: str):
         if not value:
             raise EventDescriptionInvalid(message='Event description cannot be empty')
@@ -116,11 +130,13 @@ class EventValidator:
             raise EventTimeInvalid(message="Event time couldn't be parsed into a valid date-time format")
 
     def validate_parameters(self, owner: User, title: str, location: str, location_point: List[float],
-                            start_time: datetime, end_time: datetime, no_max_participants: int, description: str):
+                            start_time: datetime, end_time: datetime, min_trust_level: int, no_max_participants: int,
+                            description: str):
         self.validate_owner(owner)
         self.validate_title(title)
         self.validate_location(location)
         self.validate_location_point(location_point)
         self.validate_times(start_time, end_time)
+        self.validate_min_trust_level(min_trust_level, owner)
         self.validate_no_max_participants(no_max_participants)
         self.validate_description(description)

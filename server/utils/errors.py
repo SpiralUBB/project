@@ -71,6 +71,9 @@ EventTimeInvalid = make_http_error('EventTimeInvalid',
 EventMaxNoParticipantsInvalid = make_http_error('EventMaxNoParticipantsInvalid',
                                                 'event-max-no-participants-invalid', 400,
                                                 'Event max number of participants is invalid')
+EventMinTrustLevelInvalid = make_http_error('EventMinTrustLevelInvalid',
+                                            'event-min-trust-level-invalid', 400,
+                                            'Event min trust level invalid')
 EventDescriptionInvalid = make_http_error('EventDescriptionInvalid',
                                           'event-description-invalid', 400,
                                           'Event description is invalid')

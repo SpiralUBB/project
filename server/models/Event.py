@@ -50,6 +50,7 @@ class Event(Document):
     no_participants = IntField(min_value=0, default=0)
     no_max_participants = IntField(min_value=0, default=0)
     description = StringField(required=True)
+    min_trust_level = IntField(min_value=0, default=0)
     visibility = IntField(min_value=event_visibility_map.minimum_key(),
                           max_value=event_visibility_map.maximum_key(), required=True)
     category = IntField(min_value=event_category_map.minimum_key(),
@@ -92,6 +93,7 @@ class Event(Document):
             'category_text': event_category_map.to_value(self.category),
             'is_limited_details': not with_details,
             'is_unlimited_participants': self.is_unlimited_participants(),
+            'min_trust_level': self.min_trust_level,
         }
 
         if with_details:

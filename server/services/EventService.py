@@ -17,14 +17,15 @@ class EventService:
         self.validator = validator
 
     def add(self, owner: User, title: str, location: str, location_point: List[float], start_time: str, end_time: str,
-            no_max_participants: int, description: str, visibility: Union[str, int], category: [str, int]) -> Event:
+            min_trust_level: int, no_max_participants: int, description: str, visibility: Union[str, int],
+            category: [str, int]) -> Event:
         visibility = self.validator.parse_visibility(visibility)
         category = self.validator.parse_category(category)
         start_time = self.validator.parse_time(start_time)
         end_time = self.validator.parse_time(end_time)
 
         self.validator.validate_parameters(owner, title, location, location_point, start_time, end_time,
-                                           no_max_participants, description)
+                                           min_trust_level, no_max_participants, description)
 
         event = Event(owner=owner, title=title, location=location, location_point=location_point, start_time=start_time,
                       end_time=end_time, no_max_participants=no_max_participants, description=description,
@@ -135,8 +136,9 @@ class EventService:
         return self.find_one_by(Q(id=event_id) & query)
 
     def update(self, event: Event, title: str = None, location: str = None, location_point: List[int] = None,
-               start_time: str = None, end_time: str = None, no_max_participants: int = None, description: str = None,
-               visibility: Union[str, int] = None, category: [str, int] = None):
+               start_time: str = None, end_time: str = None, min_trust_level: int = None,
+               no_max_participants: int = None, description: str = None, visibility: Union[str, int] = None,
+               category: [str, int] = None):
         if title is not None:
             self.validator.validate_title(title)
             event.title = title
@@ -161,6 +163,10 @@ class EventService:
                 end_time = event.end_time
 
             self.validator.validate_times(start_time, end_time)
+
+        if min_trust_level is not None:
+            self.validator.validate_min_trust_level(min_trust_level, event.owner)
+            event.min_trust_level = min_trust_level
 
         if no_max_participants is not None:
             self.validator.validate_no_max_participants(no_max_participants)

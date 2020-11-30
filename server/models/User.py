@@ -32,10 +32,14 @@ class User(Document):
         password = encode_string(password)
         return bcrypt.checkpw(password, self.password)
 
+    def get_trust_level(self):
+        return self.points / 100
+
     def to_dict(self):
         return {
             'username': self.username,
             'first_name': self.first_name,
             'last_name': self.last_name,
+            'trust_level': self.get_trust_level(),
             'points': self.points,
         }

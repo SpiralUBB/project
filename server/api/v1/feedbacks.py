@@ -21,11 +21,11 @@ def feedbacks_get_feedback(user_service: UserService, event_service: EventServic
     if user is None:
         raise UserDoesNotExist()
 
-    to_user_id = request.args.get('to_user_id')
-    if not to_user_id:
+    to_user_username = request.args.get('to_user')
+    if not to_user_username:
         raise UserDoesNotExist()
 
-    to_user = user_service.find_one_by(id=to_user_id)
+    to_user = user_service.find_one_by(username=to_user_username)
     if not to_user:
         raise UserDoesNotExist()
 
@@ -56,11 +56,11 @@ def feedbacks_put_feedback(user_service: UserService, event_service: EventServic
     if user is None:
         raise UserDoesNotExist()
 
-    to_user_id = request.args.get('to_user_id')
-    if not to_user_id:
+    to_user_username = request.args.get('to_user')
+    if not to_user_username:
         raise UserDoesNotExist()
 
-    to_user = user_service.find_one_by(id=to_user_id)
+    to_user = user_service.find_one_by(username=to_user_username)
     if not to_user:
         raise UserDoesNotExist()
 

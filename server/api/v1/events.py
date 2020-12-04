@@ -6,7 +6,8 @@ from flask_jwt_extended import jwt_required, get_jwt_identity, jwt_optional
 
 from models.Event import event_visibility_map, event_category_map, Event, \
     EVENT_VISIBILITY_PUBLIC_KEY
-from models.EventInvitation import EVENT_INVITATION_STATUS_ACCEPTED_KEY, EVENT_INVITATION_ATTEND_STATUS_ATTENDED_KEY
+from models.EventInvitation import EVENT_INVITATION_STATUS_ACCEPTED_KEY, EVENT_INVITATION_ATTEND_STATUS_ATTENDED_KEY, \
+    event_invitation_status_map, event_invitation_attend_status_map
 from models.User import User, PredefinedPoints
 from services.EventCommentService import EventCommentService
 from services.EventInvitationService import EventInvitationService
@@ -51,6 +52,26 @@ def event_to_restricted_dict(event: Event, event_service: EventService,
     return event.to_dict(with_details=with_details)
 
 
+@api.route('/visibilities')
+def events_get_visibilities():
+    return jsonify(event_visibility_map.to_reverse_dict())
+
+
+@api.route('/categories')
+def events_get_categories():
+    return jsonify(event_category_map.to_reverse_dict())
+
+
+@api.route('/invitation_statuses')
+def events_get_invitation_statuses():
+    return jsonify(event_invitation_status_map.to_reverse_dict())
+
+
+@api.route('/invitation_attend_statuses')
+def events_get_invitation_attend_statuses():
+    return jsonify(event_invitation_attend_status_map.to_reverse_dict())
+
+
 @api.route('')
 @jwt_optional
 def events_get(user_service: UserService, event_service: EventService,
@@ -71,16 +92,6 @@ def events_get(user_service: UserService, event_service: EventService,
 
     return jsonify(get_paginated_items_from_qs(events, event_to_restricted_dict, event_service, user,
                                                full_details_event_ids))
-
-
-@api.route('/visibilities')
-def events_get_visibilities():
-    return jsonify(event_visibility_map.to_reverse_dict())
-
-
-@api.route('/categories')
-def events_get_categories():
-    return jsonify(event_category_map.to_reverse_dict())
 
 
 @api.route('', methods=['POST'])

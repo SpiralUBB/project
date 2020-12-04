@@ -69,17 +69,11 @@ class EventService:
             query &= Q(category__in=categories)
 
         if date_start is not None:
-            if date_end is None:
-                date_end = self.validator.parse_time(date_start, end=True)
             date_start = self.validator.parse_time(date_start, start=True)
+            query &= Q(start_time__gte=date_start)
 
         if date_end is not None:
-            if date_start is None:
-                date_start = self.validator.parse_time(date_end, start=True)
             date_end = self.validator.parse_time(date_end, end=True)
-
-        if date_start is not None and date_start is not None:
-            query &= Q(start_time__gte=date_start)
             query &= Q(start_time__lte=date_end)
 
         return query

@@ -33,7 +33,7 @@ class User(Document):
         return bcrypt.checkpw(password, self.password)
 
     def get_trust_level(self):
-        return self.points / 100
+        return self.points // 100
 
     def to_dict(self):
         return {

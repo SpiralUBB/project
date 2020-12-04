@@ -153,6 +153,7 @@ The item is specific to each route.
 #### Query parameters
 
 `limit` is the number of items to return per-page, defaults to 100.
+
 `page` is the index of the page, counting from 0, defaults to 0.
 
 ```
@@ -176,10 +177,15 @@ The item is specific to each route.
 ```
 
 `limit` is the limit specified using query parameters.
+
 `page` is the page specified using query parameters.
+
 `no_items` is the number of items on this page.
+
 `no_pages` is the number of pages available.
+
 `no_total_items` is the number of total items available.
+
 `skip` is the calculated number of items skipped.
 
 ---

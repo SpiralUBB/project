@@ -307,7 +307,7 @@ A logged in user can see events for which he has an accepted invite with full de
 ##### Query parameters
 `category` is the category to use when filtering. Can be specified multiple times to filter for multiple categories.
 
-`date_start` is the start of the interval to use when filtering. Only events tarting after this date will be shown.
+`date_start` is the start of the interval to use when filtering. Only events starting after this date will be shown.
 
 `date_end` is the end of the interval to use when filtering. Only events starting before this date will be shown.
 

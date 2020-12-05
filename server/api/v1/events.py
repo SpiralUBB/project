@@ -46,8 +46,8 @@ def extract_event_invitation_properties():
     return status, attend_status
 
 
-def event_to_restricted_dict(event: Event, event_service: EventService,
-                             user: User, full_details_event_ids: List[ObjectId]):
+def event_to_restricted_dict(event: Event, user: User, full_details_event_ids: List[ObjectId]):
+    event_service = services_injector.get(EventService)
     with_details = event_service.is_details_visible(event, user, full_details_event_ids)
     return event.to_dict(with_details=with_details)
 
@@ -88,8 +88,7 @@ def events_get(event_service: EventService, event_invitation_service: EventInvit
     events = event_service.find_visible_for_user(user, full_details_event_ids, show_public=True, show_whitelist=True,
                                                  categories=categories, date_start=date_start, date_end=date_end)
 
-    return jsonify(get_paginated_items_from_qs(events, event_to_restricted_dict, event_service, user,
-                                               full_details_event_ids))
+    return jsonify(get_paginated_items_from_qs(events, event_to_restricted_dict, user, full_details_event_ids))
 
 
 @api.route('', methods=['POST'])
@@ -128,7 +127,7 @@ def events_get_event(event_service: EventService, event_invitation_service: Even
     if event is None:
         raise EventDoesNotExist()
 
-    return jsonify(event_to_restricted_dict(event, event_service, user, full_details_event_ids))
+    return jsonify(event_to_restricted_dict(event, user, full_details_event_ids))
 
 
 @api.route('/<string:event_id>', methods=['PATCH'])

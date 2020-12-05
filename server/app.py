@@ -19,6 +19,7 @@ connect(
     username=DB_USERNAME,
     password=DB_PASSWORD,
     host=DB_HOST,
+    port=DB_PORT,
 )
 
 app = Flask(__name__)

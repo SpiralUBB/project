@@ -27,9 +27,11 @@ def retrieve_logged_in_user(optional=False):
                     raise UserNotLoggedIn()
 
             user_service = services_injector.get(UserService)
-            request.user = user_service.find_one_by(username=username)
-            if not request.user:
+            user = user_service.find_one_by(username=username)
+            if not user:
                 raise UserLoggedInInvalid()
+
+            request.user = user
 
             return fn(*args, **kwargs)
 

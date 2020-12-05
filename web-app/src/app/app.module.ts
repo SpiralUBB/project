@@ -36,6 +36,9 @@ import { ParticipantCardComponent } from './components/event-page/event-particip
 import { EventDetailsComponent } from './components/event-page/event-details/event-details.component';
 import { FilterPanelComponent } from './components/shared/filter-panel/filter-panel.component';
 import { ParticipantFeedbackComponent } from './components/event-page/event-participants/participant-feedback/participant-feedback.component';
+import { EventFormComponent } from './components/event-form/event-form.component';
+import { EventParticipantsConfirmComponent } from './components/event-page/event-participants-confirm/event-participants-confirm.component';
+import { EventParticipantConfirmCardComponent } from './components/event-page/event-participants-confirm/event-participant-confirm-card/event-participant-confirm-card.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +63,9 @@ import { ParticipantFeedbackComponent } from './components/event-page/event-part
     EventDetailsComponent,
     FilterPanelComponent,
     ParticipantFeedbackComponent,
+    EventFormComponent,
+    EventParticipantsConfirmComponent,
+    EventParticipantConfirmCardComponent,
   ],
   imports: [
     MaterialModule,

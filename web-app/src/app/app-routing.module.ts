@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
+import { EventFormComponent } from './components/event-form/event-form.component';
 import { EventPageComponent } from './components/event-page/event-page.component';
 import { EventsComponent } from './components/events/events.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
@@ -35,9 +36,13 @@ const routes: Routes = [
         component: EventPageComponent,
       },
       {
+        path: 'event-form/:id',
+        component: EventFormComponent,
+      },
+      {
         path: 'profile',
         component: ProfileFormComponent,
-      }
+      },
     ],
   },
 ];

@@ -1,5 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Circle, icon, latLng, Marker, marker, tileLayer } from 'leaflet';
+import { MarkerPopupComponent } from '../components/map/marker-popup/marker-popup.component';
 import { AppEvent } from '../models/app-event.interface';
 import { ApiService } from './api.service';
 
@@ -26,7 +28,11 @@ export class MapService {
     center: latLng(46.879966, -121.726909),
   };
 
-  constructor(private apiService: ApiService) {
+  constructor(
+    private apiService: ApiService,
+    private dialog: MatDialog,
+    private ngZone: NgZone
+  ) {
     this.initMap();
   }
 
@@ -42,9 +48,9 @@ export class MapService {
     }
 
     this.apiService.getAllEvents().subscribe((eventsRes) => {
-      Object.keys(eventsRes.items).forEach(key => {
-        this.events.push(eventsRes.items[key])
-      })
+      Object.keys(eventsRes.items).forEach((key) => {
+        this.events.push(eventsRes.items[key]);
+      });
       console.log(this.events);
       this.eventsLayer = Object.values(this.events).map((event) =>
         marker(latLng(event.locationPoints[0], event.locationPoints[1]), {
@@ -54,8 +60,17 @@ export class MapService {
             iconUrl: 'leaflet/marker-icon.png',
             shadowUrl: 'leaflet/marker-shadow.png',
           }),
-        })
+        }).on('click', (e) => this.openEventCard(event))
       );
+    });
+  }
+
+  openEventCard(event: AppEvent) {
+    this.ngZone.run(() => {
+      this.dialog.open(MarkerPopupComponent, {
+        maxWidth: '100vw !important',
+        data: { event },
+      });
     });
   }
 }

@@ -39,6 +39,7 @@ import { ParticipantFeedbackComponent } from './components/event-page/event-part
 import { EventFormComponent } from './components/event-form/event-form.component';
 import { EventParticipantsConfirmComponent } from './components/event-page/event-participants-confirm/event-participants-confirm.component';
 import { EventParticipantConfirmCardComponent } from './components/event-page/event-participants-confirm/event-participant-confirm-card/event-participant-confirm-card.component';
+import { MarkerPopupComponent } from './components/map/marker-popup/marker-popup.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { EventParticipantConfirmCardComponent } from './components/event-page/ev
     EventFormComponent,
     EventParticipantsConfirmComponent,
     EventParticipantConfirmCardComponent,
+    MarkerPopupComponent,
   ],
   imports: [
     MaterialModule,

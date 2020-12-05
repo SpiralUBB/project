@@ -14,7 +14,6 @@ def retrieve_logged_in_user(optional=False):
         def wrapper(*args, **kwargs):
             request.user = None
 
-            user_service = services_injector.get(UserService)
             if optional:
                 verify_jwt_in_request_optional()
             else:
@@ -27,6 +26,7 @@ def retrieve_logged_in_user(optional=False):
                 else:
                     raise UserNotLoggedIn()
 
+            user_service = services_injector.get(UserService)
             request.user = user_service.find_one_by(username=username)
             if not request.user:
                 raise UserLoggedInInvalid()

@@ -1,4 +1,5 @@
 from flask_injector import request
+from injector import Injector
 
 from services.EventCommentService import EventCommentService
 from services.EventInvitationService import EventInvitationService
@@ -32,3 +33,6 @@ def configure_services(binder):
     user_feedback_validator = UserFeedbackValidator()
     user_feedback_service = UserFeedbackService(user_feedback_validator)
     binder.bind(UserFeedbackService, to=user_feedback_service, scope=request)
+
+
+services_injector = Injector([configure_services])

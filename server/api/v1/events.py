@@ -3,7 +3,8 @@ from typing import List
 from bson import ObjectId
 from flask import Blueprint, jsonify, request, Flask
 
-from api.v1.helpers import retrieve_logged_in_user
+from api.v1.helpers import retrieve_logged_in_user, EventRetrievalType, retrieve_event, ShowFlagType, \
+    EventCommentRetrievalType, retrieve_event_comment, EventInvitationRetrievalType, retrieve_event_invitation
 from models.Event import event_visibility_map, event_category_map, Event, \
     EVENT_VISIBILITY_PUBLIC_KEY
 from models.EventInvitation import EVENT_INVITATION_STATUS_ACCEPTED_KEY, EVENT_INVITATION_ATTEND_STATUS_ATTENDED_KEY, \
@@ -13,6 +14,7 @@ from services.EventCommentService import EventCommentService
 from services.EventInvitationService import EventInvitationService
 from services.EventService import EventService
 from services.UserService import UserService
+from utils.dependencies import services_injector
 from utils.errors import EventDoesNotExist, EventCommentDoesNotExist, EventInvitationDoesNotExist, \
     EventInvitationAlreadyExists, EventInvitationCannotJoinFull, EventInvitationCannotModifyOwn
 from utils.pagination import get_paginated_items_from_qs
@@ -95,14 +97,14 @@ def events_get(event_service: EventService, event_invitation_service: EventInvit
 @retrieve_logged_in_user()
 def events_post(user_service: UserService, event_service: EventService,
                 event_invitation_service: EventInvitationService):
-    user = request.user
     title, location, location_point, start_time, end_time, min_trust_level, no_max_participants, description, \
-    visibility, category = extract_event_properties()
+        visibility, category = extract_event_properties()
+    user = request.user
+
     event = event_service.add(user, title, location, location_point, start_time, end_time, min_trust_level,
                               no_max_participants, description, visibility, category)
     event_invitation_service.add(event, user, status=EVENT_INVITATION_STATUS_ACCEPTED_KEY,
                                  attend_status=EVENT_INVITATION_ATTEND_STATUS_ATTENDED_KEY)
-
     user_service.add_points(user, PredefinedPoints.CREATE_EVENT.value)
 
     return jsonify(event.to_dict(with_details=True))
@@ -110,57 +112,34 @@ def events_post(user_service: UserService, event_service: EventService,
 
 @api.route('/<string:event_id>')
 @retrieve_logged_in_user(optional=True)
-def events_get_event(event_service: EventService, event_invitation_service: EventInvitationService,
-                     event_id: str):
-    # An user can see a whitelisted event with limited details
-    # An user can see a public event with full details
-    # A logged in user can see an unlisted event with limited details. Since an unlisted event is not
-    # visible within the events route, this means that the owner needs to share the link to it with people
-    # that he wants to let join
-    # A logged in user can see a whitelisted or unlisted event for which he has an accepted invite with full
-    # details
-    # A logged in user can see events that he owns with full details
-    user = request.user
-    full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
-    event = event_service.find_one_visible_for_user(user, event_id, full_details_event_ids, show_public=True,
-                                                    show_whitelist=True, show_unlisted=user is not None)
-    if event is None:
-        raise EventDoesNotExist()
-
-    return jsonify(event_to_restricted_dict(event, user, full_details_event_ids))
+@retrieve_event(EventRetrievalType.ID_AND_LOGGED_IN_USER_VISIBLE, show_public=True, show_whitelisted=True,
+                show_unlisted=ShowFlagType.USER_EXISTS)
+def events_get_event():
+    return jsonify(event_to_restricted_dict(request.event, request.user, request.full_details_event_ids))
 
 
 @api.route('/<string:event_id>', methods=['PATCH'])
 @retrieve_logged_in_user()
-def events_patch_event(event_service: EventService,
-                       event_id: str):
-    user = request.user
-
-    # Restrict to owner
-    event = event_service.find_one_by(owner=user, id=event_id)
-    if event is None:
-        raise EventDoesNotExist()
-
+@retrieve_event(EventRetrievalType.ID_AND_OWNER)
+def events_patch_event(event_service: EventService):
     title, location, location_point, start_time, end_time, min_trust_level, no_max_participants, description, \
-    visibility, category = extract_event_properties()
+        visibility, category = extract_event_properties()
+    event = request.event
+
     event_service.update(event, title, location, location_point, start_time, end_time, min_trust_level,
                          no_max_participants, description, visibility, category)
+
     return jsonify(event.to_dict(with_details=True))
 
 
 @api.route('/<string:event_id>', methods=['DELETE'])
 @retrieve_logged_in_user()
-def events_delete_event(user_service: UserService, event_service: EventService,
-                        event_id: str):
+@retrieve_event(EventRetrievalType.ID_AND_OWNER)
+def events_delete_event(user_service: UserService, event_service: EventService):
     user = request.user
-
-    # Restrict to owner
-    event = event_service.find_one_by(owner=user, id=event_id)
-    if event is None:
-        raise EventDoesNotExist()
+    event = request.event
 
     event_service.delete(event)
-
     user_service.add_points(user, -PredefinedPoints.CREATE_EVENT.value)
 
     return jsonify(event.to_dict(with_details=True))
@@ -168,30 +147,22 @@ def events_delete_event(user_service: UserService, event_service: EventService,
 
 @api.route('/<string:event_id>/comments')
 @retrieve_logged_in_user()
-def events_get_event_comments(event_service: EventService, event_comments_service: EventCommentService,
-                              event_id: str):
-    # A logged in user can access the comments for an event
-
-    event = event_service.find_one_by(id=event_id)
-    if event is None:
-        raise EventDoesNotExist()
-
+@retrieve_event(EventRetrievalType.ID)
+def events_get_event_comments(event_comments_service: EventCommentService):
+    event = request.event
     event_comments = event_comments_service.find_by(event=event)
+
     return jsonify(get_paginated_items_from_qs(event_comments))
 
 
 @api.route('/<string:event_id>/comments', methods=['POST'])
 @retrieve_logged_in_user()
-def events_post_event_comments(event_service: EventService, event_comments_service: EventCommentService,
-                               event_id: str):
-    # A logged in user can access the comments for an event
-    user = request.user
-
-    event = event_service.find_one_by(id=event_id)
-    if event is None:
-        raise EventDoesNotExist()
-
+@retrieve_event(EventRetrievalType.ID)
+def events_post_event_comments(event_comments_service: EventCommentService):
     text = extract_event_comment_properties()
+    user = request.user
+    event = request.event
+
     event_comment = event_comments_service.add(user, event, text)
 
     return jsonify(event_comment.to_dict())
@@ -199,21 +170,12 @@ def events_post_event_comments(event_service: EventService, event_comments_servi
 
 @api.route('/<string:event_id>/comments/<string:comment_id>', methods=['PATCH'])
 @retrieve_logged_in_user()
-def events_patch_event_comment(event_service: EventService, event_comments_service: EventCommentService,
-                               event_id: str, comment_id: str):
-    # A logged in user can access the comments for an event
-    user = request.user
-
-    event = event_service.find_one_by(id=event_id)
-    if event is None:
-        raise EventDoesNotExist()
-
-    # Restrict to author
-    event_comment = event_comments_service.find_one_by(author=user, event=event, id=comment_id)
-    if event_comment is None:
-        raise EventCommentDoesNotExist()
-
+@retrieve_event(EventRetrievalType.ID)
+@retrieve_event_comment(EventCommentRetrievalType.ID_AND_AUTHOR)
+def events_patch_event_comment(event_comments_service: EventCommentService):
     text = extract_event_comment_properties()
+    event_comment = request.event_comment
+
     event_comments_service.update(event_comment, text)
 
     return jsonify(event_comment.to_dict())
@@ -221,19 +183,10 @@ def events_patch_event_comment(event_service: EventService, event_comments_servi
 
 @api.route('/<string:event_id>/comments/<string:comment_id>', methods=['DELETE'])
 @retrieve_logged_in_user()
-def events_delete_event_comment(event_service: EventService, event_comments_service: EventCommentService,
-                                event_id: str, comment_id: str):
-    # A logged in user can access the comments for an event
-    user = request.user
-
-    event = event_service.find_one_by(id=event_id)
-    if event is None:
-        raise EventDoesNotExist()
-
-    # Restrict to author
-    event_comment = event_comments_service.find_one_by(author=user, event=event, id=comment_id)
-    if event_comment is None:
-        raise EventCommentDoesNotExist()
+@retrieve_event(EventRetrievalType.ID)
+@retrieve_event_comment(EventCommentRetrievalType.ID_AND_AUTHOR)
+def events_delete_event_comment(event_comments_service: EventCommentService):
+    event_comment = request.event_comment
 
     event_comments_service.delete(event_comment)
 
@@ -242,65 +195,43 @@ def events_delete_event_comment(event_service: EventService, event_comments_serv
 
 @api.route('/<string:event_id>/invitation')
 @retrieve_logged_in_user()
-def events_get_event_invitation(event_service: EventService, event_invitation_service: EventInvitationService,
-                                event_id: str):
-    # A logged in user can get his invitation status for an event
-    user = request.user
-
-    event = event_service.find_one_by(id=event_id)
-    if event is None:
-        raise EventDoesNotExist()
-
-    event_invitation = event_invitation_service.find_one_by(user=user, event=event)
-    if event_invitation is None:
-        raise EventInvitationDoesNotExist()
-
+@retrieve_event(EventRetrievalType.ID)
+@retrieve_event_invitation(EventInvitationRetrievalType.LOGGED_IN_USER)
+def events_get_event_invitation():
+    event_invitation = request.event_invitation
     return jsonify(event_invitation.to_dict())
 
 
 @api.route('/<string:event_id>/invitation', methods=['PUT'])
 @retrieve_logged_in_user()
+@retrieve_event(EventRetrievalType.ID)
 def events_put_event_join(event_service: EventService, event_invitation_service: EventInvitationService,
-                          user_service: UserService, event_id: str):
-    # A logged in user can join a public event
-    # A logged in user can join a whitelisted or unlisted event, the invitation will be marked pending
+                          user_service: UserService):
     user = request.user
-
-    event = event_service.find_one_by(id=event_id)
-    if event is None:
-        raise EventDoesNotExist()
+    event = request.event
 
     if not event.allows_more_participants():
         raise EventInvitationCannotJoinFull()
 
-    try:
-        event_invitation = event_invitation_service.add(event, user)
-        if event.visibility == EVENT_VISIBILITY_PUBLIC_KEY:
-            old_invitation_status = event_invitation.status
-            event_invitation_service.update(event_invitation, status=EVENT_INVITATION_STATUS_ACCEPTED_KEY)
-            new_invitation_status = event_invitation.status
-            event_service.add_participants(event, old_invitation_status=old_invitation_status,
-                                           new_invitation_status=new_invitation_status)
+    event_invitation = event_invitation_service.add(event, user)
+    if event.visibility == EVENT_VISIBILITY_PUBLIC_KEY:
+        old_invitation_status = event_invitation.status
+        event_invitation_service.update(event_invitation, status=EVENT_INVITATION_STATUS_ACCEPTED_KEY)
+        new_invitation_status = event_invitation.status
+        event_service.add_participants(event, old_invitation_status=old_invitation_status,
+                                       new_invitation_status=new_invitation_status)
 
-        user_service.add_points(event.owner, PredefinedPoints.JOIN_EVENT_FOR_OWNER.value)
-    except EventInvitationAlreadyExists:
-        event_invitation = event_invitation_service.find_one_by(user=user, event=event)
+    user_service.add_points(event.owner, PredefinedPoints.JOIN_EVENT_FOR_OWNER.value)
 
     return jsonify(event_invitation.to_dict())
 
 
 @api.route('/<string:event_id>/invitations')
 @retrieve_logged_in_user()
-def events_get_event_invitations(event_service: EventService, event_invitation_service: EventInvitationService,
-                                 event_id: str):
-    # A logged in user can see the accepted invitations for an event for which he has an accepted invite
-    # A logged in user can see events that he owns with full details
+@retrieve_event(EventRetrievalType.ID_AND_LOGGED_IN_USER_VISIBLE)
+def events_get_event_invitations(event_invitation_service: EventInvitationService):
     user = request.user
-
-    full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
-    event = event_service.find_one_visible_for_user(user, event_id, full_details_event_ids)
-    if event is None:
-        raise EventDoesNotExist()
+    event = request.event
 
     event_invitations = event_invitation_service.find_visible_for_user(user, event)
 
@@ -309,23 +240,18 @@ def events_get_event_invitations(event_service: EventService, event_invitation_s
 
 @api.route('/<string:event_id>/invitations/<string:invitation_id>', methods=['PATCH'])
 @retrieve_logged_in_user()
+@retrieve_event(EventRetrievalType.ID_AND_OWNER)
+@retrieve_event_invitation(EventInvitationRetrievalType.ID)
 def events_patch_event_invitation(event_service: EventService, event_invitation_service: EventInvitationService,
-                                  user_service: UserService, event_id: str, invitation_id: str):
+                                  user_service: UserService):
+    status, attend_status = extract_event_invitation_properties()
     user = request.user
-
-    # Restrict to owner
-    event = event_service.find_one_by(id=event_id, owner=user)
-    if event is None:
-        raise EventDoesNotExist()
-
-    event_invitation = event_invitation_service.find_one_by(id=invitation_id, event=event)
-    if event_invitation is None:
-        raise EventInvitationDoesNotExist()
+    event = request.event
+    event_invitation = request.event_invitation
 
     if event_invitation.user.id == user.id:
         raise EventInvitationCannotModifyOwn()
 
-    status, attend_status = extract_event_invitation_properties()
     old_invitation_status, old_invitation_attend_status = event_invitation.status, event_invitation.attend_status
     event_invitation_service.update(event_invitation, status=status, attend_status=attend_status)
     new_invitation_status, new_invitation_attend_status = event_invitation.status, event_invitation.attend_status

@@ -92,7 +92,6 @@ class Event(Document):
             'category': self.category,
             'category_text': event_category_map.to_value(self.category),
             'is_limited_details': not with_details,
-            'is_unlimited_participants': self.is_unlimited_participants(),
             'min_trust_level': self.min_trust_level,
         }
 
@@ -102,6 +101,7 @@ class Event(Document):
             d['location_points_radius_meters'] = None
             d['no_participants'] = self.no_participants
             d['no_max_participants'] = self.no_max_participants
+            d['is_unlimited_participants'] = self.is_unlimited_participants()
             d['allows_more_participants'] = self.allows_more_participants()
         else:
             d['location'] = None
@@ -109,6 +109,7 @@ class Event(Document):
             d['location_points_radius_meters'] = GEOGRAPHICAL_APPROXIMATION_METERS
             d['no_participants'] = None
             d['no_max_participants'] = None
+            d['is_unlimited_participants'] = None
             d['allows_more_participants'] = None
 
         return d

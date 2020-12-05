@@ -1,6 +1,7 @@
 from flask import Blueprint, Flask, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
+from api.v1.helpers import retrieve_logged_in_user
 from services.EventInvitationService import EventInvitationService
 from services.EventService import EventService
 from services.UserFeedbackService import UserFeedbackService
@@ -12,7 +13,7 @@ api = Blueprint('api_v1_feedbacks', __name__)
 
 
 @api.route('/')
-@jwt_required
+@retrieve_logged_in_user()
 def feedbacks_get_feedback(user_service: UserService, event_service: EventService,
                            event_invitation_service: EventInvitationService,
                            user_feedback_service: UserFeedbackService):
@@ -47,7 +48,7 @@ def feedbacks_get_feedback(user_service: UserService, event_service: EventServic
 
 
 @api.route('/', methods=['PUT'])
-@jwt_required
+@retrieve_logged_in_user()
 def feedbacks_put_feedback(user_service: UserService, event_service: EventService,
                            event_invitation_service: EventInvitationService,
                            user_feedback_service: UserFeedbackService):

@@ -58,11 +58,11 @@ class EventInvitationService:
 
     def find_accepted_user_invitations_event_ids(self, user: User):
         if user is None:
-            accepted_event_invitations = []
-        else:
-            accepted_event_invitations = self.find_by(
-                user=user,
-                status=EVENT_INVITATION_STATUS_ACCEPTED_KEY
-            )
+            return []
+
+        accepted_event_invitations = self.find_by(
+            user=user,
+            status=EVENT_INVITATION_STATUS_ACCEPTED_KEY
+        )
 
         return [ei.id for ei in accepted_event_invitations]

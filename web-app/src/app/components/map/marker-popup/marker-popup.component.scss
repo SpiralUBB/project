@@ -1,0 +1,16 @@
+::ng-deep mat-dialog-container {
+  padding: 0 !important;
+  width: 90vw !important;
+}
+
+.dialog {
+  position: relative;
+}
+
+.close-button {
+  //   float: right;
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  right: 0;
+}

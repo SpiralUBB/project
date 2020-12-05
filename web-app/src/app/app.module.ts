@@ -29,8 +29,6 @@ import { EventCardComponent } from './components/shared/event-card/event-card.co
 import { EventListComponent } from './components/shared/event-list/event-list.component';
 import { EventPageComponent } from './components/event-page/event-page.component';
 import { ProfileFormComponent } from './components/shared/profile-form/profile-form.component';
-<<<<<<< HEAD
-=======
 import { EventCommentsComponent } from './components/event-page/event-comments/event-comments.component';
 import { CommentCardComponent } from './components/event-page/event-comments/comment-card/comment-card.component';
 import { EventParticipantsComponent } from './components/event-page/event-participants/event-participants.component';
@@ -41,7 +39,6 @@ import { ParticipantFeedbackComponent } from './components/event-page/event-part
 import { EventFormComponent } from './components/event-form/event-form.component';
 import { EventParticipantsConfirmComponent } from './components/event-page/event-participants-confirm/event-participants-confirm.component';
 import { EventParticipantConfirmCardComponent } from './components/event-page/event-participants-confirm/event-participant-confirm-card/event-participant-confirm-card.component';
->>>>>>> master
 
 @NgModule({
   declarations: [
@@ -59,8 +56,6 @@ import { EventParticipantConfirmCardComponent } from './components/event-page/ev
     EventListComponent,
     EventPageComponent,
     ProfileFormComponent,
-<<<<<<< HEAD
-=======
     EventCommentsComponent,
     CommentCardComponent,
     EventParticipantsComponent,
@@ -71,7 +66,6 @@ import { EventParticipantConfirmCardComponent } from './components/event-page/ev
     EventFormComponent,
     EventParticipantsConfirmComponent,
     EventParticipantConfirmCardComponent,
->>>>>>> master
   ],
   imports: [
     MaterialModule,

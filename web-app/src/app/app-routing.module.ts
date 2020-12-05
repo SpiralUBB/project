@@ -36,11 +36,6 @@ const routes: Routes = [
         component: EventPageComponent,
       },
       {
-<<<<<<< HEAD
-        path: 'profile',
-        component: ProfileFormComponent,
-      }
-=======
         path: 'event-form/:id',
         component: EventFormComponent,
       },
@@ -48,7 +43,6 @@ const routes: Routes = [
         path: 'profile',
         component: ProfileFormComponent,
       },
->>>>>>> master
     ],
   },
 ];

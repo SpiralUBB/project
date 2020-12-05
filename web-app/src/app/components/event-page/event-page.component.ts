@@ -11,8 +11,8 @@ import { filter, map } from 'rxjs/operators';
 export class EventPageComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute) {}
 
-  public eventId$: Observable<number>;
-  private id: number;
+  public eventId$: Observable<string>;
+  private id: string;
 
   ngOnInit(): void {
     //daca navighezi pe un url nou unde difera doar id-ul nu se incarca pagina noua, doar se emite o alta valoare in observable

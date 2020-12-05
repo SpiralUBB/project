@@ -11,8 +11,7 @@
         </mat-card-content>
     
         <mat-card-actions>
-            <button mat-button>View Event</button>
-            <button mat-button>Join</button>
+            <button [routerLink]="['/app', 'event', event.id]" mat-button>View Event</button>
             </mat-card-actions>
     </mat-card>
 </div>

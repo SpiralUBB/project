@@ -29,6 +29,13 @@ import { EventCardComponent } from './components/shared/event-card/event-card.co
 import { EventListComponent } from './components/shared/event-list/event-list.component';
 import { EventPageComponent } from './components/event-page/event-page.component';
 import { ProfileFormComponent } from './components/shared/profile-form/profile-form.component';
+import { EventCommentsComponent } from './components/event-page/event-comments/event-comments.component';
+import { CommentCardComponent } from './components/event-page/event-comments/comment-card/comment-card.component';
+import { EventParticipantsComponent } from './components/event-page/event-participants/event-participants.component';
+import { ParticipantCardComponent } from './components/event-page/event-participants/participant-card/participant-card.component';
+import { EventDetailsComponent } from './components/event-page/event-details/event-details.component';
+import { FilterPanelComponent } from './components/shared/filter-panel/filter-panel.component';
+import { ParticipantFeedbackComponent } from './components/event-page/event-participants/participant-feedback/participant-feedback.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +53,13 @@ import { ProfileFormComponent } from './components/shared/profile-form/profile-f
     EventListComponent,
     EventPageComponent,
     ProfileFormComponent,
+    EventCommentsComponent,
+    CommentCardComponent,
+    EventParticipantsComponent,
+    ParticipantCardComponent,
+    EventDetailsComponent,
+    FilterPanelComponent,
+    ParticipantFeedbackComponent,
   ],
   imports: [
     MaterialModule,

@@ -8,3 +8,4 @@ bidict
 arrow
 bson
 injector
+pyee

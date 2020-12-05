@@ -5,18 +5,13 @@ from flask import Blueprint, jsonify, request, Flask
 
 from api.v1.helpers import retrieve_logged_in_user, EventRetrievalType, retrieve_event, ShowFlagType, \
     EventCommentRetrievalType, retrieve_event_comment, EventInvitationRetrievalType, retrieve_event_invitation
-from models.Event import event_visibility_map, event_category_map, Event, \
-    EVENT_VISIBILITY_PUBLIC_KEY
-from models.EventInvitation import EVENT_INVITATION_STATUS_ACCEPTED_KEY, EVENT_INVITATION_ATTEND_STATUS_ATTENDED_KEY, \
-    event_invitation_status_map, event_invitation_attend_status_map
-from models.User import User, PredefinedPoints
+from models.Event import event_visibility_map, event_category_map, Event
+from models.EventInvitation import event_invitation_status_map, event_invitation_attend_status_map
+from models.User import User
 from services.EventCommentService import EventCommentService
 from services.EventInvitationService import EventInvitationService
 from services.EventService import EventService
-from services.UserService import UserService
 from utils.dependencies import services_injector
-from utils.errors import EventDoesNotExist, EventCommentDoesNotExist, EventInvitationDoesNotExist, \
-    EventInvitationAlreadyExists, EventInvitationCannotJoinFull, EventInvitationCannotModifyOwn
 from utils.pagination import get_paginated_items_from_qs
 
 api = Blueprint('api_v1_events', __name__)
@@ -95,17 +90,13 @@ def events_get(event_service: EventService, event_invitation_service: EventInvit
 
 @api.route('', methods=['POST'])
 @retrieve_logged_in_user()
-def events_post(user_service: UserService, event_service: EventService,
-                event_invitation_service: EventInvitationService):
+def events_post(event_service: EventService):
     title, location, location_point, start_time, end_time, min_trust_level, no_max_participants, description, \
         visibility, category = extract_event_properties()
     user = request.user
 
     event = event_service.add(user, title, location, location_point, start_time, end_time, min_trust_level,
                               no_max_participants, description, visibility, category)
-    event_invitation_service.add(event, user, status=EVENT_INVITATION_STATUS_ACCEPTED_KEY,
-                                 attend_status=EVENT_INVITATION_ATTEND_STATUS_ATTENDED_KEY)
-    user_service.add_points(user, PredefinedPoints.CREATE_EVENT.value)
 
     return jsonify(event.to_dict(with_details=True))
 
@@ -135,12 +126,10 @@ def events_patch_event(event_service: EventService):
 @api.route('/<string:event_id>', methods=['DELETE'])
 @retrieve_logged_in_user()
 @retrieve_event(EventRetrievalType.ID_AND_OWNER)
-def events_delete_event(user_service: UserService, event_service: EventService):
-    user = request.user
+def events_delete_event(event_service: EventService):
     event = request.event
 
     event_service.delete(event)
-    user_service.add_points(user, -PredefinedPoints.CREATE_EVENT.value)
 
     return jsonify(event.to_dict(with_details=True))
 
@@ -150,6 +139,7 @@ def events_delete_event(user_service: UserService, event_service: EventService):
 @retrieve_event(EventRetrievalType.ID)
 def events_get_event_comments(event_comments_service: EventCommentService):
     event = request.event
+
     event_comments = event_comments_service.find_by(event=event)
 
     return jsonify(get_paginated_items_from_qs(event_comments))
@@ -205,23 +195,11 @@ def events_get_event_invitation():
 @api.route('/<string:event_id>/invitation', methods=['PUT'])
 @retrieve_logged_in_user()
 @retrieve_event(EventRetrievalType.ID)
-def events_put_event_join(event_service: EventService, event_invitation_service: EventInvitationService,
-                          user_service: UserService):
+def events_put_event_join(event_invitation_service: EventInvitationService):
     user = request.user
     event = request.event
 
-    if not event.allows_more_participants():
-        raise EventInvitationCannotJoinFull()
-
     event_invitation = event_invitation_service.add(event, user)
-    if event.visibility == EVENT_VISIBILITY_PUBLIC_KEY:
-        old_invitation_status = event_invitation.status
-        event_invitation_service.update(event_invitation, status=EVENT_INVITATION_STATUS_ACCEPTED_KEY)
-        new_invitation_status = event_invitation.status
-        event_service.add_participants(event, old_invitation_status=old_invitation_status,
-                                       new_invitation_status=new_invitation_status)
-
-    user_service.add_points(event.owner, PredefinedPoints.JOIN_EVENT_FOR_OWNER.value)
 
     return jsonify(event_invitation.to_dict())
 
@@ -242,23 +220,11 @@ def events_get_event_invitations(event_invitation_service: EventInvitationServic
 @retrieve_logged_in_user()
 @retrieve_event(EventRetrievalType.ID_AND_OWNER)
 @retrieve_event_invitation(EventInvitationRetrievalType.ID)
-def events_patch_event_invitation(event_service: EventService, event_invitation_service: EventInvitationService,
-                                  user_service: UserService):
+def events_patch_event_invitation(event_invitation_service: EventInvitationService):
     status, attend_status = extract_event_invitation_properties()
-    user = request.user
-    event = request.event
     event_invitation = request.event_invitation
 
-    if event_invitation.user.id == user.id:
-        raise EventInvitationCannotModifyOwn()
-
-    old_invitation_status, old_invitation_attend_status = event_invitation.status, event_invitation.attend_status
     event_invitation_service.update(event_invitation, status=status, attend_status=attend_status)
-    new_invitation_status, new_invitation_attend_status = event_invitation.status, event_invitation.attend_status
-    event_service.add_participants(event, old_invitation_status=old_invitation_status,
-                                   new_invitation_status=new_invitation_status)
-    user_service.add_points(event_invitation.user, old_invitation_attend_status=old_invitation_attend_status,
-                            new_invitation_attend_status=new_invitation_attend_status)
 
     return jsonify(event_invitation.to_dict(with_user=True))
 

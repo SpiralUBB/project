@@ -1,23 +1,34 @@
+from enum import Enum
 from typing import Union
 
 from mongoengine import DoesNotExist, Q, NotUniqueError
+from pyee import BaseEventEmitter
 
 from models.Event import Event
 from models.EventInvitation import EventInvitation, EVENT_INVITATION_STATUS_PENDING_KEY, \
     EVENT_INVITATION_STATUS_ACCEPTED_KEY, EVENT_INVITATION_ATTEND_STATUS_UNCHECKED_KEY
 
 from models.User import User
-from utils.errors import EventInvitationAlreadyExists
+from utils.errors import EventInvitationAlreadyExists, EventInvitationCannotJoinFull, EventInvitationCannotModifyOwn
 from validators.EventInvitationValidator import EventInvitationValidator
+
+
+class EventInvitationServiceEvents(Enum):
+    INVITATION_ADDED = 'invitation-added'
+    INVITATION_UPDATED = 'invitation-updated'
 
 
 class EventInvitationService:
     def __init__(self, validator: EventInvitationValidator):
         self.validator = validator
+        self.emitter = BaseEventEmitter()
 
     def add(self, event: Event, user: User, status: Union[str, int] = EVENT_INVITATION_STATUS_PENDING_KEY,
             attend_status: Union[str, int] = EVENT_INVITATION_ATTEND_STATUS_UNCHECKED_KEY):
         status = self.validator.parse_status(status)
+
+        if not event.allows_more_participants():
+            raise EventInvitationCannotJoinFull()
 
         event_invitation = EventInvitation(event=event, user=user, status=status, attend_status=attend_status)
         try:
@@ -25,10 +36,17 @@ class EventInvitationService:
         except NotUniqueError:
             raise EventInvitationAlreadyExists()
 
+        self.emitter.emit(EventInvitationServiceEvents.INVITATION_ADDED, event_invitation)
+
         return event_invitation
 
     def update(self, event_invitation: EventInvitation, status: Union[str, int] = None,
                attend_status: Union[str, int] = None):
+        if event_invitation.user.id == event_invitation.event.owner.id:
+            raise EventInvitationCannotModifyOwn()
+
+        old_data = event_invitation.to_data()
+
         if status is not None:
             status = self.validator.parse_status(status)
             event_invitation.status = status
@@ -38,6 +56,8 @@ class EventInvitationService:
             event_invitation.attend_status = attend_status
 
         event_invitation.save()
+
+        self.emitter.emit(EventInvitationServiceEvents.INVITATION_UPDATED, event_invitation, old_data)
 
     def find_one_by(self, *args, **kwargs) -> Union[EventInvitation, None]:
         try:

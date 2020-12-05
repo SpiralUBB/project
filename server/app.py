@@ -10,7 +10,7 @@ from mongoengine import connect
 
 from api.v1.api_v1 import register_blueprint as register_api_v1_blueprint
 from config import DB_NAME, DB_USERNAME, DB_PASSWORD, DB_HOST, JWT_SECRET_KEY, JWT_TOKEN_LOCATION, \
-    JWT_COOKIE_CSRF_PROTECT
+    JWT_COOKIE_CSRF_PROTECT, DB_PORT
 from utils.dependencies import configure_services, services_injector
 from utils.errors import HttpError, UserTokenExpired, UserTokenInvalid
 

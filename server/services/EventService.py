@@ -3,11 +3,12 @@ from typing import Union, List
 from bson import ObjectId
 from mongoengine import DoesNotExist, Q
 
-from models.Event import Event, event_visibility_map, EVENT_VISIBILITY_PUBLIC, EVENT_VISIBILITY_WHITELISTED, \
-    EVENT_VISIBILITY_UNLISTED
+from models.Event import Event, EVENT_VISIBILITY_PUBLIC_KEY, EVENT_VISIBILITY_WHITELISTED_KEY, \
+    EVENT_VISIBILITY_UNLISTED_KEY
+from models.EventInvitation import EVENT_INVITATION_STATUS_PENDING_KEY, \
+    EVENT_INVITATION_STATUS_ACCEPTED_KEY, EVENT_INVITATION_STATUS_DENIED_KEY
 
 from models.User import User
-from utils.errors import EventInvitationCannotJoinOwn, EventInvitationCannotJoinFull
 from validators.EventValidator import EventValidator
 
 
@@ -15,20 +16,40 @@ class EventService:
     def __init__(self, validator: EventValidator):
         self.validator = validator
 
-    def add(self, owner: User, title: str, location: str, location_point: List[float], date: str,
-            no_max_participants: int, description: str, visibility: Union[str, int], category: [str, int]) -> Event:
+    def add(self, owner: User, title: str, location: str, location_point: List[float], start_time: str, end_time: str,
+            min_trust_level: int, no_max_participants: int, description: str, visibility: Union[str, int],
+            category: [str, int]) -> Event:
         visibility = self.validator.parse_visibility(visibility)
         category = self.validator.parse_category(category)
+        start_time = self.validator.parse_time(start_time)
+        end_time = self.validator.parse_time(end_time)
 
-        self.validator.validate_parameters(owner, title, location, location_point, date, no_max_participants,
-                                           description)
+        self.validator.validate_parameters(owner, title, location, location_point, start_time, end_time,
+                                           min_trust_level, no_max_participants, description)
 
-        event = Event(owner=owner, title=title, location=location, location_point=location_point, date=date,
-                      no_max_participants=no_max_participants, description=description, visibility=visibility,
-                      category=category)
+        event = Event(owner=owner, title=title, location=location, location_point=location_point, start_time=start_time,
+                      end_time=end_time, no_max_participants=no_max_participants, description=description,
+                      visibility=visibility, category=category)
         event.save()
 
         return event
+
+    def add_participants(self, event: Event, no_participants: int = 0, old_invitation_status: int = None,
+                         new_invitation_status: int = None):
+        event_transition_participants = [
+            (EVENT_INVITATION_STATUS_DENIED_KEY, EVENT_INVITATION_STATUS_ACCEPTED_KEY, 1),
+            (EVENT_INVITATION_STATUS_ACCEPTED_KEY, EVENT_INVITATION_STATUS_DENIED_KEY, -1),
+            (EVENT_INVITATION_STATUS_PENDING_KEY, EVENT_INVITATION_STATUS_ACCEPTED_KEY, 1),
+            (EVENT_INVITATION_STATUS_ACCEPTED_KEY, EVENT_INVITATION_STATUS_PENDING_KEY, -1),
+        ]
+
+        if old_invitation_status is not None and new_invitation_status is not None:
+            for from_key, to_key, change in event_transition_participants:
+                if old_invitation_status == from_key and new_invitation_status == to_key:
+                    no_participants += change
+
+        Event.objects(id=event.id).update_one(inc__no_participants=no_participants)
+        event.reload()
 
     def find_one_by(self, *args, **kwargs) -> Union[Event, None]:
         try:
@@ -39,35 +60,52 @@ class EventService:
     def find_by(self, *args, **kwargs):
         return Event.objects(*args, **kwargs)
 
-    def build_query_visible_for_user(self, user: User = None, ids=None, show_whitelist: bool = False,
-                                     show_unlisted: bool = False):
-        if ids is None:
-            ids = []
-
+    def build_query_filters(self, categories: List[Union[int, str]] = None, date_start: str = None,
+                            date_end: str = None):
         query = Q()
 
-        # Add public events
-        query |= Q(visibility=event_visibility_map.to_key(EVENT_VISIBILITY_PUBLIC))
+        if categories is not None and len(categories) != 0:
+            categories = [self.validator.parse_category(c) for c in categories]
+            query &= Q(category__in=categories)
 
-        if show_whitelist:
-            # Add whitelisted events
-            query |= Q(visibility=event_visibility_map.to_key(EVENT_VISIBILITY_WHITELISTED))
+        if date_start is not None:
+            date_start = self.validator.parse_time(date_start, start=True)
+            query &= Q(start_time__gte=date_start)
 
-        if show_unlisted:
-            # Add unlisted events
-            query |= Q(visibility=event_visibility_map.to_key(EVENT_VISIBILITY_UNLISTED))
+        if date_end is not None:
+            date_end = self.validator.parse_time(date_end, end=True)
+            query &= Q(start_time__lte=date_end)
 
-        # Add events for which the user has an accepted invite
-        query |= Q(id__in=ids)
+        return query
+
+    def build_query_visible(self, user: User, ids: List[ObjectId] = None, show_public: bool = False,
+                            show_whitelist: bool = False, show_unlisted: bool = False):
+        query = Q()
 
         if user is not None:
             # Add events owned by the logged in user
             query |= Q(owner=user)
 
+        if ids is not None and len(ids):
+            # Add events for which the user has an accepted invite
+            query |= Q(id__in=ids)
+
+        if show_public:
+            # Add public events
+            query |= Q(visibility=EVENT_VISIBILITY_PUBLIC_KEY)
+
+        if show_whitelist:
+            # Add whitelisted events
+            query |= Q(visibility=EVENT_VISIBILITY_WHITELISTED_KEY)
+
+        if show_unlisted:
+            # Add unlisted events
+            query |= Q(visibility=EVENT_VISIBILITY_UNLISTED_KEY)
+
         return query
 
     def is_details_visible(self, event: Event, user: User, visible_ids: List[ObjectId]):
-        if event_visibility_map.to_key(EVENT_VISIBILITY_PUBLIC) == event.visibility:
+        if EVENT_VISIBILITY_PUBLIC_KEY == event.visibility:
             return True
 
         if user is not None and event.owner.id == user.id:
@@ -78,26 +116,23 @@ class EventService:
 
         return False
 
-    def check_can_user_join_event(self, event: Event, user: User):
-        if event.owner.id == user.id:
-            raise EventInvitationCannotJoinOwn()
-
-        if event.no_max_participants != 0 and event.no_participants >= event.no_max_participants:
-            raise EventInvitationCannotJoinFull()
-
-    def find_visible_for_user(self, user: User, ids: List[ObjectId], show_whitelist: bool = False,
-                              show_unlisted: bool = False):
-        query = self.build_query_visible_for_user(user, ids, show_whitelist, show_unlisted)
+    def find_visible_for_user(self, user: User, ids: List[ObjectId], show_public: bool = False,
+                              show_whitelist: bool = False, show_unlisted: bool = False,
+                              categories: List[Union[int, str]] = None, date_start: str = None, date_end: str = None):
+        query = Q()
+        query &= self.build_query_filters(categories, date_start, date_end)
+        query &= self.build_query_visible(user, ids, show_public, show_whitelist, show_unlisted)
         return self.find_by(query)
 
-    def find_one_visible_for_user(self, user: User, event_id: str, ids: List[ObjectId], show_whitelist: bool = False,
-                                  show_unlisted: bool = False):
-        query = self.build_query_visible_for_user(user, ids, show_whitelist, show_unlisted)
+    def find_one_visible_for_user(self, user: User, event_id: str, ids: List[ObjectId], show_public: bool = False,
+                                  show_whitelist: bool = False, show_unlisted: bool = False):
+        query = self.build_query_visible(user, ids, show_public, show_whitelist, show_unlisted)
         return self.find_one_by(Q(id=event_id) & query)
 
     def update(self, event: Event, title: str = None, location: str = None, location_point: List[int] = None,
-               date: str = None, no_max_participants: int = None, description: str = None,
-               visibility: Union[str, int] = None, category: [str, int] = None):
+               start_time: str = None, end_time: str = None, min_trust_level: int = None,
+               no_max_participants: int = None, description: str = None, visibility: Union[str, int] = None,
+               category: [str, int] = None):
         if title is not None:
             self.validator.validate_title(title)
             event.title = title
@@ -110,9 +145,22 @@ class EventService:
             self.validator.validate_location_point(location_point)
             event.location_point = location_point
 
-        if date is not None:
-            self.validator.validate_date(date)
-            event.date = date
+        if start_time is not None or end_time is not None:
+            if start_time is not None:
+                start_time = self.validator.parse_time(start_time)
+            else:
+                start_time = event.start_time
+
+            if end_time is not None:
+                end_time = self.validator.parse_time(end_time)
+            else:
+                end_time = event.end_time
+
+            self.validator.validate_times(start_time, end_time)
+
+        if min_trust_level is not None:
+            self.validator.validate_min_trust_level(min_trust_level, event.owner)
+            event.min_trust_level = min_trust_level
 
         if no_max_participants is not None:
             self.validator.validate_no_max_participants(no_max_participants)

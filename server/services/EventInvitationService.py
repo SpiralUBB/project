@@ -1,38 +1,43 @@
 from typing import Union
 
-from mongoengine import DoesNotExist, Q
+from mongoengine import DoesNotExist, Q, NotUniqueError
 
-from models.Event import Event, event_visibility_map, EVENT_VISIBILITY_PUBLIC
-from models.EventInvitation import EVENT_INVITATION_STATUS_PENDING, EVENT_INVITATION_STATUS_ACCEPTED, \
-    EventInvitation, event_invitation_status_map
+from models.Event import Event
+from models.EventInvitation import EventInvitation, EVENT_INVITATION_STATUS_PENDING_KEY, \
+    EVENT_INVITATION_STATUS_ACCEPTED_KEY, EVENT_INVITATION_ATTEND_STATUS_UNCHECKED_KEY
 
 from models.User import User
 from utils.errors import EventInvitationAlreadyExists
+from validators.EventInvitationValidator import EventInvitationValidator
 
 
 class EventInvitationService:
-    def join(self, event: Event, user: User):
+    def __init__(self, validator: EventInvitationValidator):
+        self.validator = validator
+
+    def add(self, event: Event, user: User, status: Union[str, int] = EVENT_INVITATION_STATUS_PENDING_KEY,
+            attend_status: Union[str, int] = EVENT_INVITATION_ATTEND_STATUS_UNCHECKED_KEY):
+        status = self.validator.parse_status(status)
+
+        event_invitation = EventInvitation(event=event, user=user, status=status, attend_status=attend_status)
         try:
-            EventInvitation.objects.get(user=user, event=event)
+            event_invitation.save()
+        except NotUniqueError:
             raise EventInvitationAlreadyExists()
-        except DoesNotExist:
-            pass
-
-        event_invitation = EventInvitation(event=event, user=user,
-                                           status=event_invitation_status_map.to_key(EVENT_INVITATION_STATUS_PENDING))
-        event_invitation.save()
-
-        if event.visibility == event_visibility_map.to_key(EVENT_VISIBILITY_PUBLIC):
-            self.accept(event_invitation)
 
         return event_invitation
 
-    def accept(self, event_invitation: EventInvitation):
-        event_invitation.status = event_invitation_status_map.to_key(EVENT_INVITATION_STATUS_ACCEPTED)
-        event_invitation.save()
+    def update(self, event_invitation: EventInvitation, status: Union[str, int] = None,
+               attend_status: Union[str, int] = None):
+        if status is not None:
+            status = self.validator.parse_status(status)
+            event_invitation.status = status
 
-        event_invitation.event.no_participants += 1
-        event_invitation.event.save()
+        if attend_status is not None:
+            attend_status = self.validator.parse_attend_status(attend_status)
+            event_invitation.attend_status = attend_status
+
+        event_invitation.save()
 
     def find_one_by(self, *args, **kwargs) -> Union[EventInvitation, None]:
         try:
@@ -47,7 +52,7 @@ class EventInvitationService:
         query = Q(event=event)
 
         if event.owner.id != user.id:
-            query &= Q(status=event_invitation_status_map.to_key(EVENT_INVITATION_STATUS_ACCEPTED))
+            query &= Q(status=EVENT_INVITATION_STATUS_ACCEPTED_KEY)
 
         return self.find_by(query)
 
@@ -57,7 +62,7 @@ class EventInvitationService:
         else:
             accepted_event_invitations = self.find_by(
                 user=user,
-                status=event_invitation_status_map.to_key(EVENT_INVITATION_STATUS_ACCEPTED)
+                status=EVENT_INVITATION_STATUS_ACCEPTED_KEY
             )
 
         return [ei.id for ei in accepted_event_invitations]

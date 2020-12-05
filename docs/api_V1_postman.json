@@ -223,6 +223,49 @@
 			"response": []
 		},
 		{
+			"name": "Get events with filtering",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/v1/events?limit=5&category=Learning&category=Music&date_start=2020-11-29&date_end=2020-11-30",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"events"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "5"
+						},
+						{
+							"key": "category",
+							"value": "Learning"
+						},
+						{
+							"key": "category",
+							"value": "Music"
+						},
+						{
+							"key": "date_start",
+							"value": "2020-11-29"
+						},
+						{
+							"key": "date_end",
+							"value": "2020-11-30"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get event",
 			"request": {
 				"method": "GET",
@@ -250,7 +293,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events/5fb274d839369e43e33a049a/comments",
+					"raw": "http://localhost:5000/api/v1/events/5fb274c739369e43e33a0499/comments",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -260,7 +303,7 @@
 						"api",
 						"v1",
 						"events",
-						"5fb274d839369e43e33a049a",
+						"5fb274c739369e43e33a0499",
 						"comments"
 					]
 				}
@@ -282,7 +325,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events/5faff0ff58a2dfdc1e7ca40d/comments",
+					"raw": "http://localhost:5000/api/v1/events/5fb274c739369e43e33a0499/comments",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -292,7 +335,7 @@
 						"api",
 						"v1",
 						"events",
-						"5faff0ff58a2dfdc1e7ca40d",
+						"5fb274c739369e43e33a0499",
 						"comments"
 					]
 				}
@@ -371,7 +414,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events/5fafb66aca441a3926de19c6",
+					"raw": "http://localhost:5000/api/v1/events/5fc3e63963706d5bb79633c9",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -381,7 +424,7 @@
 						"api",
 						"v1",
 						"events",
-						"5fafb66aca441a3926de19c6"
+						"5fc3e63963706d5bb79633c9"
 					]
 				}
 			},
@@ -394,7 +437,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"title\": \"Beuta inf newnewnew\",\n  \"location\": \"Infinity, Piezisa\",\n  \"location_point\": [-25.0, 32.0],\n  \"date\": \"This is a date I guess\",\n  \"description\": \"Let's drink you fuckers\",\n  \"visibility\": \"whitelist\",\n  \"category\": \"Arts\",\n  \"no_max_participants\": 10\n}\n",
+					"raw": "{\n  \"title\": \"Beuta inf newnewnew\",\n  \"location\": \"Infinity, Piezisa\",\n  \"location_point\": [-25.0, 32.0],\n  \"start_time\": \"2020-11-30T15:19:59+0000\",\n  \"end_time\": \"2020-11-30T15:19:59+0000\",\n  \"description\": \"Let's drink you fuckers\",\n  \"visibility\": \"whitelisted\",\n  \"category\": \"Music\",\n  \"no_max_participants\": 10\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -498,7 +541,7 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events/5fb274d839369e43e33a049a/invitation",
+					"raw": "http://localhost:5000/api/v1/events/5fc3e65e63706d5bb79633ca/invitation",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -508,7 +551,7 @@
 						"api",
 						"v1",
 						"events",
-						"5fb274d839369e43e33a049a",
+						"5fc3e65e63706d5bb79633ca",
 						"invitation"
 					]
 				}
@@ -521,7 +564,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events/5fb274d839369e43e33a049a/invitation",
+					"raw": "http://localhost:5000/api/v1/events/5fc3e65e63706d5bb79633ca/invitation",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -531,7 +574,7 @@
 						"api",
 						"v1",
 						"events",
-						"5fb274d839369e43e33a049a",
+						"5fc3e65e63706d5bb79633ca",
 						"invitation"
 					]
 				}
@@ -541,10 +584,19 @@
 		{
 			"name": "Accept event invitation",
 			"request": {
-				"method": "PUT",
+				"method": "PATCH",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\": \"accepted\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events/5fb274d839369e43e33a049a/invitations/5fb2750439369e43e33a049b/accept",
+					"raw": "http://localhost:5000/api/v1/events/5fc3e65e63706d5bb79633ca/invitations/5fc3e72563706d5bb79633cb",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -554,10 +606,49 @@
 						"api",
 						"v1",
 						"events",
-						"5fb274d839369e43e33a049a",
+						"5fc3e65e63706d5bb79633ca",
 						"invitations",
-						"5fb2750439369e43e33a049b",
-						"accept"
+						"5fc3e72563706d5bb79633cb"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "accepted",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mark event invitation as attended",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"attend_status\": \"unchecked\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/v1/events/5fc3e65e63706d5bb79633ca/invitations/5fc3e72563706d5bb79633cb",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"v1",
+						"events",
+						"5fc3e65e63706d5bb79633ca",
+						"invitations",
+						"5fc3e72563706d5bb79633cb"
 					]
 				}
 			},
@@ -569,7 +660,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:5000/api/v1/events/5fb274d839369e43e33a049a/invitations",
+					"raw": "http://localhost:5000/api/v1/events/5fc3e65e63706d5bb79633ca/invitations",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -579,7 +670,7 @@
 						"api",
 						"v1",
 						"events",
-						"5fb274d839369e43e33a049a",
+						"5fc3e65e63706d5bb79633ca",
 						"invitations"
 					]
 				}

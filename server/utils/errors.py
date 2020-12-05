@@ -14,241 +14,123 @@ class HttpError(Exception):
         }
 
 
-class UserAlreadyExists(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'User already exists'
-
-        super().__init__(message, 'user-already-exists', 403)
-
-
-class UserDoesNotExist(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'User does not exist'
-
-        super().__init__(message, 'user-not-exist', 404)
-
-
-class UserUsernameInvalid(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'User username is invalid'
-
-        super().__init__(message, 'user-username-invalid', 400)
-
-
-class UserPasswordInvalid(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'User password is invalid'
-
-        super().__init__(message, 'user-password-invalid', 400)
-
-
-class UserFirstNameInvalid(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'User first name is invalid'
-
-        super().__init__(message, 'user-first-name-invalid', 400)
-
-
-class UserLastNameInvalid(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'User last name is invalid'
-
-        super().__init__(message, 'user-last-name-invalid', 400)
-
-
-class UserLoginFailed(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'User login failed'
-
-        super().__init__(message, 'user-login-failed', 401)
-
-
-class UserTokenExpired(HttpError):
-    def __init__(self, token=None):
-        if token:
-            message = 'User {} token expired'.format(token)
-        else:
-            message = 'User token expired'
-
-        super().__init__(message, 'user-token-expired', 401)
-
-
-class UserTokenInvalid(HttpError):
-    def __init__(self, reason=None):
-        message = 'User token is invalid: {}'.format(reason)
-        super().__init__(message, 'user-token-invalid', 422)
-
-
-class EventDoesNotExist(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'Event does not exist'
-
-        super().__init__(message, 'event-not-exist', 404)
-
-
-class EventOwnerInvalid(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'Event owner is invalid'
-
-        super().__init__(message, 'event-owner-invalid', 400)
-
-
-class EventTitleInvalid(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'Event title is invalid'
-
-        super().__init__(message, 'event-title-invalid', 400)
-
-
-class EventLocationInvalid(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'Event location is invalid'
-
-        super().__init__(message, 'event-location-invalid', 400)
-
-
-class EventLocationPointInvalid(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'Event location point is invalid'
-
-        super().__init__(message, 'event-location-point-invalid', 400)
-
-
-class EventDateInvalid(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'Event date is invalid'
-
-        super().__init__(message, 'event-date-invalid', 400)
-
-
-class EventMaxNoParticipantsInvalid(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'Event max number of participants is invalid'
-
-        super().__init__(message, 'event-max-no-participants-invalid', 400)
-
-
-class EventDescriptionInvalid(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'Event description is invalid'
-
-        super().__init__(message, 'event-description-invalid', 400)
-
-
-class EventVisibilityInvalid(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'Event visibility type is invalid'
-
-        super().__init__(message, 'event-visibility-invalid', 400)
-
-
-class EventCategoryInvalid(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'Event category is invalid'
-
-        super().__init__(message, 'event-category-invalid', 400)
-
-
-class EventCommentDoesNotExist(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'Event comment does not exist'
-
-        super().__init__(message, 'event-comment-not-exist', 404)
-
-
-class EventCommentAuthorInvalid(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'Event comment author invalid'
-
-        super().__init__(message, 'event-comment-author-invalid', 400)
-
-
-class EventInvitationAlreadyExists(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'Event invitation already exists'
-
-        super().__init__(message, 'event-invitation-already-exists', 403)
-
-
-class EventInvitationDoesNotExist(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'Event invitation does not exist'
-
-        super().__init__(message, 'event-invitation-not-exist', 404)
-
-
-class EventInvitationStatusInvalid(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'Event invitation status is invalid'
-
-        super().__init__(message, 'event-invitation-status-invalid', 400)
-
-
-class EventInvitationCannotJoinOwn(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'Cannot join an event owned by yourself'
-
-        super().__init__(message, 'event-invitation-cannot-join-own', 400)
-
-
-class EventInvitationCannotJoinFull(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'Cannot join a full event'
-
-        super().__init__(message, 'event-invitation-cannot-join-full', 400)
-
-
-class EventCommentEventInvalid(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'Event comment event invalid'
-
-        super().__init__(message, 'event-comment-event-invalid', 400)
-
-
-class EventCommentTextInvalid(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'Event comment text invalid'
-
-        super().__init__(message, 'event-comment-text-invalid', 400)
-
-
-class PaginationLimitInvalid(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'Pagination limit invalid'
-
-        super().__init__(message, 'pagination-limit-invalid', 400)
-
-
-class PaginationPageInvalid(HttpError):
-    def __init__(self, message=None):
-        if not message:
-            message = 'Pagination page invalid'
-
-        super().__init__(message, 'pagination-page-invalid', 400)
+def make_http_error(name, code, status, default_message):
+    def __init__(self, message=default_message):
+        HttpError.__init__(self, message, code, status)
+
+    return type(name, (HttpError,), {
+        '__init__': __init__,
+    })
+
+
+UserAlreadyExists = make_http_error('UserAlreadyExists',
+                                    'user-already-exists', 403,
+                                    'User already exists')
+UserDoesNotExist = make_http_error('UserDoesNotExist',
+                                   'user-not-exist', 404,
+                                   'User does not exist')
+UserUsernameInvalid = make_http_error('UserUsernameInvalid',
+                                      'user-username-invalid', 400,
+                                      'User username is invalid')
+UserPasswordInvalid = make_http_error('UserPasswordInvalid',
+                                      'user-password-invalid', 400,
+                                      'User password is invalid')
+UserFirstNameInvalid = make_http_error('UserFirstNameInvalid',
+                                       'user-first-name-invalid', 400,
+                                       'User first name is invalid')
+UserLastNameInvalid = make_http_error('UserLastNameInvalid',
+                                      'user-last-name-invalid', 400,
+                                      'User last name is invalid')
+UserLoginFailed = make_http_error('UserLoginFailed',
+                                  'user-login-failed', 401,
+                                  'User login failed')
+UserTokenExpired = make_http_error('UserTokenExpired',
+                                   'user-token-expired', 401,
+                                   'User token expired')
+UserTokenInvalid = make_http_error('UserTokenInvalid',
+                                   'user-token-invalid', 422,
+                                   'User token is invalid')
+EventDoesNotExist = make_http_error('EventDoesNotExist',
+                                    'event-not-exist', 404,
+                                    'Event does not exist')
+EventOwnerInvalid = make_http_error('EventOwnerInvalid',
+                                    'event-owner-invalid', 400,
+                                    'Event owner is invalid')
+EventTitleInvalid = make_http_error('EventTitleInvalid',
+                                    'event-title-invalid', 400,
+                                    'Event title is invalid')
+EventLocationInvalid = make_http_error('EventLocationInvalid',
+                                       'event-location-invalid', 400,
+                                       'Event location is invalid')
+EventLocationPointInvalid = make_http_error('EventLocationPointInvalid',
+                                            'event-location-point-invalid', 400,
+                                            'Event location point is invalid')
+EventTimeInvalid = make_http_error('EventTimeInvalid',
+                                   'event-time-invalid', 400,
+                                   'Event time is invalid')
+EventMaxNoParticipantsInvalid = make_http_error('EventMaxNoParticipantsInvalid',
+                                                'event-max-no-participants-invalid', 400,
+                                                'Event max number of participants is invalid')
+EventMinTrustLevelInvalid = make_http_error('EventMinTrustLevelInvalid',
+                                            'event-min-trust-level-invalid', 400,
+                                            'Event min trust level invalid')
+EventDescriptionInvalid = make_http_error('EventDescriptionInvalid',
+                                          'event-description-invalid', 400,
+                                          'Event description is invalid')
+EventVisibilityInvalid = make_http_error('EventVisibilityInvalid',
+                                         'event-visibility-invalid', 400,
+                                         'Event visibility type is invalid')
+EventCategoryInvalid = make_http_error('EventCategoryInvalid',
+                                       'event-category-invalid', 400,
+                                       'Event category is invalid')
+EventCommentDoesNotExist = make_http_error('EventCommentDoesNotExist',
+                                           'event-comment-not-exist', 404,
+                                           'Event comment does not exist')
+EventCommentAuthorInvalid = make_http_error('EventCommentAuthorInvalid',
+                                            'event-comment-author-invalid', 400,
+                                            'Event comment author invalid')
+EventInvitationAlreadyExists = make_http_error('EventInvitationAlreadyExists',
+                                               'event-invitation-already-exists', 403,
+                                               'Event invitation already exists')
+EventInvitationDoesNotExist = make_http_error('EventInvitationDoesNotExist',
+                                              'event-invitation-not-exist', 404,
+                                              'Event invitation does not exist')
+EventInvitationStatusInvalid = make_http_error('EventInvitationStatusInvalid',
+                                               'event-invitation-status-invalid', 400,
+                                               'Event invitation status is invalid')
+EventInvitationAttendStatusInvalid = make_http_error('EventInvitationAttendStatusInvalid',
+                                                     'event-invitation-attend-status-invalid', 400,
+                                                     'Event invitation attend status is invalid')
+EventInvitationCannotJoinOwn = make_http_error('EventInvitationCannotJoinOwn',
+                                               'event-invitation-cannot-join-own', 400,
+                                               'Cannot join an event owned by yourself')
+EventInvitationCannotJoinFull = make_http_error('EventInvitationCannotJoinFull',
+                                                'event-invitation-cannot-join-full', 400,
+                                                'Cannot join a full event')
+EventInvitationCannotModifyOwn = make_http_error('EventInvitationCannotModifyOwn',
+                                                 'event-invitation-cannot-modify own', 400,
+                                                 'Cannot modify invitation for own event')
+EventCommentEventInvalid = make_http_error('EventCommentEventInvalid',
+                                           'event-comment-event-invalid', 400,
+                                           'Event comment event invalid')
+EventCommentTextInvalid = make_http_error('EventCommentTextInvalid',
+                                          'event-comment-text-invalid', 400,
+                                          'Event comment text invalid')
+UserFeedbackAlreadyExists = make_http_error('UserFeedbackAlreadyExists',
+                                            'user-feedback-already-exists', 400,
+                                            'User feedback already exists')
+UserFeedbackDoesNotExist = make_http_error('UserFeedbackDoesNotExist',
+                                           'user-feedback-not-exist', 400,
+                                           'User feedback does not exist')
+UserFeedbackPointsInvalid = make_http_error('UserFeedbackPointsInvalid',
+                                            'user-feedback-points-invalid', 400,
+                                            'User feedback points invalid')
+UserFeedbackCannotGiveOwn = make_http_error('UserFeedbackCannotGiveOwn',
+                                            'user-feedback-cannot-give-own', 400,
+                                            'Cannot give user feedback to yourself')
+PaginationLimitInvalid = make_http_error('PaginationLimitInvalid',
+                                         'pagination-limit-invalid', 400,
+                                         'Pagination limit invalid')
+PaginationPageInvalid = make_http_error('PaginationPageInvalid',
+                                        'pagination-page-invalid', 400,
+                                        'Pagination page invalid')

@@ -21,4 +21,19 @@ export class EventListComponent implements OnInit {
     });
   }
 
+  onFilterProps(data: any){
+    console.log("onFilterProps");
+    let categories=data["eventsTypeFilter"];
+    let startDate=null,endDate=null;
+    startDate=data["eventsDateFilter"]["startDate"];
+    endDate=data["eventsDateFilter"]["endDate"];
+    this.apiService.getFilterEvents(categories,startDate,endDate).subscribe((eventsRes)=>{
+      this.events=[];
+      Object.keys(eventsRes.items).forEach(key => {
+        this.events.push(eventsRes.items[key])
+      })
+    })
+  }
+
+
 }

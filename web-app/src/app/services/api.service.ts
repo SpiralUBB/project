@@ -28,6 +28,24 @@ export class ApiService {
     return this.http.get<AppEvent[]>('/events');
   }
 
+  getFilterEvents(categories:String[],startDate:String,endDate:String): Observable<any>{
+    var url="/events?";
+    for(let i=0;i<categories.length;i++){
+      url+="category="+categories[i].replace("&","%26")+"&";
+    }
+    if(startDate!=null)
+      url+="start_date="+startDate+"&";
+    if(endDate!=null)
+      url+="end_date="+endDate+"&";
+    url=url.slice(0,-1);
+    console.log(url);
+    return this.http.get<any>(url);
+  }
+
+  getCategories(): Observable<any>{
+    return this.http.get<String[]>('/events/categories');
+  }
+
   logout(): Observable<any> {
     return this.http.post<any>('/user/logout', null);
   }

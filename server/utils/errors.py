@@ -113,9 +113,9 @@ EventInvitationCannotJoinOwn = make_http_error('EventInvitationCannotJoinOwn',
 EventInvitationCannotJoinFull = make_http_error('EventInvitationCannotJoinFull',
                                                 'event-invitation-cannot-join-full', 400,
                                                 'Cannot join a full event')
-EventInvitationCannotModifyOwn = make_http_error('EventInvitationCannotModifyOwn',
-                                                 'event-invitation-cannot-modify own', 400,
-                                                 'Cannot modify invitation for own event')
+EventInvitationCannotModifyOwner = make_http_error('EventInvitationCannotModifyOwner',
+                                                   'event-invitation-cannot-modify owner', 400,
+                                                   "Cannot modify event owner invitation")
 EventCommentEventInvalid = make_http_error('EventCommentEventInvalid',
                                            'event-comment-event-invalid', 400,
                                            'Event comment event invalid')

@@ -4,12 +4,12 @@ from typing import Union
 from mongoengine import DoesNotExist, Q, NotUniqueError
 from pyee import BaseEventEmitter
 
-from models.Event import Event
+from models.Event import Event, EVENT_VISIBILITY_PUBLIC_KEY
 from models.EventInvitation import EventInvitation, EVENT_INVITATION_STATUS_PENDING_KEY, \
     EVENT_INVITATION_STATUS_ACCEPTED_KEY, EVENT_INVITATION_ATTEND_STATUS_UNCHECKED_KEY
 
 from models.User import User
-from utils.errors import EventInvitationAlreadyExists, EventInvitationCannotJoinFull, EventInvitationCannotModifyOwn
+from utils.errors import EventInvitationAlreadyExists, EventInvitationCannotJoinFull, EventInvitationCannotModifyOwner
 from validators.EventInvitationValidator import EventInvitationValidator
 
 
@@ -30,6 +30,9 @@ class EventInvitationService:
         if not event.allows_more_participants():
             raise EventInvitationCannotJoinFull()
 
+        if event.visibility == EVENT_VISIBILITY_PUBLIC_KEY:
+            status = EVENT_INVITATION_STATUS_ACCEPTED_KEY
+
         event_invitation = EventInvitation(event=event, user=user, status=status, attend_status=attend_status)
         try:
             event_invitation.save()
@@ -43,7 +46,7 @@ class EventInvitationService:
     def update(self, event_invitation: EventInvitation, status: Union[str, int] = None,
                attend_status: Union[str, int] = None):
         if event_invitation.user.id == event_invitation.event.owner.id:
-            raise EventInvitationCannotModifyOwn()
+            raise EventInvitationCannotModifyOwner()
 
         old_data = event_invitation.to_data()
 

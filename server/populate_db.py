@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
+import random
 
 from mongoengine import connect
 
 from config import DB_USERNAME, DB_NAME, DB_PASSWORD, DB_HOST
+from models.Event import event_visibility_map
 from services.EventCommentService import EventCommentService
-from services.UserService import UserService
+from services.EventInvitationService import EventInvitationService
 from services.EventService import EventService
+from services.UserFeedbackService import UserFeedbackService
+from services.UserService import UserService
+from utils.dependencies import services_injector
 from utils.errors import UserAlreadyExists
-from validators.EventCommentValidator import EventCommentValidator
-from validators.UserValidator import UserValidator
-from validators.EventValidator import EventValidator
 
 connect(
     db=DB_NAME,
@@ -18,33 +20,75 @@ connect(
     host=DB_HOST,
 )
 
-userValidator = UserValidator()
-userService = UserService(userValidator)
+user_service = services_injector.get(UserService)
+event_service = services_injector.get(EventService)
+event_comment_service = services_injector.get(EventCommentService)
+event_invitation_service = services_injector.get(EventInvitationService)
+user_feedback_service = services_injector.get(UserFeedbackService)
 
-eventValidator = EventValidator()
-eventService = EventService(eventValidator)
-
-eventCommentValidator = EventCommentValidator()
-eventCommentService = EventCommentService(eventCommentValidator)
+users = []
 
 try:
-    adminUser = userService.add("admin", "pass", "Admin", "Name")
+    user = user_service.add('admin', 'pass', 'Admin', 'Name')
+    user_service.add_points(user, 300)
 except UserAlreadyExists:
-    adminUser = userService.find_one_by(username="admin")
+    user = user_service.find_one_by(username='admin')
 
-eventValidator = EventValidator()
-eventService = EventService(eventValidator)
+users.append(user)
+
+try:
+    user = user_service.add('test_user', 'pass', 'Test', 'User')
+    user_service.add_points(user, 100)
+except Exception as e:
+    print(e)
+    user = user_service.find_one_by(username='test_user')
+
+try:
+    user = user_service.add('another_user', 'pass', 'Another', 'User')
+    user_service.add_points(user, 100)
+except Exception as e:
+    print(e)
+    user = user_service.find_one_by(username='another_user')
+
+users.append(user)
+
 events = []
 
-event = eventService.add(adminUser, "Beuta unlisted", "Infinity", [-23.0, 54.0], "2021-11-29T00:00:00.000000+02:00",
-                         "2021-11-29T08:30:00.000000Z", 0, 30, "Hai cu noi la bere", "unlisted", "Food & Drink")
-events.append(event)
-event = eventService.add(adminUser, "Beuta publica", "Infinity", [-23.0, 54.0], "2021-11-29T00:00:00.000000+02:00",
-                         "2021-11-29T08:30:00.000000Z", 1, 30, "Hai cu noi la bere", "public", "Food & Drink")
-events.append(event)
-event = eventService.add(adminUser, "Beuta cu whitelist", "Infinity", [-23.0, 54.0], "2021-11-29T00:00:00.000000+02:00",
-                         "2021-11-29T08:30:00.000000Z", 2, 30, "Hai cu noi la bere", "whitelisted", "Food & Drink")
-events.append(event)
+for user in users:
+    for visibility in event_visibility_map.keys():
+        event = event_service.add(user,
+                                  'Beuta {}'.format(event_visibility_map.to_value(visibility)),
+                                  'Infinity', [-23.0, 54.0],
+                                  '2021-11-29T00:00:00.000000+02:00', '2021-11-29T08:30:00.000000Z',
+                                  0, 30,
+                                  'Hai cu noi la bere',
+                                  visibility,
+                                  'Food & Drink')
+        events.append(event)
 
-for i, event in enumerate(events):
-    eventCommentService.add(adminUser, event, "This is a comment for event {}".format(i))
+for event in events:
+    for user in users:
+        try:
+            event_invitation_service.add(event, user)
+        except Exception as e:
+            print(e)
+            pass
+
+for from_user in users:
+    for to_user in users:
+        if from_user == to_user:
+            continue
+
+        for event in events + [None]:
+            try:
+                points = random.randint(-6, 6)
+                message = "You're okay"
+                user_feedback_service.add(from_user, to_user, event, points, message)
+            except Exception as e:
+                print(e)
+                pass
+
+for event in events:
+    for i in range(5):
+        for user in users:
+            event_comment_service.add(user, event, 'This is a comment by {}. Hello'.format(user.first_name))

@@ -13,11 +13,10 @@ class UserFeedbackService:
     def __init__(self, validator: UserFeedbackValidator):
         self.validator = validator
 
-    def add(self, from_user: User, to_user: User, event: Event, points: int, message: Union[str, None]):
+    def add(self, from_user: User, to_user: User, event: Event, points: int, message: Union[str, None] = None):
         points = self.validator.parse_points(points)
 
-        user_feedback = UserFeedback.objects.get(event=event, from_user=from_user, to_user=to_user, points=points,
-                                                 message=message)
+        user_feedback = UserFeedback(event=event, from_user=from_user, to_user=to_user, points=points, message=message)
         try:
             user_feedback.save()
         except NotUniqueError:

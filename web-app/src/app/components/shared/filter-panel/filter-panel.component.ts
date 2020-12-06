@@ -81,6 +81,15 @@ export class FilterPanelComponent implements OnInit {
       "eventsDateFilter": {},
     })
   }
+
+  deleteCategory(name: String){
+    console.log(name);
+    for(let i=0;i<this.checkedCategories.length;i++){
+      if(this.checkedCategories[i]==name){
+        this.checkedCategories.splice(i,1);
+      }
+    }
+  }
 }
 
 

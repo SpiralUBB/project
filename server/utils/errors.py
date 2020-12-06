@@ -44,6 +44,12 @@ UserLastNameInvalid = make_http_error('UserLastNameInvalid',
 UserLoginFailed = make_http_error('UserLoginFailed',
                                   'user-login-failed', 401,
                                   'User login failed')
+UserNotLoggedIn = make_http_error('UserNotLoggedIn',
+                                  'user-not-logged-in', 401,
+                                  'User not logged in')
+UserLoggedInInvalid = make_http_error('UserLoggedInInvalid',
+                                      'user-logged-in-invalid', 401,
+                                      'User logged in is invalid')
 UserTokenExpired = make_http_error('UserTokenExpired',
                                    'user-token-expired', 401,
                                    'User token expired')

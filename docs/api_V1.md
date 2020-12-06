@@ -87,6 +87,8 @@ and is not available when `is_limited_details` is true.
 
 `no_max_participants` represents the number of max participants that can join the event, or 0 if an unlimited number of participants can join the event, and is not available when `is_limited_details` is true.
 
+`is_unlimited_participants` is not available when `is_limited_details` is true.
+
 ---
 
 ### Event comment entity

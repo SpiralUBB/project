@@ -14,7 +14,7 @@ from utils.errors import EventTitleInvalid, EventLocationInvalid, EventTimeInval
 
 class EventValidator:
     def validate_owner(self, value: User):
-        if not value:
+        if value is None:
             raise EventOwnerInvalid(message='Event owner cannot be missing')
 
     def validate_title(self, value: str):
@@ -26,9 +26,6 @@ class EventValidator:
             raise EventLocationInvalid(message='Event location cannot be empty')
 
     def validate_location_point(self, value: List[float]):
-        if not value:
-            raise EventLocationPointInvalid(message='Event location point cannot be empty')
-
         if type(value) != list:
             raise EventLocationPointInvalid(message='Event location point must be a list')
 
@@ -40,10 +37,7 @@ class EventValidator:
                 raise EventLocationPointInvalid(message='Event location point must be a list with 2 floats')
 
     def validate_time(self, value, name):
-        if not value:
-            raise EventTimeInvalid(message='Event {} time cannot be empty'.format(name))
-
-        if not isinstance(value, datetime):
+        if type(value) != datetime:
             raise EventTimeInvalid(message='Event {} time must be a datetime object'.format(name))
 
     def validate_times(self, start, end):

@@ -7,3 +7,5 @@ flask_cors
 bidict
 arrow
 bson
+injector
+pyee

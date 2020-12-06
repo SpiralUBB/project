@@ -28,6 +28,12 @@ event_invitation_attend_status_map = DualMap({
 }, (-1, 'unknown-attend-status'))
 
 
+class EventInvitationData:
+    def __init__(self, status: int, attend_status: int):
+        self.status = status
+        self.attend_status = attend_status
+
+
 class EventInvitation(Document):
     user = ReferenceField('User', required=True)
     event = ReferenceField('Event', required=True)
@@ -47,6 +53,9 @@ class EventInvitation(Document):
             },
         ],
     }
+
+    def to_data(self):
+        return EventInvitationData(self.status, self.attend_status)
 
     def to_dict(self, with_user: bool = False, with_event: bool = False):
         d = {

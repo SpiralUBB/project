@@ -1,7 +1,9 @@
+from enum import Enum
 from typing import Union, List
 
 from bson import ObjectId
 from mongoengine import DoesNotExist, Q
+from pyee import BaseEventEmitter
 
 from models.Event import Event, EVENT_VISIBILITY_PUBLIC_KEY, EVENT_VISIBILITY_WHITELISTED_KEY, \
     EVENT_VISIBILITY_UNLISTED_KEY
@@ -12,9 +14,15 @@ from models.User import User
 from validators.EventValidator import EventValidator
 
 
+class EventServiceEvents(Enum):
+    EVENT_ADDED = 'event-added'
+    EVENT_DELETED = 'event-deleted'
+
+
 class EventService:
     def __init__(self, validator: EventValidator):
         self.validator = validator
+        self.emitter = BaseEventEmitter()
 
     def add(self, owner: User, title: str, location: str, location_point: List[float], start_time: str, end_time: str,
             min_trust_level: int, no_max_participants: int, description: str, visibility: Union[str, int],
@@ -31,6 +39,8 @@ class EventService:
                       end_time=end_time, no_max_participants=no_max_participants, description=description,
                       visibility=visibility, category=category)
         event.save()
+
+        self.emitter.emit(EventServiceEvents.EVENT_ADDED, event)
 
         return event
 
@@ -182,3 +192,5 @@ class EventService:
 
     def delete(self, event: Event):
         event.delete()
+
+        self.emitter.emit(EventServiceEvents.EVENT_DELETED, event)

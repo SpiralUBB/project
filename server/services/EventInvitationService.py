@@ -9,7 +9,7 @@ from models.EventInvitation import EventInvitation, EVENT_INVITATION_STATUS_PEND
     EVENT_INVITATION_STATUS_ACCEPTED_KEY, EVENT_INVITATION_ATTEND_STATUS_UNCHECKED_KEY
 
 from models.User import User
-from utils.errors import EventInvitationAlreadyExists, EventInvitationCannotJoinFull, EventInvitationCannotModifyOwn
+from utils.errors import EventInvitationAlreadyExists, EventInvitationCannotJoinFull, EventInvitationCannotModifyOwner
 from validators.EventInvitationValidator import EventInvitationValidator
 
 
@@ -46,7 +46,7 @@ class EventInvitationService:
     def update(self, event_invitation: EventInvitation, status: Union[str, int] = None,
                attend_status: Union[str, int] = None):
         if event_invitation.user.id == event_invitation.event.owner.id:
-            raise EventInvitationCannotModifyOwn()
+            raise EventInvitationCannotModifyOwner()
 
         old_data = event_invitation.to_data()
 

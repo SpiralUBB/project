@@ -19,7 +19,7 @@ class UserService:
 
         try:
             User.objects.get(username__exact=username)
-            raise UserAlreadyExists(username)
+            raise UserAlreadyExists()
         except DoesNotExist:
             pass
 

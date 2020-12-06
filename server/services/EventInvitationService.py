@@ -4,7 +4,7 @@ from typing import Union
 from mongoengine import DoesNotExist, Q, NotUniqueError
 from pyee import BaseEventEmitter
 
-from models.Event import Event
+from models.Event import Event, EVENT_VISIBILITY_PUBLIC_KEY
 from models.EventInvitation import EventInvitation, EVENT_INVITATION_STATUS_PENDING_KEY, \
     EVENT_INVITATION_STATUS_ACCEPTED_KEY, EVENT_INVITATION_ATTEND_STATUS_UNCHECKED_KEY
 
@@ -29,6 +29,9 @@ class EventInvitationService:
 
         if not event.allows_more_participants():
             raise EventInvitationCannotJoinFull()
+
+        if event.visibility == EVENT_VISIBILITY_PUBLIC_KEY:
+            status = EVENT_INVITATION_STATUS_ACCEPTED_KEY
 
         event_invitation = EventInvitation(event=event, user=user, status=status, attend_status=attend_status)
         try:

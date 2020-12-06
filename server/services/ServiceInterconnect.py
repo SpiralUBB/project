@@ -25,9 +25,6 @@ class ServiceInterconnect:
         self.user_service.add_points(event.owner, -PredefinedPoints.CREATE_EVENT.value)
 
     def on_event_invitation_added(self, event_invitation: EventInvitation):
-        if event_invitation.event.visibility == EVENT_VISIBILITY_PUBLIC_KEY:
-            self.event_invitation_service.update(event_invitation, status=EVENT_INVITATION_STATUS_ACCEPTED_KEY)
-
         if event_invitation.event.owner.id != event_invitation.user.id:
             self.user_service.add_points(event_invitation.event.owner, PredefinedPoints.JOIN_EVENT_FOR_OWNER.value)
 

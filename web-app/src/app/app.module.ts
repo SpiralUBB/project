@@ -40,6 +40,7 @@ import { EventFormComponent } from './components/event-form/event-form.component
 import { EventParticipantsConfirmComponent } from './components/event-page/event-participants-confirm/event-participants-confirm.component';
 import { EventParticipantConfirmCardComponent } from './components/event-page/event-participants-confirm/event-participant-confirm-card/event-participant-confirm-card.component';
 import { MarkerPopupComponent } from './components/map/marker-popup/marker-popup.component';
+import { CategoryDialogComponent } from './components/shared/filter-panel/category-dialog/category-dialog.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { MarkerPopupComponent } from './components/map/marker-popup/marker-popup
     EventParticipantsConfirmComponent,
     EventParticipantConfirmCardComponent,
     MarkerPopupComponent,
+    CategoryDialogComponent
   ],
   imports: [
     MaterialModule,

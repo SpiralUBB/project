@@ -1,4 +1,16 @@
 <p>{{eventId}}</p>
-<app-comment-card></app-comment-card>
-<app-comment-card></app-comment-card>
-<app-comment-card></app-comment-card>
+<ul>
+  <li *ngFor="let comment of comments">
+      <app-comment-card [comment]="comment"
+                        [username]="user.username"
+                        (deleteString)="deleteComment($event)"></app-comment-card>
+  </li>
+</ul>
+
+<form class="comment-form">
+    <mat-form-field class="comment-input">
+      <mat-label>Leave a comment</mat-label>
+      <textarea matInput placeholder="Ex. It made me feel..." [(ngModel)]="this.comment" name="comment"></textarea>
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="sendComment()">Comment</button>
+</form>

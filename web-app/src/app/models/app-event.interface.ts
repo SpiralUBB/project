@@ -3,7 +3,8 @@ export interface AppEvent {
   id: string;
   category: number;
   categoryText: string;
-  date: string;
+  startTime: string;
+  endTime: string;
   title: string;
   description: string;
   owner: EventOwner;

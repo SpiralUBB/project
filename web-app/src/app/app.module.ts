@@ -39,6 +39,7 @@ import { ParticipantFeedbackComponent } from './components/event-page/event-part
 import { EventFormComponent } from './components/event-form/event-form.component';
 import { EventParticipantsConfirmComponent } from './components/event-page/event-participants-confirm/event-participants-confirm.component';
 import { EventParticipantConfirmCardComponent } from './components/event-page/event-participants-confirm/event-participant-confirm-card/event-participant-confirm-card.component';
+import { CategoryDialogComponent } from './components/shared/filter-panel/category-dialog/category-dialog.component';
 import { MarkerPopupComponent } from './components/map/marker-popup/marker-popup.component';
 import { CategoryDialogComponent } from './components/shared/filter-panel/category-dialog/category-dialog.component';
 
@@ -68,6 +69,7 @@ import { CategoryDialogComponent } from './components/shared/filter-panel/catego
     EventFormComponent,
     EventParticipantsConfirmComponent,
     EventParticipantConfirmCardComponent,
+    CategoryDialogComponent,
     MarkerPopupComponent,
     CategoryDialogComponent
   ],

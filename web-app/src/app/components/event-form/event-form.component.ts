@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, FormControlName } from '@angular/forms';
+import { FormGroup, FormControl, FormControlName, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
+import { ApiService } from 'src/app/services/api.service';
 
-interface Category {
-  value: string;
-  viewValue: string;
+interface CheckBoxSlection {
+  value: number | string;
+  viewValue: number | string;
 }
 
 @Component({
@@ -16,25 +17,68 @@ interface Category {
 })
 
 export class EventFormComponent implements OnInit {
-  public eventId$: Observable<string>;
+  eventId$: Observable<string>;
+  categories: CheckBoxSlection[] = [];
+  trustLevelOptions: CheckBoxSlection[] = [];
+  show: boolean = false;
 
-  constructor(private activatedRoute: ActivatedRoute) {}
+  eventForm = new FormGroup({
+    title: new FormControl('', [Validators.required]),
+    location: new FormControl('', [Validators.required]),
+    startDate: new FormControl('', [Validators.required]),
+    endDate: new FormControl('', [Validators.required]),
+    visibility: new FormControl('', [Validators.required]),
+    category: new FormControl('', [Validators.required]),
+    trustLevel: new FormControl('', [Validators.required]),
+    nrMaxParticipants: new FormControl(''),
+    textarea: new FormControl('')
+  });
+
+  constructor(private activatedRoute: ActivatedRoute,
+    private apiService: ApiService) {}
 
   ngOnInit(): void {
     this.eventId$ = this.activatedRoute.params.pipe(
       filter((params) => !!params.id),
       map((params) => params.id)
     );
+
+    this.apiService.getCategories().subscribe(
+        (res) => this.addEventsCategories(res)
+    );
+
+    this.apiService.getCurrentUser().subscribe(
+        (currentUser) => this.addTrusLevelOptions(currentUser.trustLevel)
+    )
   }
 
-  categories: Category[] = [
-    {value: 'music', viewValue: 'Music'},
-    {value: 'party', viewValue: 'Party'},
-    {value: 'beuta', viewValue: 'Beuta'}
-  ];
+  addEventsCategories(categroiesType: any){
+    Object.keys(categroiesType).forEach(key => {
+        const category = {
+            value: key,
+            viewValue: key
+        }
+        this.categories.push(category);
+    });
+  }
 
-  show: boolean = false;
-  f(): void {
+  addTrusLevelOptions(currentUserTrustLevel: number){
+    const noMinRequierd = {
+        value: 0,
+        viewValue: "Any trust level"
+    };
+    this.trustLevelOptions.push(noMinRequierd);
+
+    for(let i = 1; i<currentUserTrustLevel; i++){
+        const checkBoxOption = {
+            value: i,
+            viewValue: i
+        }
+        this.trustLevelOptions.push(checkBoxOption);
+    }
+  }
+
+  onChangeMaxNrParticipants(): void {
     if(this.show) {
       this.show = false;
     }
@@ -55,18 +99,6 @@ export class EventFormComponent implements OnInit {
   onMouseLeave() {
     this.textarea.nativeElement.style.border = "1px solid rgb(128, 128, 128)";
   }
-
-  eventForm = new FormGroup({
-    title: new FormControl(''),
-    location: new FormControl(''),
-    startDate: new FormControl(''),
-    endDate: new FormControl(''),
-    visibility: new FormControl(''),
-    category: new FormControl(''),
-    trustLevel: new FormControl(''),
-    nrMaxParticipants: new FormControl(''),
-    textarea: new FormControl('')
-  });
 
   onSubmit() {
     // TODO: Use EventEmitter with form value

@@ -1,6 +1,6 @@
 <div class="add-event-form">
     <div class="middle">
-        <label id="title">Title</label>
+        <label id="title">Create an event</label>
     </div>
 
     <form id="event-form" [formGroup]="eventForm" (ngSubmit)="onSubmit()">
@@ -17,7 +17,8 @@
         <div>
             <mat-form-field appearance="standard">
                 <mat-label>Start date</mat-label>
-                <input #startDateInput matInput type="date" placeholder="Start date" formControlName="startDate">
+                <input #startDateInput mdc-datetime-picker="" matInput type="date"  date="true" time="true" minutes="true" min-date="date" show-icon="true"
+                show-clear="false" placeholder="Start date" formControlName="startDate">
             </mat-form-field>
             
             <mat-form-field appearance="standard" class="right-position">
@@ -47,19 +48,24 @@
         </div>
 
         <mat-form-field appearance="standard" class="full-width">
-            <mat-label>Trust level</mat-label>
-            <input #trustLevelInput matInput type="number" placeholder="Trust level" formControlName="trustLevel">
+            <mat-label>Minimum Trust level</mat-label>
+            <mat-select #categoryInput formControlName="trustLevel">
+                <mat-option *ngFor="let trustLevelOption of trustLevelOptions" [value]="trustLevelOption.value">
+                    {{trustLevelOption.viewValue}}
+                </mat-option>
+            </mat-select>
         </mat-form-field>
 
-        <mat-checkbox color="primary" (change)="f()">Max nr of participants</mat-checkbox>
+        <mat-checkbox color="primary" (change)="onChangeMaxNrParticipants()">Max nr of participants</mat-checkbox>
         <mat-form-field appearance="standard" class="full-width" *ngIf="show">
             <mat-label>Max nr of participants</mat-label>
             <input matInput type="number" placeholder="Max nr of participants" formControlName="nrMaxParticipants">
         </mat-form-field>
-        
-        <div>
-            <textarea #textarea id="textarea" form="event-form" (mouseover)="onMouseOver()" (mouseleave)="onMouseLeave()" placeholder="Description" formControlName="textarea"></textarea>
-        </div>
+
+        <mat-form-field class="full-width">
+            <mat-label>Description</mat-label>
+            <textarea matInput placeholder="Description" formControlName="textarea" ></textarea>
+        </mat-form-field>
         
         <div id="button" class="middle">
             <button type="submit" mat-raised-button color="primary">Submit</button>

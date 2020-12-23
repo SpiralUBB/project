@@ -27,6 +27,8 @@ export class EventFormComponent implements OnInit {
     location: new FormControl('', [Validators.required]),
     startDate: new FormControl('', [Validators.required]),
     endDate: new FormControl('', [Validators.required]),
+    startTime: new FormControl('', [Validators.required]),
+    endTime: new FormControl('', [Validators.required]),
     visibility: new FormControl('', [Validators.required]),
     category: new FormControl('', [Validators.required]),
     trustLevel: new FormControl('', [Validators.required]),

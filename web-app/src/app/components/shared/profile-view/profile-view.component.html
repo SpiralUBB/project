@@ -1,0 +1,27 @@
+<div class="profile-view-container">
+    <p class="profile-title">Profile</p>
+    <div class="profile-view">
+        <div class="profile-username">
+            Username: {{profile.username}}
+        </div>
+        <div class="profile-firstname">
+            Firstname: {{profile.firstName}}
+        </div>
+        <div class="profile-lastname">
+            Lastname: {{profile.lastName}}
+        </div>
+        <div>
+            <div class="profile-trust-level">Trust level: {{profile.trustLevel}}</div>
+            <div class="profile-progress-bar">
+            <div class="profile-points">Points to next level: <i>{{this.points}}/100</i>   </div>
+            <br>
+            <mat-progress-bar mode="determinate" value={{this.points}}></mat-progress-bar>
+        </div>
+        </div>
+        <div class='buttons-container'>
+            <button class='edit-button' mat-raised-button color="primary" (click)="editProfile()">Edit</button>
+            <button class='cancel-button' mat-raised-button (click)="close()">Cancel</button>
+        </div>
+    </div>
+   
+</div>

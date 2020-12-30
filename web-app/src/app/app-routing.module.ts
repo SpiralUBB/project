@@ -8,6 +8,7 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
 import { MapComponent } from './components/map/map.component';
 import { LoginFormComponent } from './components/shared/login-form/login-form.component';
 import { ProfileFormComponent } from './components/shared/profile-form/profile-form.component';
+import { ProfileViewComponent } from './components/shared/profile-view/profile-view.component';
 import { RegisterFormComponent } from './components/shared/register-form/register-form.component';
 import { AuthGuardService } from './guards/auth-guard.service';
 
@@ -41,7 +42,7 @@ const routes: Routes = [
       },
       {
         path: 'profile',
-        component: ProfileFormComponent,
+        component: ProfileViewComponent,
       },
     ],
   },

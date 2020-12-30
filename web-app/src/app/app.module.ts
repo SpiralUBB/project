@@ -41,6 +41,7 @@ import { EventParticipantsConfirmComponent } from './components/event-page/event
 import { EventParticipantConfirmCardComponent } from './components/event-page/event-participants-confirm/event-participant-confirm-card/event-participant-confirm-card.component';
 import { CategoryDialogComponent } from './components/shared/filter-panel/category-dialog/category-dialog.component';
 import { MarkerPopupComponent } from './components/map/marker-popup/marker-popup.component';
+import { ProfileViewComponent } from './components/shared/profile-view/profile-view.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { MarkerPopupComponent } from './components/map/marker-popup/marker-popup
     EventParticipantConfirmCardComponent,
     CategoryDialogComponent,
     MarkerPopupComponent,
-    CategoryDialogComponent
+    CategoryDialogComponent,
+    ProfileViewComponent
   ],
   imports: [
     MaterialModule,

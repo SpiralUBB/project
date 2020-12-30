@@ -309,6 +309,8 @@ A logged in user can see events for which he has an accepted invite with full de
 ##### Query parameters
 `category` is the category to use when filtering. Can be specified multiple times to filter for multiple categories.
 
+`invitation_status` is the invitation status to use when filtering. Can be specified multiple times to filter for multiple statuses. Only events for which the user has an invite with one of the given statuses will be shown.
+
 `date_start` is the start of the interval to use when filtering. Only events starting after this date will be shown.
 
 `date_end` is the end of the interval to use when filtering. Only events starting before this date will be shown.

@@ -71,7 +71,7 @@ class EventService:
         return Event.objects(*args, **kwargs)
 
     def build_query_filters(self, categories: List[Union[int, str]] = None, date_start: str = None,
-                            date_end: str = None):
+                            date_end: str = None, ids: List[ObjectId] = None):
         query = Q()
 
         if categories is not None and len(categories) != 0:
@@ -85,6 +85,9 @@ class EventService:
         if date_end is not None:
             date_end = self.validator.parse_time(date_end, end=True)
             query &= Q(start_time__lte=date_end)
+
+        if ids:
+            query &= Q(id__in=ids)
 
         return query
 
@@ -128,9 +131,10 @@ class EventService:
 
     def find_visible_for_user(self, user: User, ids: List[ObjectId], show_public: bool = False,
                               show_whitelist: bool = False, show_unlisted: bool = False,
-                              categories: List[Union[int, str]] = None, date_start: str = None, date_end: str = None):
+                              categories: List[Union[int, str]] = None, date_start: str = None, date_end: str = None,
+                              filter_ids: List[ObjectId] = None):
         query = Q()
-        query &= self.build_query_filters(categories, date_start, date_end)
+        query &= self.build_query_filters(categories, date_start, date_end, filter_ids)
         query &= self.build_query_visible(user, ids, show_public, show_whitelist, show_unlisted)
         return self.find_by(query)
 

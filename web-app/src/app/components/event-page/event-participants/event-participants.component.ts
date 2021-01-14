@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-event-participants',
@@ -8,9 +9,10 @@ import { Component, Input, OnInit } from '@angular/core';
 export class EventParticipantsComponent implements OnInit {
 
   @Input() eventId: string;
-  constructor() { }
+  constructor(private apiService: ApiService) { }
 
   ngOnInit(): void {
+    
   }
 
 }

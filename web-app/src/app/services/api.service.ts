@@ -7,6 +7,7 @@ import { RegisterUser } from '../models/register-user.interface';
 import { User } from '../models/user';
 import { AppComment } from '../models/comment.interface'
 import { ApiResponse } from '../models/api-response.interface';
+import { Invitation } from '../models/invitaion.interface';
 @Injectable({
   providedIn: 'root',
 })
@@ -65,6 +66,15 @@ export class ApiService {
 
   getAttendedEvents(): Observable<any>{
     return this.http.get<any>('/events?invitation_attend_status=attended') 
+  }
+
+  getEventById(id: string): Observable<AppEvent> {
+    return this.http.get<AppEvent>('/events/'+ id);
+  }
+
+
+  getEventInvitaionForUser(id: string): Observable<Invitation> {
+    return this.http.get<Invitation>('/events/' + id + '/invitation');
   }
 
   

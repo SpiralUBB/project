@@ -75,7 +75,7 @@ import { EventHistoryComponent } from './components/shared/event-history/event-h
     CategoryDialogComponent,
     ProfileViewComponent,
     EventHistoryComponent
-  ],
+    ],
   imports: [
     MaterialModule,
     BrowserModule,

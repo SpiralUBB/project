@@ -8,6 +8,9 @@
     <mat-tab label="Participants">
         <app-event-participants [eventId]="idTemplate"></app-event-participants>
     </mat-tab>
+    <mat-tab *ngIf="shouldConfirmInvitations" label="Confirm Participants">
+        <app-event-participants-confirm></app-event-participants-confirm>
+    </mat-tab>
 </mat-tab-group>
 
 

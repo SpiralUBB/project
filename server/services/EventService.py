@@ -86,7 +86,7 @@ class EventService:
             date_end = self.validator.parse_time(date_end, end=True)
             query &= Q(start_time__lte=date_end)
 
-        if ids:
+        if ids is not None:
             query &= Q(id__in=ids)
 
         return query

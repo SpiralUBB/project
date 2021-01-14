@@ -13,6 +13,9 @@
         <button *ngIf = "this.isLoggedIn === false" (click)="openRegisterDialog()" mat-button color="secondary" class="example-icon" >
             Register
         </button>
+        <button *ngIf = "this.isLoggedIn === true" (click)="openEventHistory()" mat-button color="secondary" class="example-icon" >
+            My events
+        </button>
         <button *ngIf = "this.isLoggedIn === true " (click)="openProfile()" mat-button color="secondary" class="example-icon">
             Profile
         </button>

@@ -74,15 +74,15 @@ class EventService:
                             date_end: str = None, ids: List[ObjectId] = None):
         query = Q()
 
-        if categories is not None and len(categories) != 0:
+        if categories:
             categories = [self.validator.parse_category(c) for c in categories]
             query &= Q(category__in=categories)
 
-        if date_start is not None:
+        if date_start:
             date_start = self.validator.parse_time(date_start, start=True)
             query &= Q(start_time__gte=date_start)
 
-        if date_end is not None:
+        if date_end:
             date_end = self.validator.parse_time(date_end, end=True)
             query &= Q(start_time__lte=date_end)
 
@@ -95,11 +95,11 @@ class EventService:
                             show_whitelist: bool = False, show_unlisted: bool = False):
         query = Q()
 
-        if user is not None:
+        if user:
             # Add events owned by the logged in user
             query |= Q(owner=user)
 
-        if ids is not None and len(ids):
+        if ids:
             # Add events for which the user has an accepted invite
             query |= Q(id__in=ids)
 
@@ -140,8 +140,10 @@ class EventService:
 
     def find_one_visible_for_user(self, user: User, event_id: str, ids: List[ObjectId], show_public: bool = False,
                                   show_whitelist: bool = False, show_unlisted: bool = False):
-        query = self.build_query_visible(user, ids, show_public, show_whitelist, show_unlisted)
-        return self.find_one_by(Q(id=event_id) & query)
+        query = Q()
+        query &= self.build_query_visible(user, ids, show_public, show_whitelist, show_unlisted)
+        query &= Q(id=event_id)
+        return self.find_one_by(query)
 
     def update(self, event: Event, title: str = None, location: str = None, location_point: List[int] = None,
                start_time: str = None, end_time: str = None, min_trust_level: int = None,

@@ -84,11 +84,11 @@ def retrieve_event(retrieval_type: EventRetrievalType,
             if retrieval_type == EventRetrievalType.ID:
                 event = event_service.find_one_by(id=event_id)
             elif retrieval_type == EventRetrievalType.ID_AND_LOGGED_IN_USER_VISIBLE:
-                request.full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
+                invited_event_ids = event_invitation_service.find_for_user_status_event_ids(user)
                 i_show_public = parse_show_flag(show_public, user)
                 i_show_whitelisted = parse_show_flag(show_whitelisted, user)
                 i_show_unlisted = parse_show_flag(show_unlisted, user)
-                event = event_service.find_one_visible_for_user(user, event_id, request.full_details_event_ids,
+                event = event_service.find_one_visible_for_user(user, event_id, invited_event_ids,
                                                                 show_public=i_show_public,
                                                                 show_whitelist=i_show_whitelisted,
                                                                 show_unlisted=i_show_unlisted)

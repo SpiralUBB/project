@@ -79,21 +79,29 @@ class EventInvitationService:
 
         return self.find_by(query)
 
-    def find_for_user_status_event_ids(self, user: User = None, statuses: List[Union[str, int]] = None):
-        if user is None:
-            return []
+    def build_query_filters(self, user: User = None, statuses: List[Union[str, int]] = None,
+                            attend_statuses: List[Union[str, int]] = None):
+        query = Q()
 
-        if not statuses:
-            return []
+        if user:
+            query &= Q(user=user)
 
-        statuses = [self.validator.parse_status(s) for s in statuses]
+        if statuses:
+            statuses = [self.validator.parse_status(s) for s in statuses]
+            query &= Q(status__in=statuses)
 
-        event_invitations = self.find_by(
-            user=user,
-            status__in=statuses,
-        )
+        if attend_statuses:
+            attend_statuses = [self.validator.parse_attend_status(s) for s in attend_statuses]
+            query &= Q(attend_status__in=attend_statuses)
 
-        return [ei.id for ei in event_invitations]
+        return query
+
+    def find_for_user_status_event_ids(self, user: User = None, statuses: List[Union[str, int]] = None,
+                                       attend_statuses: List[Union[str, int]] = None):
+        query = Q()
+        query &= self.build_query_filters(user, statuses, attend_statuses)
+        event_invitations = self.find_by(query)
+        return [ei.event.id for ei in event_invitations]
 
     def find_accepted_user_invitations_event_ids(self, user: User = None):
         return self.find_for_user_status_event_ids(user, [EVENT_INVITATION_STATUS_ACCEPTED_KEY])

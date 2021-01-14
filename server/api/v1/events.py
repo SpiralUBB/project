@@ -81,11 +81,14 @@ def events_get(event_service: EventService, event_invitation_service: EventInvit
     date_start = request.args.get('date_start')
     date_end = request.args.get('date_end')
     invitation_statuses = request.args.getlist('invitation_status')
+    invitation_attend_statuses = request.args.getlist('invitation_attend_status')
     user = request.user
 
     invited_event_ids = event_invitation_service.find_for_user_status_event_ids(user)
     if invitation_statuses:
-        filter_event_ids = event_invitation_service.find_for_user_status_event_ids(user, statuses=invitation_statuses)
+        filter_event_ids = \
+            event_invitation_service.find_for_user_status_event_ids(user, statuses=invitation_statuses,
+                                                                    attend_statuses=invitation_attend_statuses)
     else:
         filter_event_ids = None
 

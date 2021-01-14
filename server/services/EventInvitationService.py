@@ -79,7 +79,8 @@ class EventInvitationService:
 
         return self.find_by(query)
 
-    def build_query_filters(self, user: User = None, statuses: List[Union[str, int]] = None):
+    def build_query_filters(self, user: User = None, statuses: List[Union[str, int]] = None,
+                            attend_statuses: List[Union[str, int]] = None):
         query = Q()
 
         if user:
@@ -89,11 +90,16 @@ class EventInvitationService:
             statuses = [self.validator.parse_status(s) for s in statuses]
             query &= Q(status__in=statuses)
 
+        if attend_statuses:
+            attend_statuses = [self.validator.parse_attend_status(s) for s in attend_statuses]
+            query &= Q(attend_status__in=attend_statuses)
+
         return query
 
-    def find_for_user_status_event_ids(self, user: User = None, statuses: List[Union[str, int]] = None):
+    def find_for_user_status_event_ids(self, user: User = None, statuses: List[Union[str, int]] = None,
+                                       attend_statuses: List[Union[str, int]] = None):
         query = Q()
-        query &= self.build_query_filters(user, statuses)
+        query &= self.build_query_filters(user, statuses, attend_statuses)
         event_invitations = self.find_by(query)
         return [ei.event.id for ei in event_invitations]
 

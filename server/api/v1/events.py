@@ -75,6 +75,7 @@ def events_get(event_service: EventService, event_invitation_service: EventInvit
     # An user can see whitelisted events with limited details
     # An user can see public events with full details
     # A logged in user can see events that he owns with full details
+    # A logged in user can see events for which he has an invite with limited details
     # A logged in user can see events for which he has an accepted invite with full details
     categories = request.args.getlist('category')
     date_start = request.args.get('date_start')
@@ -82,12 +83,17 @@ def events_get(event_service: EventService, event_invitation_service: EventInvit
     invitation_statuses = request.args.getlist('invitation_status')
     user = request.user
 
-    full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
-    filter_event_ids = event_invitation_service.find_for_user_status_event_ids(user, statuses=invitation_statuses)
-    events = event_service.find_visible_for_user(user, full_details_event_ids, show_public=True, show_whitelist=True,
+    invited_event_ids = event_invitation_service.find_for_user_status_event_ids(user)
+    if invitation_statuses:
+        filter_event_ids = event_invitation_service.find_for_user_status_event_ids(user, statuses=invitation_statuses)
+    else:
+        filter_event_ids = None
+
+    events = event_service.find_visible_for_user(user, invited_event_ids, show_public=True, show_whitelist=True,
                                                  categories=categories, date_start=date_start, date_end=date_end,
                                                  filter_ids=filter_event_ids)
 
+    full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
     return jsonify(get_paginated_items_from_qs(events, event_to_restricted_dict, user, full_details_event_ids))
 
 
@@ -108,8 +114,12 @@ def events_post(event_service: EventService):
 @retrieve_logged_in_user(optional=True)
 @retrieve_event(EventRetrievalType.ID_AND_LOGGED_IN_USER_VISIBLE, show_public=True, show_whitelisted=True,
                 show_unlisted=ShowFlagType.USER_EXISTS)
-def events_get_event():
-    return jsonify(event_to_restricted_dict(request.event, request.user, request.full_details_event_ids))
+def events_get_event(event_invitation_service: EventInvitationService):
+    event = request.event
+    user = request.user
+
+    full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
+    return jsonify(event_to_restricted_dict(event, user, full_details_event_ids))
 
 
 @api.route('/<string:event_id>', methods=['PATCH'])

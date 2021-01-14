@@ -6,6 +6,7 @@ import { EventPageComponent } from './components/event-page/event-page.component
 import { EventsComponent } from './components/events/events.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { MapComponent } from './components/map/map.component';
+import { EventHistoryComponent } from './components/shared/event-history/event-history.component';
 import { LoginFormComponent } from './components/shared/login-form/login-form.component';
 import { ProfileFormComponent } from './components/shared/profile-form/profile-form.component';
 import { ProfileViewComponent } from './components/shared/profile-view/profile-view.component';
@@ -43,6 +44,10 @@ const routes: Routes = [
       {
         path: 'profile',
         component: ProfileViewComponent,
+      },
+      {
+        path: 'event-history',
+        component: EventHistoryComponent,
       },
     ],
   },

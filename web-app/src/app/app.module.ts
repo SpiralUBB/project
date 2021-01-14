@@ -42,6 +42,7 @@ import { EventParticipantConfirmCardComponent } from './components/event-page/ev
 import { CategoryDialogComponent } from './components/shared/filter-panel/category-dialog/category-dialog.component';
 import { MarkerPopupComponent } from './components/map/marker-popup/marker-popup.component';
 import { ProfileViewComponent } from './components/shared/profile-view/profile-view.component';
+import { EventHistoryComponent } from './components/shared/event-history/event-history.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { ProfileViewComponent } from './components/shared/profile-view/profile-v
     CategoryDialogComponent,
     MarkerPopupComponent,
     CategoryDialogComponent,
-    ProfileViewComponent
+    ProfileViewComponent,
+    EventHistoryComponent
   ],
   imports: [
     MaterialModule,

@@ -62,4 +62,10 @@ export class ApiService {
   getComments(eventId: string): Observable<ApiResponse<AppComment>> {
     return this.http.get<any>('/events/' + eventId + '/comments')
   }
+
+  getAttendedEvents(): Observable<any>{
+    return this.http.get<any>('/events?invitation_attend_status=attended') 
+  }
+
+  
 }

@@ -93,7 +93,7 @@ def retrieve_event(retrieval_type: EventRetrievalType,
                                                                 show_whitelist=i_show_whitelisted,
                                                                 show_unlisted=i_show_unlisted)
             elif retrieval_type == EventRetrievalType.ID_AND_OWNER:
-                event = event_service.find_by(owner=user, id=event_id)
+                event = event_service.find_one_by(owner=user, id=event_id)
             else:
                 event = None
 

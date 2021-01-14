@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-participant-card',
@@ -7,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ParticipantCardComponent implements OnInit {
 
+  @Input() user: User;
+  @Input() canLeaveFeedback: boolean = true;
   constructor() { }
 
   ngOnInit(): void {

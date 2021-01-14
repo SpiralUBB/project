@@ -304,12 +304,16 @@ An user can see public events with full details
 
 A logged in user can see events that he owns with full details.
 
+A logged in user can see events for which he has any type of invite with limited details.
+
 A logged in user can see events for which he has an accepted invite with full details.
 
 ##### Query parameters
 `category` is the category to use when filtering. Can be specified multiple times to filter for multiple categories.
 
 `invitation_status` is the invitation status to use when filtering. Can be specified multiple times to filter for multiple statuses. Only events for which the user has an invite with one of the given statuses will be shown.
+
+`invitation_attend_status` is the invitation attend status to use when filtering. Can be specified multiple times to filter for multiple attend statuses. Only events for which the user has an invite with one of the given attend statuses will be shown.
 
 `date_start` is the start of the interval to use when filtering. Only events starting after this date will be shown.
 
@@ -377,9 +381,11 @@ An user can see a whitelisted event with limited details.
 
 An user can see a public event with full details.
 
-A logged in user can see an unlisted event with limited details. Since an unlisted events are not visible within the events route, this means that the owner needs to share the link to it with people that he wants to let join.
+A logged in user can see an unlisted event with limited details. Since unlisted events are not visible within the events route, this means that the owner needs to share the link to it with people that he wants to let join.
 
-A logged in user can see a whitelisted or unlisted event for which he has an accepted invite with full details.
+A logged in user can see an event for which he has any type of invite with limited details.
+
+A logged in user can see an event for which he has an accepted invite with full details.
 
 A logged in user can see events that he owns with full details.
 

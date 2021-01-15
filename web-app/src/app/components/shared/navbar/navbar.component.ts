@@ -40,10 +40,6 @@ export class NavbarComponent implements OnInit {
     this.router.navigateByUrl('/app/profile');
   }
 
-  openEventHistory(){
-    this.router.navigateByUrl('/app/event-history');
-  }
-
   logout(){
       this.authService.logout();
   }

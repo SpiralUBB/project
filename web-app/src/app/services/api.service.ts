@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppEvent } from '../models/app-event.interface';
@@ -30,18 +30,38 @@ export class ApiService {
     return this.http.get<AppEvent[]>('/events');
   }
 
-  getFilterEvents(categories:String[],startDate:String,endDate:String): Observable<any>{
-    var url="/events?";
-    for(let i=0;i<categories.length;i++){
-      url+="category="+categories[i].replace("&","%26")+"&";
+  getFilterEvents(categories:String[], startDate:String, endDate:String): Observable<any>{
+    
+    // cod radu care nu merge
+    // var url = "/events?";
+    // for(let i = 0; i < categories.length; i++){
+    //   url += "category=" + categories[i].replace("&", "%26") + "&";
+    // }
+    // if(startDate != null)
+    //   url += "start_date=" + startDate + "&";
+    // if(endDate != null)
+    //   url += "end_date=" + endDate + "&";
+    // url = url.slice(0,-1);
+    // console.log(url);
+    // return this.http.get<any>(url);
+
+    //cod teo care merge
+
+    let params: HttpParams = new HttpParams().set("own", "true");
+    if (categories.length > 0) {
+      for (let category in categories)
+        params = params.append("category", category)
     }
-    if(startDate!=null)
-      url+="start_date="+startDate+"&";
-    if(endDate!=null)
-      url+="end_date="+endDate+"&";
-    url=url.slice(0,-1);
-    console.log(url);
-    return this.http.get<any>(url);
+    
+    if (startDate !== null) {
+      params = params.append("date_start", startDate.toString());
+    }
+
+    if (endDate !== null) {
+      params = params.append("date_end", endDate.toString());
+    }
+
+    return this.http.get<any>("/events", {params});
   }
 
   getCategories(): Observable<any>{
@@ -65,7 +85,9 @@ export class ApiService {
   }
 
   getAttendedEvents(): Observable<any>{
-    return this.http.get<any>('/events?invitation_attend_status=attended') 
+    let params: HttpParams = new HttpParams().set("invitation_attend_status", "attended");
+
+    return this.http.get<any>('/events', {params}) 
   }
 
   getEventById(id: string): Observable<AppEvent> {

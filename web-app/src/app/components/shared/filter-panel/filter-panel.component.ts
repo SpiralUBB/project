@@ -45,7 +45,7 @@ export class FilterPanelComponent implements OnInit {
     console.log("filterEvents");
     let supportTypeFilter=false,supportDateFilter=false;
     let startDate="",endDate="";
-    if(this.checkedCategories.length>0){
+    if(this.checkedCategories?.length>0){
       supportTypeFilter=true;
     }
     let date={};

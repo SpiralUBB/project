@@ -15,7 +15,8 @@ export class NavigationService {
   constructor() {}
   menuEntries: MenuEntry[] = [
     { title: 'Landing Page', url: '/landing-page' },
-    { title: 'Events', url: '/app/events' },
+    { title: 'All Events', url: '/app/events' },
+    { title: 'My Events', url: '/app/event-history' },
     { title: 'Map', url: '/app/map' },
   ];
 

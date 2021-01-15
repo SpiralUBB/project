@@ -8,7 +8,7 @@ describe('EventCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EventCardComponent ]
+      declarations: [ EventCardComponent ],
     })
     .compileComponents();
   });

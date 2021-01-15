@@ -75,7 +75,7 @@ import { DatePipe } from '@angular/common';
     MarkerPopupComponent,
     CategoryDialogComponent,
     ProfileViewComponent,
-    EventHistoryComponent
+    EventHistoryComponent,
     ],
   imports: [
     MaterialModule,
@@ -98,7 +98,7 @@ import { DatePipe } from '@angular/common';
       multi: true,
     },
     NavigationService,
-    DatePipe
+    DatePipe,
   ],
   bootstrap: [AppComponent],
 })

@@ -7,17 +7,16 @@ import { CategoryDialogComponent } from './category-dialog/category-dialog.compo
 @Component({
   selector: 'app-filter-panel',
   templateUrl: './filter-panel.component.html',
-  styleUrls: ['./filter-panel.component.scss']
+  styleUrls: ['./filter-panel.component.scss'],
 })
 export class FilterPanelComponent {
   @Output() filterProps = new EventEmitter<any>();
-
 
   checkedCategories: string[] = [];
 
   range = new FormGroup({
     start: new FormControl(),
-    end: new FormControl()
+    end: new FormControl(),
   });
 
   constructor(public dialog: MatDialog) {}
@@ -54,14 +53,14 @@ export class FilterPanelComponent {
     if (this.range.value.start !== null) {
       supportDateFilter = true;
       const selectedDate = this.range.value.start;
-      startDate = selectedDate.getFullYear() + '-' + selectedDate.getMonth() + '-' + selectedDate.getDay();
+      startDate = selectedDate.getFullYear() + '-' + (selectedDate.getMonth() + 1) + '-' + selectedDate.getDay();
       date.startDate = startDate;
     }
 
     if (this.range.value.end !== null) {
       supportDateFilter = true;
       const selectedDate = this.range.value.end;
-      endDate = selectedDate.getFullYear() + '-' + selectedDate.getMonth() + '-' + selectedDate.getDay();
+      endDate = selectedDate.getFullYear() + '-' + (selectedDate.getMonth() + 1) + '-' + selectedDate.getDay();
       date.endDate = endDate;
     }
 
@@ -69,7 +68,7 @@ export class FilterPanelComponent {
       supportTypeFilter,
       eventsTypeFilter: this.checkedCategories,
       supportDateFilter,
-      eventsDateFilter: date
+      eventsDateFilter: date,
     });
   }
 

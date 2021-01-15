@@ -30,8 +30,12 @@ export class ApiService {
     return this.http.get<AppEvent[]>('/events');
   }
 
-  getFilterEvents(categories: string[], startDate: string, endDate: string): Observable<any> {
-    let params: HttpParams = new HttpParams().set('own', 'true');
+  getFilterEvents(categories: string[], startDate: string, endDate: string, own = false): Observable<any> {
+    let params: HttpParams = new HttpParams();
+
+    if (own === true) {
+      params = params.append('own', 'true');
+    }
 
     if (categories.length > 0) {
       for (const category of categories) {
@@ -80,8 +84,7 @@ export class ApiService {
     return this.http.get<AppEvent>('/events/' + id);
   }
 
-
-  getEventInvitaionForUser(id: string): Observable<Invitation> {
+  getEventInvitationForUser(id: string): Observable<Invitation> {
     return this.http.get<Invitation>('/events/' + id + '/invitation');
   }
 

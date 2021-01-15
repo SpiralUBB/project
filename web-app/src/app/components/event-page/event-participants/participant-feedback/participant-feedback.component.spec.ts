@@ -8,7 +8,7 @@ describe('ParticipantFeedbackComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ParticipantFeedbackComponent ]
+      declarations: [ ParticipantFeedbackComponent ],
     })
     .compileComponents();
   });

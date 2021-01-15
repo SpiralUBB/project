@@ -8,7 +8,7 @@ import { ProfileFormComponent } from '../profile-form/profile-form.component';
 @Component({
   selector: 'app-profile-view',
   templateUrl: './profile-view.component.html',
-  styleUrls: ['./profile-view.component.scss']
+  styleUrls: ['./profile-view.component.scss'],
 })
 export class ProfileViewComponent {
   profile: User;

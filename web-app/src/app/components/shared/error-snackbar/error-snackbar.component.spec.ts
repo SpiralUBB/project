@@ -8,7 +8,7 @@ describe('ErrorSnackbarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ErrorSnackbarComponent ]
+      declarations: [ ErrorSnackbarComponent ],
     })
     .compileComponents();
   });

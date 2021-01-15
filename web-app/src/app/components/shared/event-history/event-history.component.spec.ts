@@ -8,7 +8,7 @@ describe('EventHistoryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EventHistoryComponent ]
+      declarations: [ EventHistoryComponent ],
     })
     .compileComponents();
   });

@@ -5,7 +5,7 @@ import { ApiService } from 'src/app/services/api.service';
 @Component({
   selector: 'app-event-list',
   templateUrl: './event-list.component.html',
-  styleUrls: ['./event-list.component.scss']
+  styleUrls: ['./event-list.component.scss'],
 })
 export class EventListComponent implements OnInit {
 

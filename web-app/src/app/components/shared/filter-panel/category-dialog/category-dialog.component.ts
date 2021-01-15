@@ -5,7 +5,7 @@ import { ApiService } from 'src/app/services/api.service';
 @Component({
   selector: 'app-category-dialog',
   templateUrl: './category-dialog.component.html',
-  styleUrls: ['./category-dialog.component.scss']
+  styleUrls: ['./category-dialog.component.scss'],
 })
 export class CategoryDialogComponent implements OnInit {
 

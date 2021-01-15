@@ -53,7 +53,7 @@ export class EventFormComponent implements OnInit {
     category: new FormControl('', [Validators.required]),
     trustLevel: new FormControl('', [Validators.required]),
     nrMaxParticipants: new FormControl(0),
-    textarea: new FormControl('')
+    textarea: new FormControl(''),
   });
 
   @ViewChild('textarea')
@@ -86,7 +86,7 @@ export class EventFormComponent implements OnInit {
     Object.keys(categroiesType).forEach(key => {
         const category = {
             value: key,
-            viewValue: key
+            viewValue: key,
         };
         this.categories.push(category);
     });
@@ -95,14 +95,14 @@ export class EventFormComponent implements OnInit {
   addTrustLevelOptions(currentUserTrustLevel: number): void {
     const noMinRequired = {
         value: 0,
-        viewValue: 'Any trust level'
+        viewValue: 'Any trust level',
     };
     this.trustLevelOptions.push(noMinRequired);
 
     for (let i = 1; i < currentUserTrustLevel; i++){
         const checkBoxOption = {
             value: i,
-            viewValue: i
+            viewValue: i,
         };
         this.trustLevelOptions.push(checkBoxOption);
     }
@@ -134,7 +134,7 @@ export class EventFormComponent implements OnInit {
       min_trust_level: this.eventForm.value.trustLevel,
       no_max_participants: this.eventForm.value.nrMaxParticipants,
       start_time: this.eventForm.value.startDate + 'T' + this.eventForm.value.startTime,
-      end_time: this.eventForm.value.endDate + 'T' + this.eventForm.value.endTime
+      end_time: this.eventForm.value.endDate + 'T' + this.eventForm.value.endTime,
     }).subscribe(() => {
       this.dialog.close();
     });

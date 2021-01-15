@@ -4,7 +4,7 @@ import { NavigationService } from 'src/app/services/navigation.service';
 @Component({
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
-  styleUrls: ['./sidenav.component.scss']
+  styleUrls: ['./sidenav.component.scss'],
 })
 export class SidenavComponent implements OnInit {
   // @ViewChild('drawer') drawerElementRef: ElementRef;

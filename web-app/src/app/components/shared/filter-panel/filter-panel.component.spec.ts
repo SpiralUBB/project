@@ -8,7 +8,7 @@ describe('FilterPanelComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FilterPanelComponent ]
+      declarations: [ FilterPanelComponent ],
     })
     .compileComponents();
   });

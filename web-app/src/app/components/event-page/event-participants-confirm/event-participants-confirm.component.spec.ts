@@ -8,7 +8,7 @@ describe('EventParticipantsConfirmComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EventParticipantsConfirmComponent ]
+      declarations: [ EventParticipantsConfirmComponent ],
     })
     .compileComponents();
   });

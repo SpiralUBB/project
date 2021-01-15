@@ -7,7 +7,7 @@ import { ApiService } from 'src/app/services/api.service';
 @Component({
   selector: 'app-register-form',
   templateUrl: './register-form.component.html',
-  styleUrls: ['./register-form.component.scss']
+  styleUrls: ['./register-form.component.scss'],
 })
 export class RegisterFormComponent implements OnInit {
 

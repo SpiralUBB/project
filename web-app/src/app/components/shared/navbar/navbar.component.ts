@@ -16,7 +16,7 @@ export class NavbarComponent implements OnInit {
     private dialog: MatDialog,
     private navigationService: NavigationService,
     private authService: AuthService,
-    private router: Router,
+    private router: Router
   ) {}
   isLoggedIn: boolean;
 

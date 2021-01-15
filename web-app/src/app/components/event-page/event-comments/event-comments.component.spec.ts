@@ -8,7 +8,7 @@ describe('EventCommentsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EventCommentsComponent ]
+      declarations: [ EventCommentsComponent ],
     })
     .compileComponents();
   });

@@ -7,7 +7,7 @@ import { DatePipe, formatDate } from '@angular/common';
 @Component({
   selector: 'app-event-history',
   templateUrl: './event-history.component.html',
-  styleUrls: ['./event-history.component.scss']
+  styleUrls: ['./event-history.component.scss'],
 })
 export class EventHistoryComponent implements OnInit {
 

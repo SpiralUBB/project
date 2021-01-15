@@ -77,5 +77,8 @@ export class ApiService {
     return this.http.get<Invitation>('/events/' + id + '/invitation');
   }
 
+  getEventInvitations(id: string): Observable<ApiResponse<Invitation[]>> {
+    return this.http.get<ApiResponse<Invitation[]>>('/events/' + id + '/invitations');
+  }
   
 }

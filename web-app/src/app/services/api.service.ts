@@ -30,7 +30,12 @@ export class ApiService {
     return this.http.get<AppEvent[]>('/events');
   }
 
-  getFilterEvents(categories: string[], startDate: string, endDate: string, own = false): Observable<any> {
+  getFilterEvents(
+    categories: string[],
+    startDate: string,
+    endDate: string,
+    own = false
+  ): Observable<any> {
     let params: HttpParams = new HttpParams();
 
     if (own === true) {
@@ -51,10 +56,10 @@ export class ApiService {
       params = params.append('date_end', endDate.toString());
     }
 
-    return this.http.get<any>('/events', {params});
+    return this.http.get<any>('/events', { params });
   }
 
-  getCategories(): Observable<any>{
+  getCategories(): Observable<any> {
     return this.http.get<string[]>('/events/categories');
   }
 
@@ -63,10 +68,10 @@ export class ApiService {
   }
 
   addComment(text: string, eventId: string): Observable<AppComment> {
-    return this.http.post<any>('/events/' + eventId + '/comments', {text});
+    return this.http.post<any>('/events/' + eventId + '/comments', { text });
   }
 
-  deleteComment(eventId: string, commentId: string): Observable<AppComment>{
+  deleteComment(eventId: string, commentId: string): Observable<AppComment> {
     return this.http.delete<any>('/events/' + eventId + '/comments/' + commentId);
   }
 
@@ -74,10 +79,10 @@ export class ApiService {
     return this.http.get<any>('/events/' + eventId + '/comments');
   }
 
-  getAttendedEvents(): Observable<any>{
+  getAttendedEvents(): Observable<any> {
     const params: HttpParams = new HttpParams().set('invitation_attend_status', 'attended');
 
-    return this.http.get<any>('/events', {params});
+    return this.http.get<any>('/events', { params });
   }
 
   getEventById(id: string): Observable<AppEvent> {
@@ -91,5 +96,4 @@ export class ApiService {
   addEvent(body: any): Observable<AppEvent> {
     return this.http.post<AppEvent>('/events', body);
   }
-
 }

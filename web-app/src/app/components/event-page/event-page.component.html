@@ -1,16 +1,14 @@
-<mat-tab-group *ngIf="(eventId$ | async) as idTemplate">
-    <mat-tab label="Details">
-        <app-event-details [eventId]="idTemplate"></app-event-details>
-    </mat-tab>
-    <mat-tab label="Comments">
-        <app-event-comments [eventId]="idTemplate"></app-event-comments>
-    </mat-tab>
-    <mat-tab label="Participants">
-        <app-event-participants [eventId]="idTemplate"></app-event-participants>
-    </mat-tab>
-    <mat-tab *ngIf="shouldConfirmInvitations" label="Confirm Participants">
-        <app-event-participants-confirm></app-event-participants-confirm>
-    </mat-tab>
+<mat-tab-group *ngIf="eventId$ | async as idTemplate">
+  <mat-tab label="Details">
+    <app-event-details [eventId]="idTemplate"></app-event-details>
+  </mat-tab>
+  <mat-tab label="Comments">
+    <app-event-comments [eventId]="idTemplate"></app-event-comments>
+  </mat-tab>
+  <mat-tab label="Participants">
+    <app-event-participants [eventId]="idTemplate"></app-event-participants>
+  </mat-tab>
+  <mat-tab *ngIf="shouldConfirmInvitations" label="Confirm Participants">
+    <app-event-participants-confirm></app-event-participants-confirm>
+  </mat-tab>
 </mat-tab-group>
-
-

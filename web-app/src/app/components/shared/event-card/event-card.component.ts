@@ -7,12 +7,9 @@ import { AppEvent } from 'src/app/models/app-event.interface';
   styleUrls: ['./event-card.component.scss'],
 })
 export class EventCardComponent implements OnInit {
-
   @Input() event: AppEvent;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

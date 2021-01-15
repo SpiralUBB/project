@@ -8,9 +8,8 @@ describe('EventHistoryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EventHistoryComponent ],
-    })
-    .compileComponents();
+      declarations: [EventHistoryComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

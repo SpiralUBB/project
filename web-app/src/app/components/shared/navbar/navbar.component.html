@@ -1,23 +1,51 @@
 <mat-toolbar color="primary">
-    <div class = "logo">
-        <button (click)="toggleSidenav()" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-            <mat-icon>menu</mat-icon>
-        </button>
-        <span>HypΣvent</span>
-        
-    </div>
-    <div>
-        <button *ngIf = "this.isLoggedIn === false" (click)="openLoginDialog()" mat-button color="secondary" class="example-icon favorite-icon" >
-            Login
-        </button>
-        <button *ngIf = "this.isLoggedIn === false" (click)="openRegisterDialog()" mat-button color="secondary" class="example-icon" >
-            Register
-        </button>
-        <button *ngIf = "this.isLoggedIn === true " (click)="openProfile()" mat-button color="secondary" class="example-icon">
-            Profile
-        </button>
-        <button *ngIf = "this.isLoggedIn === true" (click)="logout()" mat-button color="secondary" class="example-icon" >
-            Logout
-        </button>
-    </div>
+  <div class="logo">
+    <button
+      (click)="toggleSidenav()"
+      mat-icon-button
+      class="example-icon"
+      aria-label="Example icon-button with menu icon"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>HypΣvent</span>
+  </div>
+  <div>
+    <button
+      *ngIf="this.isLoggedIn === false"
+      (click)="openLoginDialog()"
+      mat-button
+      color="secondary"
+      class="example-icon favorite-icon"
+    >
+      Login
+    </button>
+    <button
+      *ngIf="this.isLoggedIn === false"
+      (click)="openRegisterDialog()"
+      mat-button
+      color="secondary"
+      class="example-icon"
+    >
+      Register
+    </button>
+    <button
+      *ngIf="this.isLoggedIn === true"
+      (click)="openProfile()"
+      mat-button
+      color="secondary"
+      class="example-icon"
+    >
+      Profile
+    </button>
+    <button
+      *ngIf="this.isLoggedIn === true"
+      (click)="logout()"
+      mat-button
+      color="secondary"
+      class="example-icon"
+    >
+      Logout
+    </button>
+  </div>
 </mat-toolbar>

@@ -3,7 +3,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CategoryDialogComponent } from './category-dialog/category-dialog.component';
 
-
 @Component({
   selector: 'app-filter-panel',
   templateUrl: './filter-panel.component.html',
@@ -29,9 +28,9 @@ export class FilterPanelComponent {
 
     const dialogRef = this.dialog.open(CategoryDialogComponent, dialogConfig);
 
-    dialogRef.afterClosed().subscribe(
-        data => this.checkedCategories = data
-    );
+    dialogRef
+      .afterClosed()
+      .subscribe((data) => (this.checkedCategories = data));
   }
 
   filterEvents(): void {
@@ -41,7 +40,7 @@ export class FilterPanelComponent {
     let startDate = '';
     let endDate = '';
 
-    if (this.checkedCategories?.length > 0){
+    if (this.checkedCategories?.length > 0) {
       supportTypeFilter = true;
     }
 
@@ -53,14 +52,24 @@ export class FilterPanelComponent {
     if (this.range.value.start !== null) {
       supportDateFilter = true;
       const selectedDate = this.range.value.start;
-      startDate = selectedDate.getFullYear() + '-' + (selectedDate.getMonth() + 1) + '-' + selectedDate.getDay();
+      startDate =
+        selectedDate.getFullYear() +
+        '-' +
+        (selectedDate.getMonth() + 1) +
+        '-' +
+        selectedDate.getDay();
       date.startDate = startDate;
     }
 
     if (this.range.value.end !== null) {
       supportDateFilter = true;
       const selectedDate = this.range.value.end;
-      endDate = selectedDate.getFullYear() + '-' + (selectedDate.getMonth() + 1) + '-' + selectedDate.getDay();
+      endDate =
+        selectedDate.getFullYear() +
+        '-' +
+        (selectedDate.getMonth() + 1) +
+        '-' +
+        selectedDate.getDay();
       date.endDate = endDate;
     }
 
@@ -87,8 +96,8 @@ export class FilterPanelComponent {
 
   deleteCategory(name: string): void {
     console.log(name);
-    for (let i = 0; i < this.checkedCategories.length; i++){
-      if (this.checkedCategories[i] === name){
+    for (let i = 0; i < this.checkedCategories.length; i++) {
+      if (this.checkedCategories[i] === name) {
         this.checkedCategories.splice(i, 1);
       }
     }

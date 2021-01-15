@@ -24,7 +24,6 @@ export class NavbarComponent implements OnInit {
     this.authService.currentUser$.subscribe((currentUser) => {
       this.isLoggedIn = !!currentUser;
     });
-
   }
 
   openLoginDialog(): void {
@@ -40,7 +39,7 @@ export class NavbarComponent implements OnInit {
   }
 
   logout(): void {
-      this.authService.logout();
+    this.authService.logout();
   }
 
   toggleSidenav(): void {

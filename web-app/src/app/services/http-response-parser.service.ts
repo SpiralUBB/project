@@ -18,10 +18,7 @@ export class HttpResponseParserService implements HttpInterceptor {
 
   constructor() {}
 
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const newReq = req.clone({
       url: this.apiBasePath + req.url,
       body: this.remapKeysToSnakeCase(req.body),

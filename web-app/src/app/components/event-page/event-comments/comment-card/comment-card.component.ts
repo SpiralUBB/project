@@ -14,12 +14,11 @@ export class CommentCardComponent implements OnInit {
   @Output()
   deleteString: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  deleteComment(): void{
+  deleteComment(): void {
     console.log(this.comment.id);
     this.deleteString.emit(this.comment.id);
   }

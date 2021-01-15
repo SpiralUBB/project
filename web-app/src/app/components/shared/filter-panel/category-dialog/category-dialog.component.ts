@@ -8,10 +8,12 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./category-dialog.component.scss'],
 })
 export class CategoryDialogComponent implements OnInit {
+  categories: { name; checked }[] = [];
 
-  categories: {name, checked}[] = [];
-
-  constructor(private apiService: ApiService, private dialogRef: MatDialogRef<CategoryDialogComponent>) { }
+  constructor(
+    private apiService: ApiService,
+    private dialogRef: MatDialogRef<CategoryDialogComponent>
+  ) {}
 
   ngOnInit(): void {
     this.getCategories();
@@ -19,21 +21,20 @@ export class CategoryDialogComponent implements OnInit {
 
   getCategories(): void {
     this.apiService.getCategories().subscribe((eventsRes) => {
-      Object.keys(eventsRes).forEach(key => {
-        this.categories.push({name: key, checked: false});
+      Object.keys(eventsRes).forEach((key) => {
+        this.categories.push({ name: key, checked: false });
       });
     });
   }
 
-
   save(): void {
     const values = this.categories
-              .filter(opt => opt.checked)
-              .map(opt => opt.name);
+      .filter((opt) => opt.checked)
+      .map((opt) => opt.name);
     this.dialogRef.close(values);
-}
+  }
 
   close(): void {
-      this.dialogRef.close();
+    this.dialogRef.close();
   }
 }

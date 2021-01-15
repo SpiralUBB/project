@@ -1,4 +1,4 @@
-export interface MenuEntry{
-    title: string;
-    url: string;
+export interface MenuEntry {
+  title: string;
+  url: string;
 }

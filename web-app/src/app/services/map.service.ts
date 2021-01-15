@@ -28,11 +28,7 @@ export class MapService {
     center: latLng(46.879966, -121.726909),
   };
 
-  constructor(
-    private apiService: ApiService,
-    private dialog: MatDialog,
-    private ngZone: NgZone
-  ) {
+  constructor(private apiService: ApiService, private dialog: MatDialog, private ngZone: NgZone) {
     this.initMap();
   }
 

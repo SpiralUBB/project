@@ -14,7 +14,6 @@ export interface AppEvent {
   locationPoints: [x: number, y: number];
 }
 
-
 export interface EventOwner {
   firstName: string;
   lastName: string;

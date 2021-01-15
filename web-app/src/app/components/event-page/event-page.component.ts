@@ -13,8 +13,10 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./event-page.component.scss'],
 })
 export class EventPageComponent implements OnInit {
-  constructor(private activatedRoute: ActivatedRoute,
-              private apiService: ApiService) {}
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private apiService: ApiService
+  ) {}
 
   public eventId$: Observable<string>;
   private id: string;
@@ -41,33 +43,34 @@ export class EventPageComponent implements OnInit {
     this.eventId$.subscribe((id) => {
       this.id = id;
     });
-    this.eventId$.pipe(
-      switchMap((id) => {
-        this.id = id;
-        return this.apiService.getEventById(this.id);
-      }),
-      switchMap((event: AppEvent) => {
-        this.event = event;
-        this.compareTime(event.startTime, event.endTime);
-        return this.apiService.getCurrentUser();
-
-      }),
-      switchMap((user: User) => {
-        this.user = user;
-        this.isOwner = this.user.username === this.event.owner.username;
-        this.shouldConfirmInvitations = this.isOwner && this.isEventInFuture;
-        return this.apiService.getEventInvitationForUser(this.id);
-      }),
-      switchMap((value: Invitation) => {
-        this.userInvitaionType = value.statusText;
-        this.isViewer = false;
-        return of([]);
-      }),
-      catchError((error: any) => {
-        this.isViewer = true;
-        return of([]);
-      })
-    ).subscribe();
+    this.eventId$
+      .pipe(
+        switchMap((id) => {
+          this.id = id;
+          return this.apiService.getEventById(this.id);
+        }),
+        switchMap((event: AppEvent) => {
+          this.event = event;
+          this.compareTime(event.startTime, event.endTime);
+          return this.apiService.getCurrentUser();
+        }),
+        switchMap((user: User) => {
+          this.user = user;
+          this.isOwner = this.user.username === this.event.owner.username;
+          this.shouldConfirmInvitations = this.isOwner && this.isEventInFuture;
+          return this.apiService.getEventInvitationForUser(this.id);
+        }),
+        switchMap((value: Invitation) => {
+          this.userInvitaionType = value.statusText;
+          this.isViewer = false;
+          return of([]);
+        }),
+        catchError((error: any) => {
+          this.isViewer = true;
+          return of([]);
+        })
+      )
+      .subscribe();
   }
 
   compareTime(startDate: string, endDate: string): void {
@@ -79,12 +82,12 @@ export class EventPageComponent implements OnInit {
       this.isEventInFuture = true;
       this.isEventOngoing = false;
       this.isEventPast = false;
-    }else{
+    } else {
       if (localTime < endTime) {
         this.isEventInFuture = false;
         this.isEventOngoing = true;
         this.isEventPast = false;
-      }else{
+      } else {
         this.isEventInFuture = false;
         this.isEventOngoing = false;
         this.isEventPast = true;

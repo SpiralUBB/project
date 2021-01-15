@@ -7,12 +7,9 @@ import { User } from 'src/app/models/user';
   styleUrls: ['./participant-card.component.scss'],
 })
 export class ParticipantCardComponent implements OnInit {
-
   @Input() user: User;
   @Input() canLeaveFeedback = true;
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

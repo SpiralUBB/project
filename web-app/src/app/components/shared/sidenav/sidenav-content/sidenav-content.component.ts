@@ -7,11 +7,9 @@ import { NavigationService } from 'src/app/services/navigation.service';
   styleUrls: ['./sidenav-content.component.scss'],
 })
 export class SidenavContentComponent implements OnInit {
+  constructor(public navigationService: NavigationService) {}
 
-  constructor(public navigationService: NavigationService) { }
-
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   toggleSideNav(): void {
     this.navigationService.toggleSidenav();

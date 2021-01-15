@@ -9,7 +9,7 @@ import { NavigationService } from 'src/app/services/navigation.service';
 export class SidenavComponent implements OnInit {
   // @ViewChild('drawer') drawerElementRef: ElementRef;
 
-  constructor(public navigationService: NavigationService) { }
+  constructor(public navigationService: NavigationService) {}
 
   ngOnInit(): void {
     this.navigationService.sidenavToggled$.subscribe((val) => {

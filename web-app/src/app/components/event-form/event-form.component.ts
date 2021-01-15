@@ -17,14 +17,12 @@ interface CheckBoxSelection {
   templateUrl: './event-form.component.html',
   styleUrls: ['./event-form.component.scss'],
 })
-
 export class EventFormComponent implements OnInit {
-
   constructor(
     private activatedRoute: ActivatedRoute,
     private apiService: ApiService,
     private dialog: MatDialogRef<EventFormComponent>
-  ) { }
+  ) {}
   eventId$: Observable<string>;
   categories: CheckBoxSelection[] = [];
   trustLevelOptions: CheckBoxSelection[] = [];
@@ -73,38 +71,42 @@ export class EventFormComponent implements OnInit {
       map((params) => params.id)
     );
 
-    this.apiService.getCategories().pipe(take(1)).subscribe(
-        (res) => this.addEventsCategories(res)
-    );
+    this.apiService
+      .getCategories()
+      .pipe(take(1))
+      .subscribe((res) => this.addEventsCategories(res));
 
-    this.apiService.getCurrentUser().pipe(take(1)).subscribe(
-        (currentUser) => this.addTrustLevelOptions(currentUser.trustLevel)
-    );
+    this.apiService
+      .getCurrentUser()
+      .pipe(take(1))
+      .subscribe((currentUser) =>
+        this.addTrustLevelOptions(currentUser.trustLevel)
+      );
   }
 
   addEventsCategories(categroiesType: any): void {
-    Object.keys(categroiesType).forEach(key => {
-        const category = {
-            value: key,
-            viewValue: key,
-        };
-        this.categories.push(category);
+    Object.keys(categroiesType).forEach((key) => {
+      const category = {
+        value: key,
+        viewValue: key,
+      };
+      this.categories.push(category);
     });
   }
 
   addTrustLevelOptions(currentUserTrustLevel: number): void {
     const noMinRequired = {
-        value: 0,
-        viewValue: 'Any trust level',
+      value: 0,
+      viewValue: 'Any trust level',
     };
     this.trustLevelOptions.push(noMinRequired);
 
-    for (let i = 1; i < currentUserTrustLevel; i++){
-        const checkBoxOption = {
-            value: i,
-            viewValue: i,
-        };
-        this.trustLevelOptions.push(checkBoxOption);
+    for (let i = 1; i < currentUserTrustLevel; i++) {
+      const checkBoxOption = {
+        value: i,
+        viewValue: i,
+      };
+      this.trustLevelOptions.push(checkBoxOption);
     }
   }
 
@@ -113,7 +115,7 @@ export class EventFormComponent implements OnInit {
   }
 
   onMouseOver(): void {
-    if (this.textarea.nativeElement !== document.activeElement){
+    if (this.textarea.nativeElement !== document.activeElement) {
       this.textarea.nativeElement.style.border = '2px solid black';
     }
   }
@@ -125,23 +127,29 @@ export class EventFormComponent implements OnInit {
   onSubmit(): void {
     // TODO: Use EventEmitter with form value
     console.warn(this.eventForm.value);
-    this.apiService.addEvent({
-      title: this.eventForm.value.title,
-      location: this.eventForm.value.location,
-      description: this.eventForm.value.textarea,
-      visibility: this.eventForm.value.visibility,
-      category: this.eventForm.value.category,
-      min_trust_level: this.eventForm.value.trustLevel,
-      no_max_participants: this.eventForm.value.nrMaxParticipants,
-      start_time: this.eventForm.value.startDate + 'T' + this.eventForm.value.startTime,
-      end_time: this.eventForm.value.endDate + 'T' + this.eventForm.value.endTime,
-    }).subscribe(() => {
-      this.dialog.close();
-    });
+    this.apiService
+      .addEvent({
+        title: this.eventForm.value.title,
+        location: this.eventForm.value.location,
+        description: this.eventForm.value.textarea,
+        visibility: this.eventForm.value.visibility,
+        category: this.eventForm.value.category,
+        min_trust_level: this.eventForm.value.trustLevel,
+        no_max_participants: this.eventForm.value.nrMaxParticipants,
+        start_time:
+          this.eventForm.value.startDate + 'T' + this.eventForm.value.startTime,
+        end_time:
+          this.eventForm.value.endDate + 'T' + this.eventForm.value.endTime,
+      })
+      .subscribe(() => {
+        this.dialog.close();
+      });
   }
 
   onMapReady(leafletMap: Map): void {
     console.log('map ready');
-    leafletMap.on('click', <LeafletMouseEvent>(e) => { console.log(e.latlng); });
+    leafletMap.on('click', <LeafletMouseEvent>(e) => {
+      console.log(e.latlng);
+    });
   }
 }

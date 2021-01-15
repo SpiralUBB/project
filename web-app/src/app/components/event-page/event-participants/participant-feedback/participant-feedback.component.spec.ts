@@ -8,9 +8,8 @@ describe('ParticipantFeedbackComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ParticipantFeedbackComponent ],
-    })
-    .compileComponents();
+      declarations: [ParticipantFeedbackComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

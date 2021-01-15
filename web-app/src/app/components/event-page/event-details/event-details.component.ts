@@ -6,12 +6,9 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./event-details.component.scss'],
 })
 export class EventDetailsComponent implements OnInit {
-
   @Input() eventId: string;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

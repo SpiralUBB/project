@@ -14,33 +14,38 @@ export class EventCommentsComponent implements OnInit {
   public comments: AppComment[];
   public user: User;
 
-  constructor(private apiService: ApiService, public authService: AuthService) {}
+  constructor(
+    private apiService: ApiService,
+    public authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.getComments();
-    this.authService.currentUser$.subscribe((user) => this.user = user);
+    this.authService.currentUser$.subscribe((user) => (this.user = user));
   }
 
   public deleteComment(commentId: string): void {
     console.log(commentId);
-    this.apiService.deleteComment(this.eventId, commentId).subscribe(() => this.getComments());
+    this.apiService
+      .deleteComment(this.eventId, commentId)
+      .subscribe(() => this.getComments());
   }
 
-
-  private getComments(): void{
+  private getComments(): void {
     this.apiService.getComments(this.eventId).subscribe((components) => {
       console.log(components);
       this.comments = Object.values(components.items);
     });
   }
 
-
-  sendComment(): void{
-      if (this.comment.length > 0) {
-        this.apiService.addComment(this.comment, this.eventId).subscribe((comment) => {
+  sendComment(): void {
+    if (this.comment.length > 0) {
+      this.apiService
+        .addComment(this.comment, this.eventId)
+        .subscribe((comment) => {
           this.comments = [...this.comments, comment];
         });
-        this.comment = '';
-      }
+      this.comment = '';
+    }
   }
 }

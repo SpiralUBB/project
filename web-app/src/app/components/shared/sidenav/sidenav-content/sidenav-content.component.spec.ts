@@ -8,9 +8,8 @@ describe('SidenavContentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SidenavContentComponent ],
-    })
-    .compileComponents();
+      declarations: [SidenavContentComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

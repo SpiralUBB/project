@@ -7,12 +7,8 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./event-participants.component.scss'],
 })
 export class EventParticipantsComponent implements OnInit {
-
   @Input() eventId: string;
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService) {}
 
-  ngOnInit(): void {
-
-  }
-
+  ngOnInit(): void {}
 }

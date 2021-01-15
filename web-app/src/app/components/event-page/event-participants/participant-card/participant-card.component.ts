@@ -11,6 +11,8 @@ import { ParticipantFeedbackComponent } from '../participant-feedback/participan
 export class ParticipantCardComponent implements OnInit {
   @Input() user: User;
   @Input() canLeaveFeedback = true;
+  @Input() eventId: string;
+
   constructor(
     private dialog: MatDialog
   ) {}
@@ -20,7 +22,8 @@ export class ParticipantCardComponent implements OnInit {
   sendFeedback() {
     this.dialog.open(ParticipantFeedbackComponent, {
       data: {
-        user: this.user 
+        user: this.user,
+        eventId: this.eventId
       }
     })
   }

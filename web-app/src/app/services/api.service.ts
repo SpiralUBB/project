@@ -121,4 +121,9 @@ export class ApiService {
     return this.http.patch<any>(`/events/${eventId}/invitations/${invitationId}`, {attend_status: attStatus});
   }
   
+  putFeedback(username: string, eventId: string, points: number, message: string) {
+    const params: HttpParams = new HttpParams().set("to_user", username).set("event_id", eventId);
+    return this.http.put<any>("/feedbacks", {points, message}, {params});
+  }
+  
 }

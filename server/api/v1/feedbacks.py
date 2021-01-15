@@ -12,7 +12,7 @@ from utils.errors import UserDoesNotExist, EventDoesNotExist, UserFeedbackAlread
 api = Blueprint('api_v1_feedbacks', __name__)
 
 
-@api.route('/')
+@api.route('')
 @retrieve_logged_in_user()
 def feedbacks_get_feedback(user_service: UserService, event_service: EventService,
                            event_invitation_service: EventInvitationService,
@@ -47,7 +47,7 @@ def feedbacks_get_feedback(user_service: UserService, event_service: EventServic
     return jsonify(user_feedback.to_dict(with_details=True))
 
 
-@api.route('/', methods=['PUT'])
+@api.route('', methods=['PUT'])
 @retrieve_logged_in_user()
 def feedbacks_put_feedback(user_service: UserService, event_service: EventService,
                            event_invitation_service: EventInvitationService,

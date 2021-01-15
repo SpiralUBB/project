@@ -34,7 +34,9 @@
   </mat-card-content>
 
   <mat-card-actions>
-    <!-- <button mat-button>LIKE</button>
-    <button mat-button>SHARE</button> -->
+    <button *ngIf="showJoinButton" (click)="joinEvent()" color="primary" mat-raised-button>Join event</button>
+    <mat-chip-list *ngIf="!showJoinButton">
+      <mat-chip color="primary">Invitation status: {{invitationStatus}}</mat-chip>
+    </mat-chip-list>
   </mat-card-actions>
 </mat-card>

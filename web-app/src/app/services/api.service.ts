@@ -12,7 +12,7 @@ import { Invitation } from '../models/invitaion.interface';
   providedIn: 'root',
 })
 export class ApiService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   login(user: LoginUser): Observable<User> {
     return this.http.post<User>('/user/login', user);
@@ -36,7 +36,7 @@ export class ApiService {
     endDate: string,
     own = false,
     invitation_status = null,
-    invitation_attend_status = null, 
+    invitation_attend_status = null,
 
   ): Observable<any> {
     let params: HttpParams = new HttpParams();
@@ -45,7 +45,7 @@ export class ApiService {
       params = params.append('own', 'true');
     }
     if (own === false) {
-      params = params.append('own','false');
+      params = params.append('own', 'false');
     }
 
     if (categories.length > 0) {
@@ -62,12 +62,12 @@ export class ApiService {
       params = params.append('date_end', endDate.toString());
     }
 
-    if(invitation_status){
+    if (invitation_status) {
       params = params.append('invitation_status', invitation_status);
     }
     
-    if(invitation_attend_status){
-      params = params.append('invitation_attend_status',invitation_attend_status);
+    if (invitation_attend_status) {
+      params = params.append('invitation_attend_status', invitation_attend_status);
     }
 
     return this.http.get<any>('/events', { params });
@@ -107,6 +107,10 @@ export class ApiService {
 
   addEvent(body: any): Observable<AppEvent> {
     return this.http.post<AppEvent>('/events', body);
+  }
+
+  joinEvent(eventId: string): Observable<Invitation> {
+    return this.http.put<Invitation>(`/events/${eventId}/invitation`, {});
   }
 
   

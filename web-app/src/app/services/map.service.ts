@@ -39,7 +39,7 @@ export class MapService {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
         this.map.center = latLng(latitude, longitude);
-        this.map.zoom = 15;
+        this.map.zoom = 14;
       });
     }
 

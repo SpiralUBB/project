@@ -25,7 +25,7 @@ export class EventPageComponent implements OnInit {
   private isEventOngoing = false;
   private isEventInFuture = false;
   private isViewer = true;
-  private userInvitaionType: string;
+  private userInvitationType: string;
 
   private shouldConfirmInvitations = false;
 
@@ -58,7 +58,7 @@ export class EventPageComponent implements OnInit {
           return this.apiService.getEventInvitationForUser(this.id);
         }),
         switchMap((value: Invitation) => {
-          this.userInvitaionType = value.statusText;
+          this.userInvitationType = value.statusText;
           this.isViewer = false;
           return of([]);
         }),
@@ -67,7 +67,10 @@ export class EventPageComponent implements OnInit {
           return of([]);
         })
       )
-      .subscribe();
+      .subscribe(() => {
+        console.log(this.isOwner);
+        console.log(this.isEventPast);
+      });
   }
 
   compareTime(startDate: string, endDate: string): void {
@@ -90,5 +93,10 @@ export class EventPageComponent implements OnInit {
         this.isEventPast = true;
       }
     }
+  }
+
+  handleJoinedEvent(invitation: Invitation) {
+    this.userInvitationType = invitation.statusText;
+    this.isViewer = false;
   }
 }

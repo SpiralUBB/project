@@ -91,7 +91,7 @@ export class EventFormComponent implements OnInit {
     Object.keys(categroiesType).forEach((key) => {
       const category = {
         value: key,
-        viewValue: key,
+        viewValue: categroiesType[key],
       };
       this.categories.push(category);
     });

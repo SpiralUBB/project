@@ -1,4 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { take } from 'rxjs/operators';
+import { AppEvent } from 'src/app/models/app-event.interface';
 import { Invitation } from 'src/app/models/invitaion.interface';
 import { ApiService } from 'src/app/services/api.service';
 
@@ -7,9 +9,10 @@ import { ApiService } from 'src/app/services/api.service';
   templateUrl: './event-participants-confirm.component.html',
   styleUrls: ['./event-participants-confirm.component.scss'],
 })
-export class EventParticipantsConfirmComponent implements OnInit {
+export class EventParticipantsConfirmComponent implements OnInit, OnChanges {
 
   @Input() eventId: string;
+  appEvent: AppEvent;
 
   constructor(private apiService: ApiService) { }
 
@@ -19,10 +22,15 @@ export class EventParticipantsConfirmComponent implements OnInit {
     this.loadInvitations();
   }
 
+  ngOnChanges(): void {
+    this.apiService.getEventById(this.eventId).pipe(take(1)).subscribe(res => {
+      this.appEvent = res;
+    })
+  }
+
   loadInvitations(): void {
     this.apiService.getEventInvitations(this.eventId).subscribe(
       (response: any) => {
-        debugger;
         let invitations = response.items;
         let keys = Object.keys(response.items);
         keys.forEach(key => {

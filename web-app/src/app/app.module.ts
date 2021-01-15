@@ -41,6 +41,7 @@ import { ProfileViewComponent } from './components/shared/profile-view/profile-v
 import { EventHistoryComponent } from './components/shared/event-history/event-history.component';
 import { DatePipe } from '@angular/common';
 import { EventsUpcomingComponent} from './components/shared/events-upcoming/events-upcoming.component';
+import { EventConfirmAttendanceComponent } from './components/event-page/event-confirm-attendance/event-confirm-attendance.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { EventsUpcomingComponent} from './components/shared/events-upcoming/even
     ProfileViewComponent,
     EventHistoryComponent,
     EventsUpcomingComponent,
+    EventConfirmAttendanceComponent,
   ],
   imports: [
     MaterialModule,

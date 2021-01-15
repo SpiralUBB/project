@@ -5,7 +5,6 @@ from mongoengine import connect
 
 from config import DB_USERNAME, DB_NAME, DB_PASSWORD, DB_HOST
 from models.Event import event_visibility_map
-from models.EventInvitation import EVENT_INVITATION_STATUS_ACCEPTED_KEY, EVENT_INVITATION_ATTEND_STATUS_ATTENDED_KEY
 from services.EventCommentService import EventCommentService
 from services.EventInvitationService import EventInvitationService
 from services.EventService import EventService
@@ -60,7 +59,7 @@ for user in users:
         event = event_service.add(user,
                                   'Beuta {}'.format(event_visibility_map.to_value(visibility)),
                                   'Infinity', [-23.0, 54.0],
-                                  '2021-11-29T00:00:00.000000+02:00', '2021-11-29T08:30:00.000000Z',
+                                  '2020-11-29T00:00:00.000000+02:00', '2020-11-29T08:30:00.000000Z',
                                   0, 30,
                                   'Hai cu noi la bere',
                                   visibility,
@@ -93,16 +92,3 @@ for event in events:
     for i in range(5):
         for user in users:
             event_comment_service.add(user, event, 'This is a comment by {}. Hello'.format(user.first_name))
-
-user = user_service.find_one_by(username='test_user')
-for visibility in event_visibility_map.keys():
-    event = event_service.add(user,
-                                      'Test created {}'.format(event_visibility_map.to_value(visibility)),
-                                      'Infinity', [-23.0, 54.0],
-                                      '2021-11-29T00:00:00.000000+02:00', '2021-11-29T08:30:00.000000Z',
-                                      0, 30,
-                                      'Hai cu noi la bere',
-                                      visibility,
-                                      'Food & Drink')
-    user2=user_service.find_one_by(username='admin')
-    event_invitation_service.add(event,user2, status=EVENT_INVITATION_STATUS_ACCEPTED_KEY)

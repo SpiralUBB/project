@@ -51,22 +51,22 @@ def event_to_restricted_dict(event: Event, user: User, full_details_event_ids: L
 
 @api.route('/visibilities')
 def events_get_visibilities():
-    return jsonify(event_visibility_map.to_reverse_dict())
+    return jsonify(event_visibility_map.to_dict())
 
 
 @api.route('/categories')
 def events_get_categories():
-    return jsonify(event_category_map.to_reverse_dict())
+    return jsonify(event_category_map.to_dict())
 
 
 @api.route('/invitation_statuses')
 def events_get_invitation_statuses():
-    return jsonify(event_invitation_status_map.to_reverse_dict())
+    return jsonify(event_invitation_status_map.to_dict())
 
 
 @api.route('/invitation_attend_statuses')
 def events_get_invitation_attend_statuses():
-    return jsonify(event_invitation_attend_status_map.to_reverse_dict())
+    return jsonify(event_invitation_attend_status_map.to_dict())
 
 
 @api.route('')

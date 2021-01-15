@@ -1,22 +1,13 @@
-import {
-  HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest,
-  HttpResponse,
-} from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from "@angular/common/http";
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { isObject } from 'util';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HttpResponseParserService implements HttpInterceptor {
   private apiBasePath = 'http://localhost:5000/api/v1';
-
-  constructor() {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const newReq = req.clone({
@@ -29,9 +20,7 @@ export class HttpResponseParserService implements HttpInterceptor {
       map((event: HttpEvent<any>) => {
         if (event instanceof HttpResponse) {
           const camelCaseObject = this.remapKeysToCamelCase(event.body);
-          const modEvent = event.clone({ body: camelCaseObject });
-
-          return modEvent;
+          return event.clone({ body: camelCaseObject });
         }
       })
     );
@@ -55,17 +44,10 @@ export class HttpResponseParserService implements HttpInterceptor {
   }
 
   private toCamel(toParse: string): string {
-    console.log(toParse);
-    // const toReturn = toParse.replace('/([-_][a-z])/g',
-    //   (group) => group.toUpperCase()
-    //     .replace('-', '')
-    //     .replace('_', ''));
-    const toReturn = toParse
+    return toParse
       .split('_')
       .map((x, i) => (i > 0 ? x[0].toUpperCase() : x[0]) + x.slice(1))
       .join('');
-    console.log(toReturn);
-    return toReturn;
   }
 
   private remapKeysToSnakeCase(o: object): object {
@@ -86,17 +68,10 @@ export class HttpResponseParserService implements HttpInterceptor {
   }
 
   private toSnake(toParse: string): string {
-    console.log(toParse);
-    // const toReturn = toParse.replace('/([-_][a-z])/g',
-    //   (group) => group.toUpperCase()
-    //     .replace('-', '')
-    //     .replace('_', ''));
-    const toReturn = toParse
+    return toParse
       .replace(/(?:^|\.?)([A-Z])/g, (x, y) => {
         return '_' + y.toLowerCase();
       })
       .replace(/^_/, '');
-    console.log(toReturn);
-    return toReturn;
   }
 }

@@ -1,1 +1,3 @@
-<p>{{ eventId }}</p>
+<app-participant-card *ngFor="let user of participants" [user]="user" [canLeaveFeedback]="isOwner">
+
+</app-participant-card>

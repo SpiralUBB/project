@@ -7,5 +7,5 @@ export interface Invitation {
   id: string;
   status: number;
   statusText: string;
-  user: User;
+  user?: User;
 }

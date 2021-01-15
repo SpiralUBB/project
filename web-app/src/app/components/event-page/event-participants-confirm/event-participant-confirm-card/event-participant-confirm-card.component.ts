@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Invitation } from 'src/app/models/invitaion.interface';
+import { User } from 'src/app/models/user';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-event-participant-confirm-card',
@@ -6,5 +9,24 @@ import { Component } from '@angular/core';
   styleUrls: ['./event-participant-confirm-card.component.scss'],
 })
 export class EventParticipantConfirmCardComponent {
-  constructor() {}
+
+  @Input() invitation: Invitation;
+  @Output() patchInvitation = new EventEmitter<any>();
+  constructor(private apiService: ApiService) {}
+
+  acceptInvitation(): void {
+    let data = {
+      invitaionId: this.invitation.id,
+      status: "accepted"
+    };
+    this.patchInvitation.emit(data);
+  }
+
+  declineInvitation(): void {
+    let data = {
+      invitaionId: this.invitation.id,
+      status: "denied"
+    };
+    this.patchInvitation.emit(data);
+  }
 }

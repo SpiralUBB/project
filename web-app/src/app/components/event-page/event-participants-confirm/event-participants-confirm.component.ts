@@ -1,6 +1,4 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { take } from 'rxjs/operators';
-import { AppEvent } from 'src/app/models/app-event.interface';
 import { Invitation } from 'src/app/models/invitaion.interface';
 import { ApiService } from 'src/app/services/api.service';
 
@@ -13,21 +11,30 @@ export class EventParticipantsConfirmComponent implements OnInit {
   @Input() eventId: string;
   constructor(private apiService: ApiService) {}
 
-  private invitations: Invitation[];
+  invitations: Invitation[] = [];
 
   ngOnInit(): void {
     this.loadInvitations();
   }
 
   loadInvitations(): void {
+    this.invitations = [];
     this.apiService.getEventInvitations(this.eventId).subscribe((response: any) => {
       const invitations = response.items;
       const keys = Object.keys(response.items);
       keys.forEach((key) => {
-        if (invitations[key].staus === 0) {
+        if (invitations[key].status === 0) {
           this.invitations.push(invitations[key]);
         }
       });
     });
+  }
+
+  patchInvitaion(data: any): void {
+    this.apiService.patchInvitationStatus(this.eventId, data.invitaionId, data.status).subscribe(
+      () => {
+        this.loadInvitations();
+      }
+    )
   }
 }

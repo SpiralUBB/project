@@ -3,16 +3,14 @@
     <div class="name-time">
       <div class="name">{{ this.comment.author.firstName }}</div>
       <div class="time">{{ this.comment.time | date: "dd-MM-yyyy" }}</div>
+      <div class="delete"
+      (click)="deleteComment()"
+      *ngIf="comment.author.username == username"
+    >
+      Delete
+    </div>
     </div>
     <div class="text">{{ this.comment.text }}</div>
   </div>
-  <button
-    mat-mini-fab
-    color="primary"
-    aria-label="delete-button"
-    (click)="deleteComment()"
-    *ngIf="comment.author.username == username"
-  >
-    <mat-icon>delete</mat-icon>
-  </button>
+
 </div>

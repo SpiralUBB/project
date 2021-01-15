@@ -1,0 +1,13 @@
+<mat-card>
+    <mat-card-header>
+      <mat-card-title>{{invitation.user.username}}</mat-card-title>
+      <mat-card-subtitle>Nivelul {{invitation.user.trustLevel}}</mat-card-subtitle>
+      <div *ngIf="!shouldDisplayStatus" class="left">
+        <button mat-icon-button (click)="confirmAttendence()"><mat-icon>check</mat-icon></button>
+        <button mat-icon-button  (click)="declineAttendence()"><mat-icon>clear</mat-icon></button>
+      </div>
+      <div *ngIf="shouldDisplayStatus">
+          {{invitation.attendStatusText}}
+      </div>
+    </mat-card-header>
+  </mat-card>

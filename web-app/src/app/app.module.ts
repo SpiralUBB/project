@@ -42,6 +42,7 @@ import { EventHistoryComponent } from './components/shared/event-history/event-h
 import { DatePipe } from '@angular/common';
 import { EventsUpcomingComponent} from './components/shared/events-upcoming/events-upcoming.component';
 import { EventConfirmAttendanceComponent } from './components/event-page/event-confirm-attendance/event-confirm-attendance.component';
+import { EventConfirmAttendanceCardComponent } from './components/event-page/event-confirm-attendance/event-confirm-attendance-card/event-confirm-attendance-card.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,7 @@ import { EventConfirmAttendanceComponent } from './components/event-page/event-c
     EventHistoryComponent,
     EventsUpcomingComponent,
     EventConfirmAttendanceComponent,
+    EventConfirmAttendanceCardComponent,
   ],
   imports: [
     MaterialModule,

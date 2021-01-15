@@ -2,7 +2,7 @@
   font-size: smaller;
   display: flex;
   flex-direction: row;
-  padding: 10px 10px 10px 0px;
+  padding-bottom: 10px;
 }
 .time {
   margin-left: 10px;
@@ -11,6 +11,13 @@
 .name {
   font-weight: bolder;
 }
+
+.delete{
+  font-weight: bolder;
+  margin-left: 10px;
+  color: red;
+  cursor: pointer;
+}
 .comment-container {
   display: flex;
   flex-direction: row;
@@ -18,4 +25,13 @@
 }
 button {
   margin-left: 10px;
+}
+
+.text{
+  word-wrap: anywhere;
+}
+
+.comment-container{
+  padding-right: 16px;
+  padding-bottom: 25px;
 }

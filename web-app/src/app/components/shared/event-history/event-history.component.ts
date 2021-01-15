@@ -36,8 +36,8 @@ export class EventHistoryComponent implements OnInit {
         [],
         null,
         this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-        null,
         false,
+        null,
         'attended'
       )
       .subscribe((eventsRes) => {

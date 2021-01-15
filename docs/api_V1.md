@@ -268,9 +268,9 @@ Return the available visibility types, to be used when creating an event.
 
 ```
 {
-    "public": 0,
-    "unlisted": 1,
-    "whitelisted": 2
+    "0": "public",
+    "1": "unlisted",
+    "2": "whitelisted"
 }
 ```
 
@@ -284,11 +284,11 @@ Return the available categories, to be used when creating an event.
 
 ```
 {
-    "Arts": 0,
-    "Book Clubs": 1,
+    "0": "Arts",
+    "1": "Book Clubs",
     [... more properties ...]
-    "Sport & Fitness": 14,
-    "Tech": 15
+    "14": "Sport & Fitness",
+    "15": "Tech"
 }
 ```
 
@@ -498,9 +498,9 @@ Return the available invitation statuses, to be used when modifying an invitatio
 
 ```
 {
-    "accepted": 1,
-    "denied": 2,
-    "pending": 0
+    "0": "pending",
+    "1": "accepted",
+    "2": "denied"
 }
 ```
 
@@ -512,9 +512,9 @@ Return the available invitation attendance statuses, to be used when modifying a
 
 ```
 {
-    "attended": 1,
-    "missed": 2,
-    "unchecked": 0
+    "0": "unchecked",
+    "1": "attended",
+    "2": "missed"
 }
 ```
 

@@ -21,7 +21,7 @@ def make_error(base_class, name, code, status, default_message, **default_kwargs
         merged_kwargs = {}
         merged_kwargs.update(default_kwargs)
         merged_kwargs.update(kwargs)
-        base_class.__init__(self, code, status, message, **merged_kwargs)
+        base_class.__init__(self, message, code, status, **merged_kwargs)
 
     return type(name, (base_class,), {
         '__init__': __init__,

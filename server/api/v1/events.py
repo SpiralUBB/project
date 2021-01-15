@@ -51,22 +51,22 @@ def event_to_restricted_dict(event: Event, user: User, full_details_event_ids: L
 
 @api.route('/visibilities')
 def events_get_visibilities():
-    return jsonify(event_visibility_map.to_reverse_dict())
+    return jsonify(event_visibility_map.to_dict())
 
 
 @api.route('/categories')
 def events_get_categories():
-    return jsonify(event_category_map.to_reverse_dict())
+    return jsonify(event_category_map.to_dict())
 
 
 @api.route('/invitation_statuses')
 def events_get_invitation_statuses():
-    return jsonify(event_invitation_status_map.to_reverse_dict())
+    return jsonify(event_invitation_status_map.to_dict())
 
 
 @api.route('/invitation_attend_statuses')
 def events_get_invitation_attend_statuses():
-    return jsonify(event_invitation_attend_status_map.to_reverse_dict())
+    return jsonify(event_invitation_attend_status_map.to_dict())
 
 
 @api.route('')
@@ -85,11 +85,17 @@ def events_get(event_service: EventService, event_invitation_service: EventInvit
     own = request.args.get('own')
     user = request.user
     filter_owner = None
+    filter_exclude_owner = False
     invited_event_ids = None
     filter_event_ids = None
 
     if own:
         filter_owner = user
+
+    if own == 'true':
+        filter_exclude_owner = False
+    elif own == 'false':
+        filter_exclude_owner = True
 
     if user:
         invited_event_ids = event_invitation_service.find_for_user_status_event_ids(user)
@@ -101,7 +107,8 @@ def events_get(event_service: EventService, event_invitation_service: EventInvit
 
     events = event_service.find_visible_for_user(user, invited_event_ids, show_public=True, show_whitelist=True,
                                                  categories=categories, date_start=date_start, date_end=date_end,
-                                                 filter_ids=filter_event_ids, filter_owner=filter_owner)
+                                                 filter_ids=filter_event_ids, filter_owner=filter_owner,
+                                                 filter_exclude_owner=filter_exclude_owner, sort_newest_first=True)
 
     full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
     return jsonify(get_paginated_items_from_qs(events, event_to_restricted_dict, user, full_details_event_ids))

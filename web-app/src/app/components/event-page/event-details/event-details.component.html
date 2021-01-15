@@ -1,6 +1,12 @@
 <mat-card *ngIf="appEvent" class="example-card">
   <mat-card-header>
     <mat-card-title>{{ appEvent.title }}</mat-card-title>
+    <div class="no-participants" *ngIf='appEvent.noParticipants>=0'>
+      <mat-icon aria-hidden="false">how_to_reg</mat-icon>
+
+      <p class="no-participants-text"> {{appEvent.noParticipants}} / {{appEvent.noMaxParticipants}}</p>
+      
+    </div>
     <mat-card-subtitle *ngIf="!appEvent?.isLimitedDetails">
       <mat-icon inline="true">location_on</mat-icon>
       {{ appEvent.location }}
@@ -31,6 +37,7 @@
     <p>
       {{ appEvent.description }}
     </p>
+   
   </mat-card-content>
 
   <mat-card-actions>

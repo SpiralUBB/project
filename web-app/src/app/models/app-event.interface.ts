@@ -18,6 +18,7 @@ export interface AppEvent {
   isUnlimitedParticipants?: boolean;
   locationPointsRadiusMeters?: number;
   noMaxParticipants: number;
+  noParticipants?: number;
 }
 
 export interface EventOwner {

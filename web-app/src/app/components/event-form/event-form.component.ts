@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, FormControlName, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { latLng, tileLayer, Map } from 'leaflet';
@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
 
-interface CheckBoxSlection {
+interface CheckBoxSelection {
   value: number | string;
   viewValue: number | string;
 }
@@ -19,10 +19,16 @@ interface CheckBoxSlection {
 })
 
 export class EventFormComponent implements OnInit {
+
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private apiService: ApiService,
+    private dialog: MatDialogRef<EventFormComponent>
+  ) { }
   eventId$: Observable<string>;
-  categories: CheckBoxSlection[] = [];
-  trustLevelOptions: CheckBoxSlection[] = [];
-  show: boolean = false;
+  categories: CheckBoxSelection[] = [];
+  trustLevelOptions: CheckBoxSelection[] = [];
+  show = false;
   mapCenter;
 
   public readonly locationPickerOptions = {
@@ -50,11 +56,8 @@ export class EventFormComponent implements OnInit {
     textarea: new FormControl('')
   });
 
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private apiService: ApiService,
-    private dialog: MatDialogRef<EventFormComponent>
-  ) { }
+  @ViewChild('textarea')
+  private textarea;
 
   ngOnInit(): void {
     if (navigator.geolocation) {
@@ -75,59 +78,51 @@ export class EventFormComponent implements OnInit {
     );
 
     this.apiService.getCurrentUser().pipe(take(1)).subscribe(
-        (currentUser) => this.addTrusLevelOptions(currentUser.trustLevel)
-    )
+        (currentUser) => this.addTrustLevelOptions(currentUser.trustLevel)
+    );
   }
 
-  addEventsCategories(categroiesType: any){
+  addEventsCategories(categroiesType: any): void {
     Object.keys(categroiesType).forEach(key => {
         const category = {
             value: key,
             viewValue: key
-        }
+        };
         this.categories.push(category);
     });
   }
 
-  addTrusLevelOptions(currentUserTrustLevel: number){
-    const noMinRequierd = {
+  addTrustLevelOptions(currentUserTrustLevel: number): void {
+    const noMinRequired = {
         value: 0,
-        viewValue: "Any trust level"
+        viewValue: 'Any trust level'
     };
-    this.trustLevelOptions.push(noMinRequierd);
+    this.trustLevelOptions.push(noMinRequired);
 
-    for(let i = 1; i<currentUserTrustLevel; i++){
+    for (let i = 1; i < currentUserTrustLevel; i++){
         const checkBoxOption = {
             value: i,
             viewValue: i
-        }
+        };
         this.trustLevelOptions.push(checkBoxOption);
     }
   }
 
   onChangeMaxNrParticipants(): void {
-    if(this.show) {
-      this.show = false;
-    }
-    else {
-      this.show = true;
-    }
+    this.show = !this.show;
   }
 
-  @ViewChild('textarea')
-  private textarea;
-
-  onMouseOver() {
-    if(this.textarea.nativeElement != document.activeElement){
-      this.textarea.nativeElement.style.border = "2px solid black";
+  onMouseOver(): void {
+    if (this.textarea.nativeElement !== document.activeElement){
+      this.textarea.nativeElement.style.border = '2px solid black';
     }
   }
 
-  onMouseLeave() {
-    this.textarea.nativeElement.style.border = "1px solid rgb(128, 128, 128)";
+  onMouseLeave(): void {
+    this.textarea.nativeElement.style.border = '1px solid rgb(128, 128, 128)';
   }
 
-  onSubmit() {
+  onSubmit(): void {
     // TODO: Use EventEmitter with form value
     console.warn(this.eventForm.value);
     this.apiService.addEvent({
@@ -138,15 +133,15 @@ export class EventFormComponent implements OnInit {
       category: this.eventForm.value.category,
       min_trust_level: this.eventForm.value.trustLevel,
       no_max_participants: this.eventForm.value.nrMaxParticipants,
-      start_time: this.eventForm.value.startDate + "T" + this.eventForm.value.startTime,
-      end_time: this.eventForm.value.endDate + "T" + this.eventForm.value.endTime
+      start_time: this.eventForm.value.startDate + 'T' + this.eventForm.value.startTime,
+      end_time: this.eventForm.value.endDate + 'T' + this.eventForm.value.endTime
     }).subscribe(() => {
       this.dialog.close();
     });
   }
 
-  onMapReady(map: Map) {
-    console.log("map ready")
-    map.on('click', <LeafletMouseEvent>(e) => { console.log(e.latlng) });
+  onMapReady(leafletMap: Map): void {
+    console.log('map ready');
+    leafletMap.on('click', <LeafletMouseEvent>(e) => { console.log(e.latlng); });
   }
 }

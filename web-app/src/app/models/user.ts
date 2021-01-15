@@ -1,8 +1,8 @@
 export interface User{
-  //The "?" means the attribute is optional
+  // The "?" means the attribute is optional
   firstName: string;
   lastName: string;
   username: string;
-  trustLevel: number,
-  points: number
+  trustLevel: number;
+  points: number;
 }

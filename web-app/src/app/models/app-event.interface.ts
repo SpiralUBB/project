@@ -1,4 +1,4 @@
-//Cause Event already exists in angular
+// Cause Event already exists in angular
 export interface AppEvent {
   id: string;
   category: number;

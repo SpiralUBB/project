@@ -36,7 +36,7 @@ export class MapService {
     this.initMap();
   }
 
-  initMap() {
+  initMap(): void {
     // marker([46.879966, -121.726909]);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -55,14 +55,14 @@ export class MapService {
 
       const locationEvents = new Map();
       Object.values(this.events).forEach((event) => {
-        const location = String(event.locationPoints[0]) + "," + String(event.locationPoints[1]);
+        const location = String(event.locationPoints[0]) + ',' + String(event.locationPoints[1]);
 
         if (!locationEvents.has(location)) {
           locationEvents.set(location, []);
         }
 
         locationEvents.set(location, [...locationEvents.get(location), event]);
-      })
+      });
 
       this.eventsLayer = [];
       locationEvents.forEach((events, locationPoints) => {
@@ -80,7 +80,7 @@ export class MapService {
     });
   }
 
-  openEventCard(events: AppEvent[]) {
+  openEventCard(events: AppEvent[]): void {
     this.ngZone.run(() => {
       this.dialog.open(MarkerPopupComponent, {
         maxWidth: '100vw !important',

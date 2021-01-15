@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service';
-import {MatDialog} from "@angular/material/dialog";
-import {EventFormComponent} from "../event-form/event-form.component";
+import {MatDialog} from '@angular/material/dialog';
+import {EventFormComponent} from '../event-form/event-form.component';
 import { Router } from '@angular/router';
 
 @Component({
@@ -20,10 +20,10 @@ export class EventsComponent implements OnInit {
   ngOnInit(): void {
     this.apiService.getCurrentUser().subscribe((res) => {
       console.log(res);
-    })
+    });
   }
 
-  openEventFormDialog() {
+  openEventFormDialog(): void {
     const dialogRef = this.dialog.open(EventFormComponent);
     dialogRef.afterClosed().subscribe(() => {
       this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {

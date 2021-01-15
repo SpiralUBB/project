@@ -9,9 +9,9 @@ import { AppEvent } from 'src/app/models/app-event.interface';
 export class EventCardComponent implements OnInit {
 
   @Input() event: AppEvent;
-  
+
   constructor() { }
-  
+
   ngOnInit(): void {
   }
 

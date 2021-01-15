@@ -12,7 +12,7 @@ export class EventParticipantsComponent implements OnInit {
   constructor(private apiService: ApiService) { }
 
   ngOnInit(): void {
-    
+
   }
 
 }

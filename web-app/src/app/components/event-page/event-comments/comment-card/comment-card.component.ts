@@ -11,7 +11,7 @@ export class CommentCardComponent implements OnInit {
   comment: AppComment;
   @Input()
   username: string;
-  @Output() 
+  @Output()
   deleteString: EventEmitter<string> = new EventEmitter<string>();
 
   constructor() { }

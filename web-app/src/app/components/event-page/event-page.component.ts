@@ -14,30 +14,30 @@ import { ApiService } from 'src/app/services/api.service';
 })
 export class EventPageComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute,
-    private apiService: ApiService) {}
+              private apiService: ApiService) {}
 
   public eventId$: Observable<string>;
   private id: string;
   private event: AppEvent;
   private user: User;
 
-  private isOwner: boolean = false;
-  private isEventPast: boolean = false;
-  private isEventOngoing: boolean = false;
-  private isEventInFuture: boolean = false;
-  private isViewer: boolean = true;
+  private isOwner = false;
+  private isEventPast = false;
+  private isEventOngoing = false;
+  private isEventInFuture = false;
+  private isViewer = true;
   private userInvitaionType: string;
 
-  private shouldConfirmInvitations: boolean = false;
+  private shouldConfirmInvitations = false;
 
   ngOnInit(): void {
-    //daca navighezi pe un url nou unde difera doar id-ul nu se incarca pagina noua, doar se emite o alta valoare in observable
+    // daca navighezi pe un url nou unde difera doar id-ul nu se incarca pagina noua, doar se emite o alta valoare in observable
     this.eventId$ = this.activatedRoute.params.pipe(
       filter((params) => !!params.id),
       map((params) => params.id)
     );
 
-    //Ii dai subscribe aici daca ai nevoie de el in ts
+    // Ii dai subscribe aici daca ai nevoie de el in ts
     this.eventId$.subscribe((id) => {
       this.id = id;
     });
@@ -46,11 +46,11 @@ export class EventPageComponent implements OnInit {
         this.id = id;
         return this.apiService.getEventById(this.id);
       }),
-      switchMap((event: AppEvent)=> {
+      switchMap((event: AppEvent) => {
         this.event = event;
         this.compareTime(event.startTime, event.endTime);
-        return this.apiService.getCurrentUser()
-        
+        return this.apiService.getCurrentUser();
+
       }),
       switchMap((user: User) => {
         this.user = user;
@@ -61,26 +61,26 @@ export class EventPageComponent implements OnInit {
       switchMap((value: Invitation) => {
         this.userInvitaionType = value.statusText;
         this.isViewer = false;
-        return of([])
+        return of([]);
       }),
       catchError((error: any) => {
         this.isViewer = true;
-        return of([])
+        return of([]);
       })
     ).subscribe();
   }
 
   compareTime(startDate: string, endDate: string): void {
-    let localTime = new Date().getTime();
-    let startTime = new Date(startDate).getTime();
-    let endTime = new Date(endDate).getTime();
+    const localTime = new Date().getTime();
+    const startTime = new Date(startDate).getTime();
+    const endTime = new Date(endDate).getTime();
 
-    if(localTime < startTime) {
+    if (localTime < startTime) {
       this.isEventInFuture = true;
       this.isEventOngoing = false;
       this.isEventPast = false;
     }else{
-      if(localTime < endTime) {
+      if (localTime < endTime) {
         this.isEventInFuture = false;
         this.isEventOngoing = true;
         this.isEventPast = false;

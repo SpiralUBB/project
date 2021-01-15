@@ -13,7 +13,7 @@ export class SidenavContentComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  toggleSideNav(){
+  toggleSideNav(): void {
     this.navigationService.toggleSidenav();
   }
 }

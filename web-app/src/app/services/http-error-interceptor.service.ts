@@ -35,12 +35,12 @@ export class HttpErrorInterceptorService implements HttpInterceptor {
           errorMsg = `Error Code: ${error.status},  Message: ${error.message}`;
         }
         console.log(errorMsg);
-        let backendCustomError = error.error;
+        const backendCustomError = error.error;
         console.log(backendCustomError);
         errorMsg = errorMsg.concat(
           `\n${backendCustomError.code}\n${backendCustomError.message}`
         );
-        let snackBarRef = this.snackbar.open(errorMsg, null, {
+        const snackBarRef = this.snackbar.open(errorMsg, null, {
           duration: 5000,
         });
         return throwError(errorMsg);

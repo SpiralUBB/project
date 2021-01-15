@@ -1,7 +1,6 @@
-import { Component, EventEmitter, Inject, NgModule, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ApiService } from 'src/app/services/api.service';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CategoryDialogComponent } from './category-dialog/category-dialog.component';
 
 
@@ -10,87 +9,89 @@ import { CategoryDialogComponent } from './category-dialog/category-dialog.compo
   templateUrl: './filter-panel.component.html',
   styleUrls: ['./filter-panel.component.scss']
 })
-export class FilterPanelComponent implements OnInit {
-  @Output() filterProps=new EventEmitter<any>();
+export class FilterPanelComponent {
+  @Output() filterProps = new EventEmitter<any>();
 
 
-  checkedCategories: String[]=[];
+  checkedCategories: string[] = [];
 
   range = new FormGroup({
     start: new FormControl(),
     end: new FormControl()
   });
 
-  constructor(private apiService: ApiService,public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog) {}
 
-  ngOnInit(): void {
-
-  }
-
-  
-  openDialog() {
+  openDialog(): void {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    
+
     const dialogRef = this.dialog.open(CategoryDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(
-        data => this.checkedCategories=data
-    );    
+        data => this.checkedCategories = data
+    );
   }
 
-  filterEvents(){
-    console.log("filterEvents");
-    let supportTypeFilter=false,supportDateFilter=false;
-    let startDate="",endDate="";
-    if(this.checkedCategories?.length>0){
-      supportTypeFilter=true;
+  filterEvents(): void {
+    console.log('filterEvents');
+    let supportTypeFilter = false;
+    let supportDateFilter = false;
+    let startDate = '';
+    let endDate = '';
+
+    if (this.checkedCategories?.length > 0){
+      supportTypeFilter = true;
     }
-    let date={};
-    if(this.range.value.start!=null){
-      supportDateFilter=true;
-      let date=this.range.value.start;
-      startDate=date.getFullYear()+"-"+date.getMonth()+"-"+date.getDay();
-      date["startDate"]=startDate;
+
+    const date = {
+      startDate: null,
+      endDate: null,
+    };
+
+    if (this.range.value.start !== null) {
+      supportDateFilter = true;
+      const selectedDate = this.range.value.start;
+      startDate = selectedDate.getFullYear() + '-' + selectedDate.getMonth() + '-' + selectedDate.getDay();
+      date.startDate = startDate;
     }
-    if(this.range.value.end!=null){
-      supportDateFilter=true;
-      let date=this.range.value.end;
-      endDate=date.getFullYear()+"-"+date.getMonth()+"-"+date.getDay();
-      date["endDate"]=endDate;
+
+    if (this.range.value.end !== null) {
+      supportDateFilter = true;
+      const selectedDate = this.range.value.end;
+      endDate = selectedDate.getFullYear() + '-' + selectedDate.getMonth() + '-' + selectedDate.getDay();
+      date.endDate = endDate;
     }
+
     this.filterProps.emit({
-      "supportTypeFilter":supportTypeFilter,
-      "eventsTypeFilter": this.checkedCategories,
-      "supportDateFilter":supportDateFilter,
-      "eventsDateFilter":date
+      supportTypeFilter,
+      eventsTypeFilter: this.checkedCategories,
+      supportDateFilter,
+      eventsDateFilter: date
     });
   }
 
-  clearEvents(){
-    console.log("clearEvents");
-    this.checkedCategories=[];
-    this.range.value.start=null;
-    this.range.value.end=null;
+  clearEvents(): void {
+    console.log('clearEvents');
+    this.checkedCategories = [];
+    this.range.value.start = null;
+    this.range.value.end = null;
     this.filterProps.emit({
-      "supportTypeFilter":false,
-      "eventsTypeFilter": [],
-      "supportDateFilter": false,
-      "eventsDateFilter": {},
-    })
+      supportTypeFilter: false,
+      eventsTypeFilter: [],
+      supportDateFilter: false,
+      eventsDateFilter: {},
+    });
   }
 
-  deleteCategory(name: String){
+  deleteCategory(name: string): void {
     console.log(name);
-    for(let i=0;i<this.checkedCategories.length;i++){
-      if(this.checkedCategories[i]==name){
-        this.checkedCategories.splice(i,1);
+    for (let i = 0; i < this.checkedCategories.length; i++){
+      if (this.checkedCategories[i] === name){
+        this.checkedCategories.splice(i, 1);
       }
     }
   }
 }
-
-
-

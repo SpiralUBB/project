@@ -1,5 +1,4 @@
-import { ElementRef } from '@angular/core';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavigationService } from 'src/app/services/navigation.service';
 
 @Component({
@@ -16,8 +15,6 @@ export class SidenavComponent implements OnInit {
     this.navigationService.sidenavToggled$.subscribe((val) => {
       // this.drawerElementRef.nativeElement.toggl
       console.log(val);
-    })
+    });
   }
-
-
 }

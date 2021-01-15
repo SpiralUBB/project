@@ -20,7 +20,7 @@ export class NavigationService {
     { title: 'Map', url: '/app/map' },
   ];
 
-  public toggleSidenav() {
+  public toggleSidenav(): void {
     this.isSidenavToggled = !this.isSidenavToggled;
     this.sidenavToggledSubject.next(this.isSidenavToggled);
   }

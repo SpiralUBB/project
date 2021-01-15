@@ -9,7 +9,7 @@ import { User } from 'src/app/models/user';
 export class ParticipantCardComponent implements OnInit {
 
   @Input() user: User;
-  @Input() canLeaveFeedback: boolean = true;
+  @Input() canLeaveFeedback = true;
   constructor() { }
 
   ngOnInit(): void {

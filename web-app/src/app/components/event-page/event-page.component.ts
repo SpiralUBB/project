@@ -97,7 +97,7 @@ export class EventPageComponent implements OnInit {
     }
   }
 
-  handleJoinedEvent(invitation: Invitation) {
+  handleJoinedEvent(invitation: Invitation): void {
     this.userInvitationType = invitation.statusText;
     this.isViewer = false;
   }

@@ -17,11 +17,11 @@ export class ParticipantCardComponent implements OnInit {
 
   ngOnInit(): void {}
   
-  sendFeedback() {
+  sendFeedback(): void {
     this.dialog.open(ParticipantFeedbackComponent, {
       data: {
-        user: this.user 
-      }
-    })
+        user: this.user,
+      },
+    });
   }
 }

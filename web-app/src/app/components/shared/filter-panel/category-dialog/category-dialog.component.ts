@@ -22,7 +22,7 @@ export class CategoryDialogComponent implements OnInit {
   getCategories(): void {
     this.apiService.getCategories().subscribe((eventsRes) => {
       Object.keys(eventsRes).forEach((key) => {
-        this.categories.push({ name: key, checked: false });
+        this.categories.push({ name: eventsRes[key], checked: false });
       });
     });
   }

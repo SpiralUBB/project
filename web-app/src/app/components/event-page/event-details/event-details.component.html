@@ -15,20 +15,18 @@
       <p class="no-participants-text"> {{appEvent.noParticipants}} / {{appEvent.noMaxParticipants}}</p>
       
     </div>
-    <mat-card-subtitle *ngIf="!appEvent?.isLimitedDetails">
-      <mat-icon inline="true">location_on</mat-icon>
-      {{ appEvent.location }}
-    </mat-card-subtitle>
-    <mat-card-subtitle>{{ appEvent.categoryText }}</mat-card-subtitle>
   </mat-card-header>
 
 
   <mat-card-content>
-    <div class="period">
-      <div>
-        <mat-icon inline="true">date_range</mat-icon>
-        {{appEvent.startTime | date:'medium' }} - {{appEvent.endTime | date:'medium'}}
-      </div>
+    <div class="prop" *ngIf="!appEvent?.isLimitedDetails">
+      <mat-icon inline="true">location_on</mat-icon>
+      {{ appEvent.location }}
+    </div>
+    <div class="prop">{{ appEvent.categoryText }}</div>
+    <div class="prop">
+      <mat-icon inline="true">date_range</mat-icon>
+      {{appEvent.startTime | date:'medium' }} - {{appEvent.endTime | date:'medium'}}
     </div>
     <p>
       {{ appEvent.description }}

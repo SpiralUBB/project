@@ -6,3 +6,8 @@
 .category-checkbox {
   margin: 5px;
 }
+
+:host {
+  max-width: 765px;
+  margin: 0 auto;
+}

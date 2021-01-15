@@ -1,26 +1,35 @@
-<p *ngIf="!comments?.length">
-  No comments
-</p>
+<mat-card>
+  <mat-card-content>
 
-<ul>
-  <li *ngFor="let comment of comments">
-    <app-comment-card
-      [comment]="comment"
-      [username]="user.username"
-      (deleteString)="deleteComment($event)"
-    ></app-comment-card>
-  </li>
-</ul>
+    <form class="comment-form">
+      <mat-form-field class="comment-input">
+        <mat-label>Leave a comment</mat-label>
+        <textarea
+          matInput
+          placeholder="Ex. It made me feel..."
+          [(ngModel)]="this.comment"
+          name="comment"
+          rows="2"
+        ></textarea>
+      </mat-form-field>
 
-<form class="comment-form">
-  <mat-form-field class="comment-input">
-    <mat-label>Leave a comment</mat-label>
-    <textarea
-      matInput
-      placeholder="Ex. It made me feel..."
-      [(ngModel)]="this.comment"
-      name="comment"
-    ></textarea>
-  </mat-form-field>
-  <button mat-raised-button color="primary" (click)="sendComment()">Comment</button>
-</form>
+      <div class="send-btn-container">
+        <button class="send-btn" mat-raised-button color="primary" (click)="sendComment()">Comment</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<mat-card *ngIf="!comments?.length">
+  <mat-card-header>
+    No content
+  </mat-card-header>
+</mat-card>
+
+<div class="comment-wrapper" *ngFor="let comment of comments">
+  <app-comment-card
+    [comment]="comment"
+    [username]="user.username"
+    (deleteString)="deleteComment($event)"
+  ></app-comment-card>
+</div>

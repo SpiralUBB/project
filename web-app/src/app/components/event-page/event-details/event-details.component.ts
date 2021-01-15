@@ -13,7 +13,7 @@ import { MapService } from 'src/app/services/map.service';
 })
 export class EventDetailsComponent implements OnInit, OnChanges {
   @Input() eventId: string;
-  @Input() showJoinButton: boolean = false;
+  @Input() showJoinButton = false;
   @Input() invitationStatus: string;
   @Output() joinedEvent = new EventEmitter<Invitation>();
   appEvent: AppEvent;
@@ -27,7 +27,7 @@ export class EventDetailsComponent implements OnInit, OnChanges {
     this.loadEvent();
   }
 
-  loadEvent(id?: string) {
+  loadEvent(id?: string): void {
     this.apiService
       .getEventById(id ?? this.eventId)
       .pipe(take(1))
@@ -36,13 +36,13 @@ export class EventDetailsComponent implements OnInit, OnChanges {
       });
   }
 
-  setEventRes(res: AppEvent) {
+  setEventRes(res: AppEvent): void {
     const markerLatLng = latLng(res.locationPoints[0], res.locationPoints[1]);
 
     if (res.isLimitedDetails) {
       this.selectedEventMarker = circle(markerLatLng, {
-        radius: res.locationPointsRadiusMeters
-      })
+        radius: res.locationPointsRadiusMeters,
+      });
     } else {
       this.selectedEventMarker = marker(markerLatLng, {
         icon: icon({
@@ -60,10 +60,10 @@ export class EventDetailsComponent implements OnInit, OnChanges {
     console.log(this.appEvent);
   }
 
-  joinEvent() {
+  joinEvent(): void {
     this.apiService.joinEvent(this.eventId).subscribe((invitation) => {
       this.joinedEvent.emit(invitation);
       this.loadEvent();
-    })
+    });
   }
 }

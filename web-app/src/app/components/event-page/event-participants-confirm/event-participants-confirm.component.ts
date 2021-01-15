@@ -35,6 +35,6 @@ export class EventParticipantsConfirmComponent implements OnInit {
       () => {
         this.loadInvitations();
       }
-    )
+    );
   }
 }

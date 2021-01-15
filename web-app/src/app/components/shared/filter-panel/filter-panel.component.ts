@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ApiService } from 'src/app/services/api.service';
 import { CategoryDialogComponent } from './category-dialog/category-dialog.component';
 
 @Component({
@@ -8,28 +9,47 @@ import { CategoryDialogComponent } from './category-dialog/category-dialog.compo
   templateUrl: './filter-panel.component.html',
   styleUrls: ['./filter-panel.component.scss'],
 })
-export class FilterPanelComponent {
+export class FilterPanelComponent implements OnInit {
   @Output() filterProps = new EventEmitter<any>();
 
   checkedCategories: string[] = [];
+  categories: { id; name }[] = [];
 
   range = new FormGroup({
     start: new FormControl(),
     end: new FormControl(),
   });
 
-  constructor(public dialog: MatDialog) {}
+  categoriesControl = new FormControl();
 
-  openDialog(): void {
-    const dialogConfig = new MatDialogConfig();
+  constructor(
+    public dialog: MatDialog,
+    private apiService: ApiService
+  ) { }
 
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-
-    const dialogRef = this.dialog.open(CategoryDialogComponent, dialogConfig);
-
-    dialogRef.afterClosed().subscribe((data) => (this.checkedCategories = data));
+  ngOnInit(): void {
+    this.getCategories();
   }
+
+  getCategories(): void {
+    this.apiService.getCategories().subscribe((eventsRes) => {
+      Object.keys(eventsRes).forEach(key => {
+        this.categories.push({ id: key, name: eventsRes[key] });
+      });
+    });
+  }
+
+
+  // openDialog(): void {
+  //   const dialogConfig = new MatDialogConfig();
+
+  //   dialogConfig.disableClose = true;
+  //   dialogConfig.autoFocus = true;
+
+  //   const dialogRef = this.dialog.open(CategoryDialogComponent, dialogConfig);
+
+  //   dialogRef.afterClosed().subscribe((data) => (this.checkedCategories = data));
+  // }
 
   filterEvents(): void {
     console.log('filterEvents');

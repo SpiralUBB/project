@@ -8,9 +8,38 @@ button {
 }
 
 .comment-input {
-  width: 400px;
+  flex-grow: 1;
 }
 
 .comment-form{
-  padding-left: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.send-btn {
+  flex-grow: 0;
+  margin-left: 16px;
+}
+
+.send-btn-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+ul {
+  padding: 0;
+}
+
+.mat-card {
+  margin-top: 16px;
+}
+
+.comment-wrapper {
+  width: 100%;
+}
+
+.mat-card {
+  width: 100%;
 }

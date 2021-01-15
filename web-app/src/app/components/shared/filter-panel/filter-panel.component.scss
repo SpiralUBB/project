@@ -17,6 +17,10 @@
 
 .filter-panel-container {
   display: block;
+  max-width: 765px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .date-container {

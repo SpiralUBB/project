@@ -18,11 +18,6 @@
   color: red;
   cursor: pointer;
 }
-.comment-container {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-}
 button {
   margin-left: 10px;
 }
@@ -31,7 +26,24 @@ button {
   word-wrap: anywhere;
 }
 
-.comment-container{
+// .comment-container {
+//   display: flex;
+//   flex-direction: row;
+//   align-items: flex-end;
+// }
+// .comment-container{
+//   padding-right: 16px;
+//   padding-bottom: 25px;
+// }
+.mat-dialog {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
   padding-right: 16px;
   padding-bottom: 25px;
+}
+
+.mat-card {
+  width: 100%;
+  margin-top: 16px;
 }

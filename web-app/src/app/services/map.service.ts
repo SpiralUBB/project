@@ -96,8 +96,8 @@ export class MapService {
   openEventCard(events: AppEvent[]): void {
     this.ngZone.run(() => {
       this.dialog.open(MarkerPopupComponent, {
-        maxWidth: '100vw !important',
         data: { events },
+        width: '765px',
       });
     });
   }

@@ -5,3 +5,7 @@
 .mat-list-item-event {
   width: 100%;
 }
+
+::ng-deep mat-card {
+  margin-top: 15px;
+}

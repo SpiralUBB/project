@@ -59,7 +59,7 @@ for user in users:
         event = event_service.add(user,
                                   'Beuta {}'.format(event_visibility_map.to_value(visibility)),
                                   'Infinity', [-23.0, 54.0],
-                                  '2020-11-29T00:00:00.000000+02:00', '2020-11-29T08:30:00.000000Z',
+                                  '2021-11-29T00:00:00.000000+02:00', '2021-11-29T08:30:00.000000Z',
                                   0, 30,
                                   'Hai cu noi la bere',
                                   visibility,

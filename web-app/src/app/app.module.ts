@@ -43,6 +43,7 @@ import { DatePipe } from '@angular/common';
 import { EventsUpcomingComponent} from './components/shared/events-upcoming/events-upcoming.component';
 import { EventConfirmAttendanceComponent } from './components/event-page/event-confirm-attendance/event-confirm-attendance.component';
 import { EventConfirmAttendanceCardComponent } from './components/event-page/event-confirm-attendance/event-confirm-attendance-card/event-confirm-attendance-card.component';
+import { BarRatingModule } from "ngx-bar-rating";
 
 @NgModule({
   declarations: [
@@ -86,6 +87,7 @@ import { EventConfirmAttendanceCardComponent } from './components/event-page/eve
     AppRoutingModule,
     HttpClientModule,
     LeafletModule,
+    BarRatingModule,
   ],
   providers: [
     AuthService,

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ParticipantFeedbackComponent } from './components/event-page/event-participants/participant-feedback/participant-feedback.component';
 
 @Component({
   selector: 'app-root',

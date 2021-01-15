@@ -1,6 +1,6 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title>{{ user.username }}</mat-card-title>
+    <mat-card-title>{{ user.firstName }} {{user.lastName}}</mat-card-title>
     <mat-card-subtitle>Level {{ user.trustLevel }}</mat-card-subtitle>
     <button mat-button (click)="sendFeedback()" *ngIf="canLeaveFeedback" color="primary">Send feedback</button>
   </mat-card-header>

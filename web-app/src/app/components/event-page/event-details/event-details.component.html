@@ -1,7 +1,15 @@
 <mat-card *ngIf="appEvent" class="example-card">
+  <div
+    style="height: 25rem"
+    leaflet
+    [leafletOptions]="mapService.options"
+    [(leafletCenter)]="mapService.map.center"
+    [(leafletZoom)]="mapService.map.zoom"
+    [leafletLayers]="[selectedEventMarker]"
+  ></div>
   <mat-card-header>
     <mat-card-title>{{ appEvent.title }}</mat-card-title>
-    <div class="no-participants" *ngIf='appEvent.noParticipants>=0'>
+    <div class="no-participants" *ngIf='appEvent.noParticipants>=0 && !appEvent.isLimitedDetails'>
       <mat-icon aria-hidden="false">how_to_reg</mat-icon>
 
       <p class="no-participants-text"> {{appEvent.noParticipants}} / {{appEvent.noMaxParticipants}}</p>
@@ -14,25 +22,13 @@
     <mat-card-subtitle>{{ appEvent.categoryText }}</mat-card-subtitle>
   </mat-card-header>
 
-  <div
-    style="height: 25rem"
-    leaflet
-    [leafletOptions]="mapService.options"
-    [(leafletCenter)]="mapService.map.center"
-    [(leafletZoom)]="mapService.map.zoom"
-    [leafletLayers]="[selectedEventMarker]"
-  ></div>
 
   <mat-card-content>
     <div class="period">
-      <mat-chip-list>
-        <mat-chip>
-          Start {{appEvent.startTime | date:'medium'}}
-        </mat-chip>
-        <mat-chip>
-          End {{appEvent.endTime | date:'medium'}}
-        </mat-chip>
-      </mat-chip-list>
+      <div>
+        <mat-icon inline="true">date_range</mat-icon>
+        {{appEvent.startTime | date:'medium' }} - {{appEvent.endTime | date:'medium'}}
+      </div>
     </div>
     <p>
       {{ appEvent.description }}

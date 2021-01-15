@@ -5,7 +5,7 @@
   <mat-tab label="Comments">
     <app-event-comments [eventId]="idTemplate"></app-event-comments>
   </mat-tab>
-  <mat-tab label="Participants">
+  <mat-tab label="Participants" *ngIf="!event?.isLimitedDetails">
     <app-event-participants [isOwner]="isOwner" [eventId]="idTemplate"></app-event-participants>
   </mat-tab>
   <mat-tab *ngIf="shouldConfirmInvitations" label="Confirm Participants">

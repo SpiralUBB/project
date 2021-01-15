@@ -1,4 +1,5 @@
 import { NumberValueAccessor } from '@angular/forms';
+import { User } from './user';
 
 export interface Invitation {
   attendStatus: number;
@@ -6,4 +7,5 @@ export interface Invitation {
   id: string;
   status: number;
   statusText: string;
+  user: User;
 }

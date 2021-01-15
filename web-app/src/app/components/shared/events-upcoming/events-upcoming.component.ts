@@ -4,14 +4,15 @@ import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { DatePipe, formatDate } from '@angular/common';
 
+
 @Component({
-  selector: 'app-event-history',
-  templateUrl: './event-history.component.html',
-  styleUrls: ['./event-history.component.scss'],
+  selector: 'app-events-upcoming',
+  templateUrl: './events-upcoming.component.html',
+  styleUrls: ['./events-upcoming.component.scss']
 })
-export class EventHistoryComponent implements OnInit {
-  eventsCreatedPast: AppEvent[] = [];
-  eventsParticipated: AppEvent[] = [];
+export class EventsUpcomingComponent implements OnInit {
+  eventsCreatedFuture: AppEvent[] = [];
+  eventsAcceptedFuture: AppEvent[] = [];
 
   constructor(
     private apiService: ApiService,
@@ -23,27 +24,27 @@ export class EventHistoryComponent implements OnInit {
     this.apiService
       .getFilterEvents(
         [],
-        null,
         this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-        true,
+        null,
+        true
       )
       .subscribe((eventsRes) => {
         Object.keys(eventsRes.items).forEach((key) => {
-          this.eventsCreatedPast.push(eventsRes.items[key]);
+          this.eventsCreatedFuture.push(eventsRes.items[key]);
         });
       });
-    this.apiService.getFilterEvents(
+    this.apiService
+      .getFilterEvents(
         [],
-        null,
         this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-        false,
         null,
-        'attended'
+        false,
+        'accepted'
       )
       .subscribe((eventsRes) => {
-      Object.keys(eventsRes.items).forEach((key) => {
-        this.eventsParticipated.push(eventsRes.items[key]);
+        Object.keys(eventsRes.items).forEach((key) => {
+          this.eventsAcceptedFuture.push(eventsRes.items[key]);
+        });
       });
-    });
   }
 }

@@ -34,12 +34,18 @@ export class ApiService {
     categories: string[],
     startDate: string,
     endDate: string,
-    own = false
+    own = false,
+    invitation_status = null,
+    invitation_attend_status = null, 
+
   ): Observable<any> {
     let params: HttpParams = new HttpParams();
 
     if (own === true) {
       params = params.append('own', 'true');
+    }
+    if (own === false) {
+      params = params.append('own','false');
     }
 
     if (categories.length > 0) {
@@ -54,6 +60,14 @@ export class ApiService {
 
     if (endDate) {
       params = params.append('date_end', endDate.toString());
+    }
+
+    if(invitation_status){
+      params = params.append('invitation_status', invitation_status);
+    }
+    
+    if(invitation_attend_status){
+      params = params.append('invitation_attend_status',invitation_attend_status);
     }
 
     return this.http.get<any>('/events', { params });
@@ -79,12 +93,6 @@ export class ApiService {
     return this.http.get<any>('/events/' + eventId + '/comments');
   }
 
-  getAttendedEvents(): Observable<any> {
-    const params: HttpParams = new HttpParams().set('invitation_attend_status', 'attended');
-
-    return this.http.get<any>('/events', { params });
-  }
-
   getEventById(id: string): Observable<AppEvent> {
     return this.http.get<AppEvent>('/events/' + id);
   }
@@ -100,4 +108,6 @@ export class ApiService {
   addEvent(body: any): Observable<AppEvent> {
     return this.http.post<AppEvent>('/events', body);
   }
+
+  
 }

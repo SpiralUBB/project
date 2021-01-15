@@ -40,6 +40,7 @@ import { MarkerPopupComponent } from './components/map/marker-popup/marker-popup
 import { ProfileViewComponent } from './components/shared/profile-view/profile-view.component';
 import { EventHistoryComponent } from './components/shared/event-history/event-history.component';
 import { DatePipe } from '@angular/common';
+import { EventsUpcomingComponent} from './components/shared/events-upcoming/events-upcoming.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { DatePipe } from '@angular/common';
     CategoryDialogComponent,
     ProfileViewComponent,
     EventHistoryComponent,
+    EventsUpcomingComponent,
   ],
   imports: [
     MaterialModule,

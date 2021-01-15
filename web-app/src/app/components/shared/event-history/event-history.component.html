@@ -1,23 +1,11 @@
 <mat-tab-group>
-  <mat-tab label="Past own events">
+  <mat-tab label="Created">
     <div class="mat-list-item-event" *ngFor="let event of eventsCreatedPast">
       <app-event-card [event]="event"></app-event-card>
       <mat-divider></mat-divider>
     </div>
   </mat-tab>
-  <mat-tab label="Future own events">
-    <div class="mat-list-item-event" *ngFor="let event of eventsCreatedFuture">
-      <app-event-card [event]="event"></app-event-card>
-      <mat-divider></mat-divider>
-    </div>
-  </mat-tab>
   <mat-tab label="Participated">
-    <div class="mat-list-item-event" *ngFor="let event of eventsParticipated">
-      <app-event-card [event]="event"></app-event-card>
-      <mat-divider></mat-divider>
-    </div>
-  </mat-tab>
-  <mat-tab label="Future events">
     <div class="mat-list-item-event" *ngFor="let event of eventsParticipated">
       <app-event-card [event]="event"></app-event-card>
       <mat-divider></mat-divider>

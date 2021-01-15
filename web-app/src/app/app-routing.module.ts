@@ -8,6 +8,7 @@ import { MapComponent } from './components/map/map.component';
 import { EventHistoryComponent } from './components/shared/event-history/event-history.component';
 import { ProfileViewComponent } from './components/shared/profile-view/profile-view.component';
 import { AuthGuardService } from './guards/auth-guard.service';
+import { EventsUpcomingComponent} from './components/shared/events-upcoming/events-upcoming.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/landing-page', pathMatch: 'full' },
@@ -45,6 +46,10 @@ const routes: Routes = [
         path: 'event-history',
         component: EventHistoryComponent,
       },
+      {
+        path: 'event-upcoming',
+        component: EventsUpcomingComponent,
+      }
     ],
   },
 ];

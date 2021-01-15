@@ -1,1 +1,2 @@
-<p>event-confirm-attendance works!</p>
+
+<app-event-confirm-attendance-card *ngFor="let invitation of invitations" (patchInvitation)="patchInvitaion($event)" [invitation]="invitation"> </app-event-confirm-attendance-card>

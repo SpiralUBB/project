@@ -117,5 +117,8 @@ export class ApiService {
     return this.http.patch<any>(`/events/${eventId}/invitations/${invitationId}`, {status: invitaitonStatus});
   }
 
+  patchAttendenceStatus(eventId: string, invitationId: string, attStatus: string) {
+    return this.http.patch<any>(`/events/${eventId}/invitations/${invitationId}`, {attend_status: attStatus});
+  }
   
 }

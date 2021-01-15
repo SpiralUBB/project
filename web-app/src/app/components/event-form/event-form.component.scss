@@ -1,50 +1,18 @@
-.add-event-form {
-  max-width: 400px;
+.map {
+  width: 100%;
 
-  padding: 10px;
-  margin-top: 10px;
-  margin-left: auto;
-  margin-right: auto;
-
-  background-color: white;
-
-  //border-radius: 5px;
-  //
-  //box-shadow: 0 0 10px rgb(63, 81, 181);
+  height: 300px;
 }
 
 .full-width {
   width: 100%;
 }
 
-.right-position {
-  float: right;
+.double-field-container {
+  display: flex;
+  margin-top: 16px;
 }
 
-.middle {
-  text-align: center;
-}
-
-#title {
-  font-weight: bold;
-  color: rgb(63, 81, 181);
-}
-
-#textarea {
-  width: 99%;
-  max-width: 99%;
-  min-width: 99%;
-
-  margin-top: 10px;
-
-  border: solid 1px rgb(128, 128, 128);
-  border-radius: 5px;
-}
-
-#textarea:focus {
-  outline-color: rgb(63, 81, 181);
-}
-
-#button {
-  margin: auto;
+.double-field-container > :first-child {
+  margin-right: 16px;
 }

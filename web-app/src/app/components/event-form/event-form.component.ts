@@ -125,8 +125,6 @@ export class EventFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    // TODO: Use EventEmitter with form value
-    console.warn(this.eventForm.value);
     this.apiService
       .addEvent({
         title: this.eventForm.value.title,
@@ -134,11 +132,11 @@ export class EventFormComponent implements OnInit {
         description: this.eventForm.value.textarea,
         visibility: this.eventForm.value.visibility,
         category: this.eventForm.value.category,
-        min_trust_level: this.eventForm.value.trustLevel,
-        no_max_participants: this.eventForm.value.nrMaxParticipants,
-        start_time:
+        minTrustLevel: this.eventForm.value.trustLevel,
+        noMaxParticipants: this.eventForm.value.nrMaxParticipants,
+        startTime:
           this.eventForm.value.startDate + 'T' + this.eventForm.value.startTime,
-        end_time:
+        endTime:
           this.eventForm.value.endDate + 'T' + this.eventForm.value.endTime,
       })
       .subscribe(() => {

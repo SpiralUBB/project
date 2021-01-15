@@ -140,12 +140,17 @@ class EventService:
                               show_whitelist: bool = False, show_unlisted: bool = False,
                               categories: List[Union[int, str]] = None, date_start: str = None, date_end: str = None,
                               filter_ids: List[ObjectId] = None, filter_owner: User = None,
-                              filter_exclude_owner: bool = False):
+                              filter_exclude_owner: bool = False, sort_newest_first: bool = False):
         query = Q()
         query &= self.build_query_filters(categories, date_start, date_end, filter_ids, filter_owner,
                                           filter_exclude_owner)
         query &= self.build_query_visible(user, ids, show_public, show_whitelist, show_unlisted)
-        return self.find_by(query)
+
+        queryset = self.find_by(query)
+        if sort_newest_first:
+            queryset = queryset.order_by('-id')
+
+        return queryset
 
     def find_one_visible_for_user(self, user: User, event_id: str, ids: List[ObjectId], show_public: bool = False,
                                   show_whitelist: bool = False, show_unlisted: bool = False):

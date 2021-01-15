@@ -96,7 +96,7 @@ export class ApiService {
   getEventInvitations(id: string): Observable<ApiResponse<Invitation[]>> {
     return this.http.get<ApiResponse<Invitation[]>>('/events/' + id + '/invitations');
   }
-  
+
   addEvent(body: any): Observable<AppEvent> {
     return this.http.post<AppEvent>('/events', body);
   }

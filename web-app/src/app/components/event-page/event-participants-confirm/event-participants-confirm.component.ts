@@ -31,15 +31,15 @@ export class EventParticipantsConfirmComponent implements OnInit, OnChanges {
   loadInvitations(): void {
     this.apiService.getEventInvitations(this.eventId).subscribe(
       (response: any) => {
-        let invitations = response.items;
-        let keys = Object.keys(response.items);
+        const invitations = response.items;
+        const keys = Object.keys(response.items);
         keys.forEach(key => {
-          if(invitations[key].staus === 0){
+          if (invitations[key].staus === 0){
             this.invitations.push(invitations[key]);
           }
-        })
+        });
       }
-    )
+    );
   }
 
 }

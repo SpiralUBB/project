@@ -14,10 +14,7 @@ export class EventCommentsComponent implements OnInit {
   public comments: AppComment[];
   public user: User;
 
-  constructor(
-    private apiService: ApiService,
-    public authService: AuthService
-  ) {}
+  constructor(private apiService: ApiService, public authService: AuthService) {}
 
   ngOnInit(): void {
     this.getComments();
@@ -26,9 +23,7 @@ export class EventCommentsComponent implements OnInit {
 
   public deleteComment(commentId: string): void {
     console.log(commentId);
-    this.apiService
-      .deleteComment(this.eventId, commentId)
-      .subscribe(() => this.getComments());
+    this.apiService.deleteComment(this.eventId, commentId).subscribe(() => this.getComments());
   }
 
   private getComments(): void {
@@ -40,11 +35,9 @@ export class EventCommentsComponent implements OnInit {
 
   sendComment(): void {
     if (this.comment.length > 0) {
-      this.apiService
-        .addComment(this.comment, this.eventId)
-        .subscribe((comment) => {
-          this.comments = [...this.comments, comment];
-        });
+      this.apiService.addComment(this.comment, this.eventId).subscribe((comment) => {
+        this.comments = [...this.comments, comment];
+      });
       this.comment = '';
     }
   }

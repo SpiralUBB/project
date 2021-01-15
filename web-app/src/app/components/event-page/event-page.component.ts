@@ -13,10 +13,7 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./event-page.component.scss'],
 })
 export class EventPageComponent implements OnInit {
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private apiService: ApiService
-  ) {}
+  constructor(private activatedRoute: ActivatedRoute, private apiService: ApiService) {}
 
   public eventId$: Observable<string>;
   private id: string;

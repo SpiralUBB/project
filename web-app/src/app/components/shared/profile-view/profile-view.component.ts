@@ -14,11 +14,7 @@ export class ProfileViewComponent {
   profile: User;
   points: number;
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private dialog: MatDialog
-  ) {
+  constructor(private authService: AuthService, private router: Router, private dialog: MatDialog) {
     this.profile = authService.currentUserValue;
     this.points = this.profile.points % 100;
   }

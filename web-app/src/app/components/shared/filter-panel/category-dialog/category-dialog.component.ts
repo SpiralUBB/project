@@ -28,9 +28,7 @@ export class CategoryDialogComponent implements OnInit {
   }
 
   save(): void {
-    const values = this.categories
-      .filter((opt) => opt.checked)
-      .map((opt) => opt.name);
+    const values = this.categories.filter((opt) => opt.checked).map((opt) => opt.name);
     this.dialogRef.close(values);
   }
 

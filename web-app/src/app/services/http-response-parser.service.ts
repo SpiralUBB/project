@@ -31,7 +31,7 @@ export class HttpResponseParserService implements HttpInterceptor {
           // return event.clone({ body: camelCaseObject });
           return event.clone({
             body: this.objectToCamel(event.body),
-          })
+          });
         }
       })
     );
@@ -86,18 +86,17 @@ export class HttpResponseParserService implements HttpInterceptor {
   //     .replace(/^_/, '');
   // }
 
-
   objectToSnake(data: any): any {
-      return snakeKeys(data, {
-          recursive: true,
-          recursiveInArray: true,
-      });
+    return snakeKeys(data, {
+      recursive: true,
+      recursiveInArray: true,
+    });
   }
 
   objectToCamel(data: any): any {
-      return camelKeys(data, {
-          recursive: true,
-          recursiveInArray: true,
-      });
+    return camelKeys(data, {
+      recursive: true,
+      recursiveInArray: true,
+    });
   }
 }

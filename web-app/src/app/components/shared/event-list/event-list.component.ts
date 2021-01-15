@@ -25,13 +25,11 @@ export class EventListComponent implements OnInit {
     const categories = data.eventsTypeFilter;
     const startDate = data.eventsDateFilter.startDate;
     const endDate = data.eventsDateFilter.endDate;
-    this.apiService
-      .getFilterEvents(categories, startDate, endDate)
-      .subscribe((eventsRes) => {
-        this.events = [];
-        Object.keys(eventsRes.items).forEach((key) => {
-          this.events.push(eventsRes.items[key]);
-        });
+    this.apiService.getFilterEvents(categories, startDate, endDate).subscribe((eventsRes) => {
+      this.events = [];
+      Object.keys(eventsRes.items).forEach((key) => {
+        this.events.push(eventsRes.items[key]);
       });
+    });
   }
 }

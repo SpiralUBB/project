@@ -28,9 +28,7 @@ export class FilterPanelComponent {
 
     const dialogRef = this.dialog.open(CategoryDialogComponent, dialogConfig);
 
-    dialogRef
-      .afterClosed()
-      .subscribe((data) => (this.checkedCategories = data));
+    dialogRef.afterClosed().subscribe((data) => (this.checkedCategories = data));
   }
 
   filterEvents(): void {

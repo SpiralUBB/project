@@ -19,17 +19,10 @@ export class RegisterFormComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  register(
-    firstName: string,
-    lastName: string,
-    username: string,
-    password: string
-  ): void {
-    this.apiService
-      .register({ username, password, firstName, lastName })
-      .subscribe((res) => {
-        this.snackbar.open('User registered!');
-        this.dialogRef.close();
-      });
+  register(firstName: string, lastName: string, username: string, password: string): void {
+    this.apiService.register({ username, password, firstName, lastName }).subscribe((res) => {
+      this.snackbar.open('User registered!');
+      this.dialogRef.close();
+    });
   }
 }

@@ -22,34 +22,20 @@ export class EventHistoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.apiService
-      .getFilterEvents(
-        [],
-        null,
-        this.datePipe.transform(new Date(), 'yyyy-MM-dd')
-      )
+      .getFilterEvents([], null, this.datePipe.transform(new Date(), 'yyyy-MM-dd'))
       .subscribe((eventsRes) => {
         Object.keys(eventsRes.items).forEach((key) => {
-          if (
-            eventsRes.items[key].owner.username ===
-            this.authService.currentUserValue.username
-          ) {
+          if (eventsRes.items[key].owner.username === this.authService.currentUserValue.username) {
             this.eventsCreatedPast.push(eventsRes.items[key]);
           }
         });
       });
 
     this.apiService
-      .getFilterEvents(
-        [],
-        this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-        null
-      )
+      .getFilterEvents([], this.datePipe.transform(new Date(), 'yyyy-MM-dd'), null)
       .subscribe((eventsRes) => {
         Object.keys(eventsRes.items).forEach((key) => {
-          if (
-            eventsRes.items[key].owner.username ===
-            this.authService.currentUserValue.username
-          ) {
+          if (eventsRes.items[key].owner.username === this.authService.currentUserValue.username) {
             this.eventsCreatedFuture.push(eventsRes.items[key]);
           }
         });

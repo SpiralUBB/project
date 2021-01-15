@@ -1,6 +1,6 @@
 import { Injectable, NgZone } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Circle, icon, latLng, Marker, marker, tileLayer } from 'leaflet';
+import { circle, Circle, icon, latLng, Marker, marker, tileLayer } from 'leaflet';
 import { MarkerPopupComponent } from '../components/map/marker-popup/marker-popup.component';
 import { AppEvent } from '../models/app-event.interface';
 import { ApiService } from './api.service';
@@ -10,7 +10,7 @@ import { ApiService } from './api.service';
 })
 export class MapService {
   private events: AppEvent[] = [];
-  public eventsLayer: Marker[];
+  public eventsLayer: (Marker | Circle)[];
 
   public map = {
     zoom: 5,
@@ -50,14 +50,23 @@ export class MapService {
       console.log(this.events);
 
       const locationEvents = new Map();
-      Object.values(this.events).forEach((event) => {
-        const location = String(event.locationPoints[0]) + ',' + String(event.locationPoints[1]);
+      const whiteListedEvents = new Map();
+      Object.values(this.events).forEach((event: AppEvent) => {
+        if (event.isLimitedDetails) {
+          const location = String(event.locationPoints[0]) + ',' + String(event.locationPoints[1] + String(event.locationPointsRadiusMeter)); 
+          if (!whiteListedEvents.has(location)) {
+            whiteListedEvents.set(location, []);
+          }
 
-        if (!locationEvents.has(location)) {
-          locationEvents.set(location, []);
+          whiteListedEvents.set(location, [...whiteListedEvents.get(location), event]);
+        } else {
+          const location = String(event.locationPoints[0]) + ',' + String(event.locationPoints[1]); 
+          if (!locationEvents.has(location)) {
+            locationEvents.set(location, []);
+          }
+
+          locationEvents.set(location, [...locationEvents.get(location), event]);
         }
-
-        locationEvents.set(location, [...locationEvents.get(location), event]);
       });
 
       this.eventsLayer = [];
@@ -69,6 +78,14 @@ export class MapService {
             iconUrl: 'leaflet/marker-icon.png',
             shadowUrl: 'leaflet/marker-shadow.png',
           }),
+        }).on('click', (e) => this.openEventCard(events));
+
+        this.eventsLayer.push(m);
+      });
+
+      whiteListedEvents.forEach((events: AppEvent[], locationPoints) => {
+        const m = circle(latLng(events[0].locationPoints[0], events[0].locationPoints[1]), {
+          radius: events[0].locationPointsRadiusMeters,
         }).on('click', (e) => this.openEventCard(events));
 
         this.eventsLayer.push(m);

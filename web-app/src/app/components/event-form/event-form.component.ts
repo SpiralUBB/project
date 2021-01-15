@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { latLng, tileLayer, Map } from 'leaflet';
+import { latLng, tileLayer, Map, Marker, marker, icon } from 'leaflet';
 import { Observable } from 'rxjs';
 import { filter, map, take } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
@@ -29,6 +29,7 @@ export class EventFormComponent implements OnInit {
   trustLevelOptions: CheckBoxSelection[] = [];
   show = false;
   mapCenter;
+  newLocationMarker: Marker;
 
   public readonly locationPickerOptions = {
     layers: [
@@ -82,9 +83,7 @@ export class EventFormComponent implements OnInit {
     this.apiService
       .getCurrentUser()
       .pipe(take(1))
-      .subscribe((currentUser) =>
-        this.addTrustLevelOptions(currentUser.trustLevel)
-      );
+      .subscribe((currentUser) => this.addTrustLevelOptions(currentUser.trustLevel));
   }
 
   addEventsCategories(categroiesType: any): void {
@@ -127,10 +126,10 @@ export class EventFormComponent implements OnInit {
     this.textarea.nativeElement.style.border = '1px solid rgb(128, 128, 128)';
   }
 
-  addHoursMinsToDate(date: any, hoursMins: string) {
-    let startTime = Date.parse(date);
-    let [startHours, startMins] = hoursMins.split(':');
-    let startMoment = moment(startTime)
+  addHoursMinsToDate(date: any, hoursMins: string): string {
+    const startTime = Date.parse(date);
+    const [startHours, startMins] = hoursMins.split(':');
+    const startMoment = moment(startTime)
       .add(Number(startHours), 'hours')
       .add(Number(startMins), 'minutes');
     return startMoment.toISOString();
@@ -147,8 +146,14 @@ export class EventFormComponent implements OnInit {
         minTrustLevel: this.eventForm.value.trustLevel,
         noMaxParticipants: this.eventForm.value.nrMaxParticipants,
         locationPoint: [this.eventForm.value.x, this.eventForm.value.y],
-        startTime: this.addHoursMinsToDate(this.eventForm.value.startDate, this.eventForm.value.startTime),
-        endTime: this.addHoursMinsToDate(this.eventForm.value.endDate, this.eventForm.value.endTime),
+        startTime: this.addHoursMinsToDate(
+          this.eventForm.value.startDate,
+          this.eventForm.value.startTime
+        ),
+        endTime: this.addHoursMinsToDate(
+          this.eventForm.value.endDate,
+          this.eventForm.value.endTime
+        ),
         // startTime:
         //   this.eventForm.value.startDate + 'T' + this.eventForm.value.startTime,
         // endTime:
@@ -165,7 +170,27 @@ export class EventFormComponent implements OnInit {
       this.eventForm.patchValue({
         x: e.latlng.lat,
         y: e.latlng.lng,
-      })
+      });
+
+      if (this.newLocationMarker) {
+        this.newLocationMarker.remove();
+      }
+
+      this.newLocationMarker = marker(latLng(e.latlng.lat, e.latlng.lng), {
+        icon: icon({
+          iconSize: [25, 41],
+          iconAnchor: [13, 41],
+          iconUrl: 'leaflet/marker-icon.png',
+          shadowUrl: 'leaflet/marker-shadow.png',
+        }),
+      });
+
+      // leafletMap
+      this.newLocationMarker.addTo(leafletMap);
+
+      // leafletMap.addLayer(
+      //   [this.newLocationMarker
+      // );
     });
   }
 }

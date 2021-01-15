@@ -10,11 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./events.component.scss'],
 })
 export class EventsComponent implements OnInit {
-  constructor(
-    private apiService: ApiService,
-    private dialog: MatDialog,
-    private router: Router
-  ) {}
+  constructor(private apiService: ApiService, private dialog: MatDialog, private router: Router) {}
 
   ngOnInit(): void {
     this.apiService.getCurrentUser().subscribe((res) => {

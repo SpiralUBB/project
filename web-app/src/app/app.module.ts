@@ -5,11 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MaterialModule } from './material-module';
 import { LoginFormComponent } from './components/shared/login-form/login-form.component';
-import {
-  HttpClientModule,
-  HttpResponse,
-  HTTP_INTERCEPTORS,
-} from '@angular/common/http';
+import { HttpClientModule, HttpResponse, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthService } from './services/auth.service';
 import { HttpResponseParserService } from './services/http-response-parser.service';
@@ -78,7 +74,7 @@ import { EventsUpcomingComponent} from './components/shared/events-upcoming/even
     ProfileViewComponent,
     EventHistoryComponent,
     EventsUpcomingComponent,
-    ],
+  ],
   imports: [
     MaterialModule,
     BrowserModule,

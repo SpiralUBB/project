@@ -1,9 +1,8 @@
 <mat-sidenav-container>
-    <mat-sidenav [opened]="navigationService.sidenavToggled$ | async">
-        <app-sidenav-content></app-sidenav-content>
-    </mat-sidenav>
-    <mat-sidenav-content>
-        <router-outlet></router-outlet> 
-    </mat-sidenav-content>
+  <mat-sidenav [opened]="navigationService.sidenavToggled$ | async">
+    <app-sidenav-content></app-sidenav-content>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
 </mat-sidenav-container>
-

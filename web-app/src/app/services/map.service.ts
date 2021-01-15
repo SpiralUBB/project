@@ -28,15 +28,11 @@ export class MapService {
     center: latLng(46.879966, -121.726909),
   };
 
-  constructor(
-    private apiService: ApiService,
-    private dialog: MatDialog,
-    private ngZone: NgZone
-  ) {
+  constructor(private apiService: ApiService, private dialog: MatDialog, private ngZone: NgZone) {
     this.initMap();
   }
 
-  initMap() {
+  initMap(): void {
     // marker([46.879966, -121.726909]);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -52,24 +48,39 @@ export class MapService {
         this.events.push(eventsRes.items[key]);
       });
       console.log(this.events);
-      this.eventsLayer = Object.values(this.events).map((event) =>
-        marker(latLng(event.locationPoints[0], event.locationPoints[1]), {
+
+      const locationEvents = new Map();
+      Object.values(this.events).forEach((event) => {
+        const location = String(event.locationPoints[0]) + ',' + String(event.locationPoints[1]);
+
+        if (!locationEvents.has(location)) {
+          locationEvents.set(location, []);
+        }
+
+        locationEvents.set(location, [...locationEvents.get(location), event]);
+      });
+
+      this.eventsLayer = [];
+      locationEvents.forEach((events, locationPoints) => {
+        const m = marker(latLng(events[0].locationPoints[0], events[0].locationPoints[1]), {
           icon: icon({
             iconSize: [25, 41],
             iconAnchor: [13, 41],
             iconUrl: 'leaflet/marker-icon.png',
             shadowUrl: 'leaflet/marker-shadow.png',
           }),
-        }).on('click', (e) => this.openEventCard(event))
-      );
+        }).on('click', (e) => this.openEventCard(events));
+
+        this.eventsLayer.push(m);
+      });
     });
   }
 
-  openEventCard(event: AppEvent) {
+  openEventCard(events: AppEvent[]): void {
     this.ngZone.run(() => {
       this.dialog.open(MarkerPopupComponent, {
         maxWidth: '100vw !important',
-        data: { event },
+        data: { events },
       });
     });
   }

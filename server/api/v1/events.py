@@ -72,8 +72,8 @@ def events_get_invitation_attend_statuses():
 @api.route('')
 @retrieve_logged_in_user(optional=True)
 def events_get(event_service: EventService, event_invitation_service: EventInvitationService):
-    # An user can see whitelisted events with limited details
     # An user can see public events with full details
+    # An user can see whitelisted events with limited details
     # A logged in user can see events that he owns with full details
     # A logged in user can see events for which he has an invite with limited details
     # A logged in user can see events for which he has an accepted invite with full details
@@ -82,19 +82,26 @@ def events_get(event_service: EventService, event_invitation_service: EventInvit
     date_end = request.args.get('date_end')
     invitation_statuses = request.args.getlist('invitation_status')
     invitation_attend_statuses = request.args.getlist('invitation_attend_status')
+    own = request.args.get('own')
     user = request.user
+    filter_owner = None
+    invited_event_ids = None
+    filter_event_ids = None
 
-    invited_event_ids = event_invitation_service.find_for_user_status_event_ids(user)
+    if own:
+        filter_owner = user
+
+    if user:
+        invited_event_ids = event_invitation_service.find_for_user_status_event_ids(user)
+
     if invitation_statuses:
         filter_event_ids = \
             event_invitation_service.find_for_user_status_event_ids(user, statuses=invitation_statuses,
                                                                     attend_statuses=invitation_attend_statuses)
-    else:
-        filter_event_ids = None
 
     events = event_service.find_visible_for_user(user, invited_event_ids, show_public=True, show_whitelist=True,
                                                  categories=categories, date_start=date_start, date_end=date_end,
-                                                 filter_ids=filter_event_ids)
+                                                 filter_ids=filter_event_ids, filter_owner=filter_owner)
 
     full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
     return jsonify(get_paginated_items_from_qs(events, event_to_restricted_dict, user, full_details_event_ids))

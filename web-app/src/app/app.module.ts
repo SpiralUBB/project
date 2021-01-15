@@ -43,6 +43,7 @@ import { CategoryDialogComponent } from './components/shared/filter-panel/catego
 import { MarkerPopupComponent } from './components/map/marker-popup/marker-popup.component';
 import { ProfileViewComponent } from './components/shared/profile-view/profile-view.component';
 import { EventHistoryComponent } from './components/shared/event-history/event-history.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -74,7 +75,7 @@ import { EventHistoryComponent } from './components/shared/event-history/event-h
     MarkerPopupComponent,
     CategoryDialogComponent,
     ProfileViewComponent,
-    EventHistoryComponent
+    EventHistoryComponent,
     ],
   imports: [
     MaterialModule,
@@ -97,6 +98,7 @@ import { EventHistoryComponent } from './components/shared/event-history/event-h
       multi: true,
     },
     NavigationService,
+    DatePipe,
   ],
   bootstrap: [AppComponent],
 })

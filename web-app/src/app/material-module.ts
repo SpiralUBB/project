@@ -89,7 +89,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
         MatTreeModule,
         PortalModule,
         ReactiveFormsModule,
-        ScrollingModule
-    ]
+        ScrollingModule,
+    ],
 })
 export class MaterialModule { }

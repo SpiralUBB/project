@@ -18,10 +18,7 @@ export class HttpResponseParserService implements HttpInterceptor {
 
   constructor() {}
 
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const newReq = req.clone({
       url: this.apiBasePath + req.url,
       body: this.remapKeysToSnakeCase(req.body),
@@ -31,7 +28,7 @@ export class HttpResponseParserService implements HttpInterceptor {
     return next.handle(newReq).pipe(
       map((event: HttpEvent<any>) => {
         if (event instanceof HttpResponse) {
-          let camelCaseObject = this.remapKeysToCamelCase(event.body);
+          const camelCaseObject = this.remapKeysToCamelCase(event.body);
           const modEvent = event.clone({ body: camelCaseObject });
 
           return modEvent;
@@ -40,7 +37,7 @@ export class HttpResponseParserService implements HttpInterceptor {
     );
   }
 
-  private remapKeysToCamelCase(o: object) {
+  private remapKeysToCamelCase(o: object): object {
     if (o !== null && typeof o === 'object') {
       const n = {};
 
@@ -57,7 +54,7 @@ export class HttpResponseParserService implements HttpInterceptor {
     return o;
   }
 
-  private toCamel(toParse: string) {
+  private toCamel(toParse: string): string {
     console.log(toParse);
     // const toReturn = toParse.replace('/([-_][a-z])/g',
     //   (group) => group.toUpperCase()
@@ -71,7 +68,7 @@ export class HttpResponseParserService implements HttpInterceptor {
     return toReturn;
   }
 
-  private remapKeysToSnakeCase(o: object) {
+  private remapKeysToSnakeCase(o: object): object {
     if (o !== null && typeof o === 'object') {
       const n = {};
 
@@ -88,14 +85,14 @@ export class HttpResponseParserService implements HttpInterceptor {
     return o;
   }
 
-  private toSnake(toParse: string) {
+  private toSnake(toParse: string): string {
     console.log(toParse);
     // const toReturn = toParse.replace('/([-_][a-z])/g',
     //   (group) => group.toUpperCase()
     //     .replace('-', '')
     //     .replace('_', ''));
     const toReturn = toParse
-      .replace(/(?:^|\.?)([A-Z])/g, function (x, y) {
+      .replace(/(?:^|\.?)([A-Z])/g, (x, y) => {
         return '_' + y.toLowerCase();
       })
       .replace(/^_/, '');

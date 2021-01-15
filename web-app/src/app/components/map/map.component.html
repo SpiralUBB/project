@@ -1,7 +1,9 @@
-<div *ngIf="!!mapService.eventsLayer" style="height: calc(100vh - 64px);"
-     leaflet 
-     [leafletLayers]="mapService.eventsLayer"
-     [leafletOptions]="mapService.options"
-     [(leafletCenter)]="mapService.map.center"
-     [(leafletZoom)]="mapService.map.zoom">
-</div>
+<div
+  *ngIf="!!mapService.eventsLayer"
+  style="height: calc(100vh - 64px)"
+  leaflet
+  [leafletLayers]="mapService.eventsLayer"
+  [leafletOptions]="mapService.options"
+  [(leafletCenter)]="mapService.map.center"
+  [(leafletZoom)]="mapService.map.zoom"
+></div>

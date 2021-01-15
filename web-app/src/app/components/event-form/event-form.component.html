@@ -1,90 +1,149 @@
 <mat-dialog-content>
   <div class="add-event-form">
-      <div class="middle">
-          <label id="title">Create an event</label>
+    <div class="middle">
+      <label id="title">Create an event</label>
+    </div>
+
+    <form id="event-form" [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="standard" class="full-width">
+        <mat-label>Title</mat-label>
+        <input #titleInput matInput type="text" placeholder="Title" formControlName="title" />
+      </mat-form-field>
+
+      <mat-form-field appearance="standard" class="full-width">
+        <mat-label>Location</mat-label>
+        <input
+          #locationInput
+          matInput
+          type="text"
+          placeholder="Location"
+          formControlName="location"
+        />
+      </mat-form-field>
+
+      <div
+        style="height: 300px"
+        leaflet
+        [leafletOptions]="locationPickerOptions"
+        [(leafletCenter)]="mapCenter"
+        (leafletMapReady)="onMapReady($event)"
+      ></div>
+
+      <div class="grouped-inputs">
+        <mat-form-field appearance="standard">
+          <mat-label>Start date</mat-label>
+          <input
+            #startDateInput
+            mdc-datetime-picker=""
+            matInput
+            type="date"
+            date="true"
+            time="true"
+            minutes="true"
+            min-date="date"
+            show-icon="true"
+            show-clear="false"
+            placeholder="Start date"
+            formControlName="startDate"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="standard" class="right-position">
+          <mat-label>End date</mat-label>
+          <input
+            #endDateInput
+            matInput
+            type="date"
+            placeholder="End date"
+            formControlName="endDate"
+          />
+        </mat-form-field>
       </div>
 
-      <form id="event-form" [formGroup]="eventForm" (ngSubmit)="onSubmit()">
-          <mat-form-field appearance="standard" class="full-width">
-              <mat-label>Title</mat-label>
-              <input #titleInput matInput type="text" placeholder="Title" formControlName="title">
-          </mat-form-field>
+      <div class="grouped-inputs">
+        <mat-form-field appearance="standard">
+          <mat-label>Start time</mat-label>
+          <input
+            mat-timepicker
+            matInput
+            type="time"
+            placeholder="Click to get the time"
+            value="12:00 AM"
+            formControlName="startTime"
+          />
+        </mat-form-field>
 
-          <mat-form-field appearance="standard" class="full-width">
-              <mat-label>Location</mat-label>
-              <input #locationInput matInput type="text" placeholder="Location" formControlName="location">
-          </mat-form-field>
+        <mat-form-field appearance="standard" class="right-position">
+          <mat-label>End time</mat-label>
+          <input
+            mat-timepicker
+            matInput
+            type="time"
+            placeholder="Click to get the time"
+            value="12:00 AM"
+            formControlName="endTime"
+          />
+        </mat-form-field>
+      </div>
 
-          <div>
-              <mat-form-field appearance="standard">
-                  <mat-label>Start date</mat-label>
-                  <input #startDateInput mdc-datetime-picker="" matInput type="date"  date="true" time="true" minutes="true" min-date="date" show-icon="true"
-                  show-clear="false" placeholder="Start date" formControlName="startDate">
-              </mat-form-field>
+      <div class="grouped-inputs">
+        <mat-form-field appearance="standard">
+          <mat-label>Visibility</mat-label>
+          <mat-select formControlName="visibility">
+            <mat-option value="public">Public</mat-option>
+            <mat-option value="whitelisted">Whitelisted</mat-option>
+            <mat-option value="unlisted">Unlisted</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-              <mat-form-field appearance="standard" class="right-position">
-                  <mat-label>End date</mat-label>
-                  <input #endDateInput matInput type="date" placeholder="End date" formControlName="endDate">
-              </mat-form-field>
-          </div>
+        <mat-form-field appearance="standard" class="right-position">
+          <mat-label>Category</mat-label>
+          <mat-select #categoryInput formControlName="category">
+            <mat-option *ngFor="let category of categories" [value]="category.value">
+              {{ category.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-          <div>
-              <mat-form-field appearance="standard">
-                  <mat-label>Start time</mat-label>
-                  <input mat-timepicker matInput type="time" placeholder="Click to get the time" value="12:00 AM" formControlName="startTime">
-              </mat-form-field>
+      <mat-form-field appearance="standard" class="full-width">
+        <mat-label>Minimum Trust level</mat-label>
+        <mat-select #categoryInput formControlName="trustLevel">
+          <mat-option
+            *ngFor="let trustLevelOption of trustLevelOptions"
+            [value]="trustLevelOption.value"
+          >
+            {{ trustLevelOption.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
-              <mat-form-field appearance="standard" class="right-position">
-                <mat-label>End time</mat-label>
-                <input mat-timepicker matInput type="time" placeholder="Click to get the time" value="12:00 AM" formControlName="endTime">
-              </mat-form-field>
-          </div>
+      <mat-checkbox color="primary" (change)="onChangeMaxNrParticipants()">
+        Max nr of participants
+      </mat-checkbox>
+      <mat-form-field appearance="standard" class="full-width" *ngIf="show">
+        <mat-label>Max nr of participants</mat-label>
+        <input
+          matInput
+          type="number"
+          placeholder="Max nr of participants"
+          formControlName="nrMaxParticipants"
+        />
+      </mat-form-field>
 
-          <div>
-              <mat-form-field appearance="standard">
-                  <mat-label>Visibility</mat-label>
-                  <mat-select formControlName="visibility">
-                      <mat-option value="public">Public</mat-option>
-                      <mat-option value="whitelisted">Whitelisted</mat-option>
-                      <mat-option value="unlisted">Unlisted</mat-option>
-                  </mat-select>
-              </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Description</mat-label>
+        <textarea matInput placeholder="Description" formControlName="textarea"></textarea>
+      </mat-form-field>
 
-              <mat-form-field appearance="standard" class="right-position">
-                  <mat-label>Category</mat-label>
-                  <mat-select #categoryInput formControlName="category">
-                      <mat-option *ngFor="let category of categories" [value]="category.value">
-                          {{category.viewValue}}
-                      </mat-option>
-                  </mat-select>
-              </mat-form-field>
-          </div>
-
-          <mat-form-field appearance="standard" class="full-width">
-              <mat-label>Minimum Trust level</mat-label>
-              <mat-select #categoryInput formControlName="trustLevel">
-                  <mat-option *ngFor="let trustLevelOption of trustLevelOptions" [value]="trustLevelOption.value">
-                      {{trustLevelOption.viewValue}}
-                  </mat-option>
-              </mat-select>
-          </mat-form-field>
-
-          <mat-checkbox color="primary" (change)="onChangeMaxNrParticipants()">Max nr of participants</mat-checkbox>
-          <mat-form-field appearance="standard" class="full-width" *ngIf="show">
-              <mat-label>Max nr of participants</mat-label>
-              <input matInput type="number" placeholder="Max nr of participants" formControlName="nrMaxParticipants">
-          </mat-form-field>
-
-          <mat-form-field class="full-width">
-              <mat-label>Description</mat-label>
-              <textarea matInput placeholder="Description" formControlName="textarea" ></textarea>
-          </mat-form-field>
-      </form>
+      <div id="button" class="middle">
+        <button [disabled]="!eventForm.valid" type="submit" mat-raised-button color="primary">
+          Submit
+        </button>
+      </div>
+    </form>
   </div>
 </mat-dialog-content>
 
-<mat-dialog-actions>
-  <div id="button" class="middle">
-    <button type="submit" mat-raised-button color="primary">Submit</button>
-  </div>
-</mat-dialog-actions>
+<!-- <mat-dialog-actions>
+</mat-dialog-actions> -->

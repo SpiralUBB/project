@@ -5,7 +5,7 @@ import { ApiService } from 'src/app/services/api.service';
 @Component({
   selector: 'app-event-participants-confirm',
   templateUrl: './event-participants-confirm.component.html',
-  styleUrls: ['./event-participants-confirm.component.scss']
+  styleUrls: ['./event-participants-confirm.component.scss'],
 })
 export class EventParticipantsConfirmComponent implements OnInit {
 

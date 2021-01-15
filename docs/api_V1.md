@@ -309,6 +309,8 @@ A logged in user can see events for which he has any type of invite with limited
 A logged in user can see events for which he has an accepted invite with full details.
 
 ##### Query parameters
+`own` can be specified to filter for the events owned by the current logged in user.
+
 `category` is the category to use when filtering. Can be specified multiple times to filter for multiple categories.
 
 `invitation_status` is the invitation status to use when filtering. Can be specified multiple times to filter for multiple statuses. Only events for which the user has an invite with one of the given statuses will be shown.

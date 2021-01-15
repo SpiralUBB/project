@@ -27,15 +27,15 @@ def retrieve_logged_in_user(optional=False):
                 verify_jwt_in_request()
 
             username = get_jwt_identity()
-            if not username:
-                if optional:
-                    return
-                else:
-                    raise UserNotLoggedIn()
+            if not username and not optional:
+                raise UserNotLoggedIn()
 
-            user_service = services_injector.get(UserService)
-            user = user_service.find_one_by(username=username)
-            if not user:
+            user = None
+            if username:
+                user_service = services_injector.get(UserService)
+                user = user_service.find_one_by(username=username)
+
+            if not user and not optional:
                 raise UserLoggedInInvalid()
 
             request.user = user

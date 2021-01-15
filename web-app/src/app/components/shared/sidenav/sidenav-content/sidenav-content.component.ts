@@ -4,16 +4,14 @@ import { NavigationService } from 'src/app/services/navigation.service';
 @Component({
   selector: 'app-sidenav-content',
   templateUrl: './sidenav-content.component.html',
-  styleUrls: ['./sidenav-content.component.scss']
+  styleUrls: ['./sidenav-content.component.scss'],
 })
 export class SidenavContentComponent implements OnInit {
+  constructor(public navigationService: NavigationService) {}
 
-  constructor(public navigationService: NavigationService) { }
+  ngOnInit(): void {}
 
-  ngOnInit(): void {
-  }
-
-  toggleSideNav(){
+  toggleSideNav(): void {
     this.navigationService.toggleSidenav();
   }
 }

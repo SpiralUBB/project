@@ -1,0 +1,15 @@
+<mat-tab-group>
+    <mat-tab label="Created">
+      <div class="mat-list-item-event" *ngFor="let event of eventsCreatedFuture">
+        <app-event-card [event]="event"></app-event-card>
+        <mat-divider></mat-divider>
+      </div>
+    </mat-tab>
+    <mat-tab label="Accepted">
+      <div class="mat-list-item-event" *ngFor="let event of eventsAcceptedFuture">
+        <app-event-card [event]="event"></app-event-card>
+        <mat-divider></mat-divider>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+  

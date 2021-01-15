@@ -1,4 +1,4 @@
-//Cause Event already exists in angular
+// Cause Event already exists in angular
 export interface AppEvent {
   id: string;
   category: number;
@@ -13,7 +13,6 @@ export interface AppEvent {
   location?: string;
   locationPoints: [x: number, y: number];
 }
-
 
 export interface EventOwner {
   firstName: string;

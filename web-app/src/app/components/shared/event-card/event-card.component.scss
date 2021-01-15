@@ -1,18 +1,18 @@
 .event-card-cointainer {
-    display: block;
+  display: block;
 }
 
 .event-header::ng-deep .mat-card-header-text {
-    margin: 0px; 
+  margin: 0px;
 }
 
 .mat-icon {
-    font-size: 20px;
-    display: inline-block;
-    margin-right: 10px;
-  }
+  font-size: 20px;
+  display: inline-block;
+  margin-right: 10px;
+}
 
 .icon-with-text {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }

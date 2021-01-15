@@ -20,10 +20,7 @@ export class HttpErrorInterceptorService implements HttpInterceptor {
     return error instanceof HttpErrorResponse;
   }
 
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
         let errorMsg = '';
@@ -35,12 +32,10 @@ export class HttpErrorInterceptorService implements HttpInterceptor {
           errorMsg = `Error Code: ${error.status},  Message: ${error.message}`;
         }
         console.log(errorMsg);
-        let backendCustomError = error.error;
+        const backendCustomError = error.error;
         console.log(backendCustomError);
-        errorMsg = errorMsg.concat(
-          `\n${backendCustomError.code}\n${backendCustomError.message}`
-        );
-        let snackBarRef = this.snackbar.open(errorMsg, null, {
+        errorMsg = errorMsg.concat(`\n${backendCustomError.code}\n${backendCustomError.message}`);
+        const snackBarRef = this.snackbar.open(errorMsg, null, {
           duration: 5000,
         });
         return throwError(errorMsg);

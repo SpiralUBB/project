@@ -8,7 +8,6 @@ import {
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { isObject } from 'util';
 
 @Injectable({
   providedIn: 'root',
@@ -16,12 +15,7 @@ import { isObject } from 'util';
 export class HttpResponseParserService implements HttpInterceptor {
   private apiBasePath = 'http://localhost:5000/api/v1';
 
-  constructor() {}
-
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const newReq = req.clone({
       url: this.apiBasePath + req.url,
       body: this.remapKeysToSnakeCase(req.body),
@@ -31,16 +25,14 @@ export class HttpResponseParserService implements HttpInterceptor {
     return next.handle(newReq).pipe(
       map((event: HttpEvent<any>) => {
         if (event instanceof HttpResponse) {
-          let camelCaseObject = this.remapKeysToCamelCase(event.body);
-          const modEvent = event.clone({ body: camelCaseObject });
-
-          return modEvent;
+          const camelCaseObject = this.remapKeysToCamelCase(event.body);
+          return event.clone({ body: camelCaseObject });
         }
       })
     );
   }
 
-  private remapKeysToCamelCase(o: object) {
+  private remapKeysToCamelCase(o: object): object {
     if (o !== null && typeof o === 'object') {
       const n = {};
 
@@ -57,21 +49,14 @@ export class HttpResponseParserService implements HttpInterceptor {
     return o;
   }
 
-  private toCamel(toParse: string) {
-    console.log(toParse);
-    // const toReturn = toParse.replace('/([-_][a-z])/g',
-    //   (group) => group.toUpperCase()
-    //     .replace('-', '')
-    //     .replace('_', ''));
-    const toReturn = toParse
+  private toCamel(toParse: string): string {
+    return toParse
       .split('_')
       .map((x, i) => (i > 0 ? x[0].toUpperCase() : x[0]) + x.slice(1))
       .join('');
-    console.log(toReturn);
-    return toReturn;
   }
 
-  private remapKeysToSnakeCase(o: object) {
+  private remapKeysToSnakeCase(o: object): object {
     if (o !== null && typeof o === 'object') {
       const n = {};
 
@@ -88,18 +73,11 @@ export class HttpResponseParserService implements HttpInterceptor {
     return o;
   }
 
-  private toSnake(toParse: string) {
-    console.log(toParse);
-    // const toReturn = toParse.replace('/([-_][a-z])/g',
-    //   (group) => group.toUpperCase()
-    //     .replace('-', '')
-    //     .replace('_', ''));
-    const toReturn = toParse
-      .replace(/(?:^|\.?)([A-Z])/g, function (x, y) {
+  private toSnake(toParse: string): string {
+    return toParse
+      .replace(/(?:^|\.?)([A-Z])/g, (x, y) => {
         return '_' + y.toLowerCase();
       })
       .replace(/^_/, '');
-    console.log(toReturn);
-    return toReturn;
   }
 }

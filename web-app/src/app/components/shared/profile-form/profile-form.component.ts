@@ -1,33 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
-import { Router } from '@angular/router';
 import { MatDialogRef } from '@angular/material/dialog';
-
 
 @Component({
   selector: 'app-profile-form',
   templateUrl: './profile-form.component.html',
-  styleUrls: ['./profile-form.component.scss']
+  styleUrls: ['./profile-form.component.scss'],
 })
-export class ProfileFormComponent implements OnInit {
+export class ProfileFormComponent {
   profile: User;
-  points: Number;
-  constructor(private authService:AuthService, private dialogRef: MatDialogRef<ProfileFormComponent>) {
-    this.profile=authService.currentUserValue;
-    this.points=this.profile.points%100;
+  points: number;
+  constructor(
+    private authService: AuthService,
+    private dialogRef: MatDialogRef<ProfileFormComponent>
+  ) {
+    this.profile = authService.currentUserValue;
+    this.points = this.profile.points % 100;
   }
 
-  updateProfile(username: string, firstName: string, lastName: string){
-    //TODO
+  updateProfile(username: string, firstName: string, lastName: string): void {
+    // TODO
   }
 
-  close() {
+  close(): void {
     this.dialogRef.close();
-}
-
-
-  ngOnInit(): void {
   }
-
 }

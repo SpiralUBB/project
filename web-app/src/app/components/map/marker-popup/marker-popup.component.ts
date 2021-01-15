@@ -12,14 +12,14 @@ import { AppEvent } from 'src/app/models/app-event.interface';
 export class MarkerPopupComponent implements OnInit {
   constructor(
     private dialogRef: MatDialogRef<MarkerPopupComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { event: AppEvent },
+    @Inject(MAT_DIALOG_DATA) public data: { events: AppEvent[] },
     private router: Router
   ) {}
 
-  event: AppEvent;
+  events: AppEvent[];
 
   ngOnInit(): void {
-    this.event = this.data.event;
+    this.events = this.data.events;
 
     this.router.events
       .pipe(

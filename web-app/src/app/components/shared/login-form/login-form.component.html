@@ -1,24 +1,28 @@
 <mat-dialog-content>
-  <div class='login-container'>
-  <form class="login-form">
-    <mat-error *ngIf="hasLoginError"> 
-      Authentication error.
-    </mat-error>
-    <mat-form-field class="login-full-width">
-      <mat-label>Email</mat-label>
-      <input #emailInput matInput placeholder="Ex. name@example.com">
-    </mat-form-field>
-    <mat-form-field class="login-full-width">
-      <mat-label>Password</mat-label>
-      <input #passwordInput matInput type="password">
-    </mat-form-field>
-  </form>
-</div>
+  <div class="login-container">
+    <form class="login-form">
+      <mat-error *ngIf="hasLoginError">Authentication error.</mat-error>
+      <mat-form-field class="login-full-width">
+        <mat-label>Email</mat-label>
+        <input #emailInput matInput placeholder="Ex. name@example.com" />
+      </mat-form-field>
+      <mat-form-field class="login-full-width">
+        <mat-label>Password</mat-label>
+        <input #passwordInput matInput type="password" />
+      </mat-form-field>
+    </form>
+  </div>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <div class='buttons-container'>
-    <button class='login-button' mat-raised-button color="primary" (click)="login(emailInput.value, passwordInput.value)">Login</button>
-    <button class='cancel-button' mat-dialog-close mat-raised-button>Cancel</button>
+  <div class="buttons-container">
+    <button
+      class="login-button"
+      mat-raised-button
+      color="primary"
+      (click)="login(emailInput.value, passwordInput.value)"
+    >
+      Login
+    </button>
+    <button class="cancel-button" mat-dialog-close mat-raised-button>Cancel</button>
   </div>
 </mat-dialog-actions>
-

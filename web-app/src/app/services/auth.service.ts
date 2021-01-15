@@ -49,7 +49,7 @@ export class AuthService {
     );
   }
 
-  logout() {
+  logout(): void {
     this.apiService.logout().subscribe(() => {
       this.currentUserSubject.next(null);
       this.router.navigateByUrl('/landing-page');

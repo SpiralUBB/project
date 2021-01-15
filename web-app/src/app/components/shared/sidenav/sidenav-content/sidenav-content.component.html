@@ -1,10 +1,11 @@
 <mat-list>
-    <mat-list-item
-    (click) = "toggleSideNav()"
+  <mat-list-item
+    (click)="toggleSideNav()"
     *ngFor="let entry of navigationService.menuEntries"
     [routerLink]="entry.url"
     routerLinkActive="selected-element"
-    [routerLinkActiveOptions]="{exact:true}"
-    >{{ entry.title }}
-    </mat-list-item>
+    [routerLinkActiveOptions]="{ exact: true }"
+  >
+    {{ entry.title }}
+  </mat-list-item>
 </mat-list>

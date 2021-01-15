@@ -8,7 +8,7 @@ from utils.errors import PaginationPageInvalid, PaginationLimitInvalid
 
 
 def default_mapping_fn(item, *args, **kwargs):
-    return item.to_dict()
+    return item.to_dict(*args, **kwargs)
 
 
 def get_paginated_items_from_qs(qs: QuerySet, mapping_fn=default_mapping_fn, *args, **kwargs):

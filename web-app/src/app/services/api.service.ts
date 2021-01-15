@@ -44,9 +44,9 @@ export class ApiService {
     if (own === true) {
       params = params.append('own', 'true');
     }
-    if (own === false) {
-      params = params.append('own', 'false');
-    }
+    // if (own === false) {
+    //   params = params.append('own', 'false');
+    // }
 
     if (categories.length > 0) {
       for (const category of categories) {

@@ -1,11 +1,11 @@
-<div class="event-card-container">
+<!-- <div class="event-card-container"> -->
   <mat-card>
     <mat-card-header class="event-header">
       <mat-card-title>{{ event.title }}</mat-card-title>
       <mat-card-subtitle class="icon-with-text">
         <mat-icon inline="true">event</mat-icon>
-        {{ event.startTime }} -
-        {{ event.endTime }}
+        {{ event.startTime | date:'medium' }} -
+        {{ event.endTime | date:'medium' }}
       </mat-card-subtitle>
       <mat-card-subtitle *ngIf="event.isLimitedDetails" class="icon-with-text">
         <mat-icon inline="true">location_on</mat-icon>
@@ -23,4 +23,4 @@
       </button>
     </mat-card-actions>
   </mat-card>
-</div>
+<!-- </div> -->

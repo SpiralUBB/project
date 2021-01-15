@@ -58,6 +58,9 @@ export class FilterPanelComponent implements OnInit {
     let startDate = '';
     let endDate = '';
 
+    console.log(this.categories);
+    this.checkedCategories = this.categoriesControl.value;
+
     if (this.checkedCategories?.length > 0) {
       supportTypeFilter = true;
     }

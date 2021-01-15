@@ -1,13 +1,17 @@
-.mat-card {
-  max-width: 60%;
-  margin: 15px auto;
-}
+// .mat-card {
+//   max-width: 60%;
+//   margin: 15px auto;
+// }
 
-@media (max-width: 800px) {
-  .mat-card {
-    max-width: 90%;
-    margin: 15px auto;
-  }
+// @media (max-width: 800px) {
+//   .mat-card {
+//     max-width: 90%;
+//     margin: 15px auto;
+//   }
+// }
+
+.mat-card {
+  margin-top: 16px;
 }
 
 .mat-card-content {

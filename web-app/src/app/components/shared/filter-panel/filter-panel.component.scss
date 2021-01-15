@@ -1,36 +1,61 @@
-.category-list {
-  list-style-type: none;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-}
+// .category-list {
+//   list-style-type: none;
+//   cursor: pointer;
+//   display: flex;
+//   flex-direction: column;
+//   flex-wrap: wrap;
+// }
 
-.category-item {
-  display: inline-flex;
-}
+// .category-item {
+//   display: inline-flex;
+// }
 
-.category-text {
-  margin-left: 5px;
-  margin-top: 4px;
-}
+// .category-text {
+//   margin-left: 5px;
+//   margin-top: 4px;
+// }
 
-.filter-panel-container {
-  display: block;
-  max-width: 765px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-}
+// .filter-panel-container {
+//   display: block;
+//   max-width: 765px;
+//   margin: 0 auto;
+//   display: flex;
+//   flex-direction: column;
+// }
 
-.date-container {
-  margin: 5px;
-}
+// .date-container {
+//   margin: 5px;
+// }
 
 .button-filter-panel {
-  margin: 5px;
+  margin: 8px;
 }
 
-.mat-icon-delete {
-  margin-top: 3px;
+// .mat-icon-delete {
+//   margin-top: 3px;
+// }
+
+.mat-card {
+  margin-top: 16px;
+}
+
+.mat-card-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mat-form-field {
+  flex-grow: 1;
+  margin: 0 8px;
+}
+
+.action-btns {
+  display: flex;
+  flex-direction: column;
+}
+
+::ng-deep .mat-form-field-wrapper {
+  margin-bottom: -1.25em;
 }

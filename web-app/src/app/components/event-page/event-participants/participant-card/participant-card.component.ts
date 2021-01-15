@@ -24,7 +24,7 @@ export class ParticipantCardComponent implements OnInit {
       data: {
         user: this.user,
         eventId: this.eventId,
-      }
-    })
+      },
+    });
   }
 }

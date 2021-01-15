@@ -1,26 +1,35 @@
 class HttpError(Exception):
-    def __init__(self, message, code, status):
+    def __init__(self, message, code, status, *args, original_message=None, **kwargs):
         super().__init__(message)
 
         self.code = code
         self.status = status
         self.message = message
+        self.original_message = original_message
 
     def to_dict(self):
         return {
             'code': self.code,
             'message': self.message,
+            'original_message': self.original_message,
             'error': True,
         }
 
 
-def make_http_error(name, code, status, default_message):
-    def __init__(self, message=default_message):
-        HttpError.__init__(self, message, code, status)
+def make_error(base_class, name, code, status, default_message, **default_kwargs):
+    def __init__(self, message=default_message, **kwargs):
+        merged_kwargs = {}
+        merged_kwargs.update(default_kwargs)
+        merged_kwargs.update(kwargs)
+        base_class.__init__(self, code, status, message, **merged_kwargs)
 
-    return type(name, (HttpError,), {
+    return type(name, (base_class,), {
         '__init__': __init__,
     })
+
+
+def make_http_error(name, code, status, message, **kwargs):
+    return make_error(HttpError, name, code, status, message, **kwargs)
 
 
 UserAlreadyExists = make_http_error('UserAlreadyExists',

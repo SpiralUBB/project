@@ -28,6 +28,7 @@ export class EventPageComponent implements OnInit {
   private userInvitationType: string;
 
   private shouldConfirmInvitations = false;
+  private shouldConfirmAttendance = false;
 
   ngOnInit(): void {
     // daca navighezi pe un url nou unde difera doar id-ul nu se incarca pagina noua, doar se emite o alta valoare in observable
@@ -54,7 +55,8 @@ export class EventPageComponent implements OnInit {
         switchMap((user: User) => {
           this.user = user;
           this.isOwner = this.user.username === this.event.owner.username;
-          this.shouldConfirmInvitations = this.isOwner && this.isEventInFuture;
+          this.shouldConfirmInvitations = this.isOwner && this.isEventInFuture && this.event.visibility === 2;
+          this.shouldConfirmAttendance = this.isOwner && ( this.isEventOngoing || this.isEventPast );
           return this.apiService.getEventInvitationForUser(this.id);
         }),
         switchMap((value: Invitation) => {

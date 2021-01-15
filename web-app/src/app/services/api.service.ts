@@ -113,5 +113,9 @@ export class ApiService {
     return this.http.put<Invitation>(`/events/${eventId}/invitation`, {});
   }
 
+  patchInvitationStatus(eventId: string, invitationId: string, invitaitonStatus: string) {
+    return this.http.patch<any>(`/events/${eventId}/invitations/${invitationId}`, {status: invitaitonStatus});
+  }
+
   
 }

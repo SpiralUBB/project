@@ -1,1 +1,4 @@
-<app-event-participant-confirm-card></app-event-participant-confirm-card>
+<div >
+    <app-event-participant-confirm-card *ngFor="let invitation of invitations" (patchInvitation)="patchInvitaion($event)" [eventId]="eventId" [invitation]="invitation"></app-event-participant-confirm-card>
+</div>
+

@@ -1,2 +1,6 @@
-
-<app-event-confirm-attendance-card *ngFor="let invitation of invitations" (patchInvitation)="patchInvitaion($event)" [invitation]="invitation"> </app-event-confirm-attendance-card>
+<div class="participants-list">
+    <app-event-confirm-attendance-card 
+    *ngFor="let invitation of invitations" 
+    (patchInvitation)="patchInvitaion($event)" 
+    [invitation]="invitation"> </app-event-confirm-attendance-card>
+</div>

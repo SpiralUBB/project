@@ -10,6 +10,10 @@
           [(ngModel)]="this.comment"
           name="comment"
           rows="1"
+          cdkTextareaAutosize
+          #autosize="cdkTextareaAutosize"
+          cdkAutosizeMinRows="1"
+          cdkAutosizeMaxRows="5"
         ></textarea>
       </mat-form-field>
 

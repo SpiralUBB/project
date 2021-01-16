@@ -44,7 +44,7 @@ button {
 }
 
 .mat-card {
-  width: 100%;
+  width: -webkit-fill-available;
   margin-bottom: 16px;
 }
 
@@ -52,10 +52,12 @@ button {
   display: flex;
   flex-direction: row;
   justify-content: space-between; 
+  align-items: center;
 }
 
 .comment-right-side {
   display: flex;
+  align-items: center;
 }
 
 ::ng-deep .mat-form-field-wrapper {

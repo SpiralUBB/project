@@ -55,6 +55,7 @@ export class EventPageComponent implements OnInit {
         switchMap((user: User) => {
           this.user = user;
           this.isOwner = this.user.username === this.event.owner.username;
+          debugger;
           this.shouldConfirmInvitations = this.isOwner && this.isEventInFuture && this.event.visibility === 2;
           this.shouldConfirmAttendance = this.isOwner && ( this.isEventOngoing || this.isEventPast );
           return this.apiService.getEventInvitationForUser(this.id);

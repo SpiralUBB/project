@@ -1,8 +1,9 @@
 <div class="participants-list">
   <app-participant-card
-    *ngFor="let user of participants"
-    [user]="user"
+    *ngFor="let invitation of invitations"
+    [invitation]="invitation"
     [isOwner]="isOwner"
+    [isOwnInvitation]="this.user?.username === this.invitation.user.username"
     [eventId]="eventId"
   ></app-participant-card>
 </div>

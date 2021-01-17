@@ -1,9 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { User } from 'src/app/models/user';
 import { ApiService } from 'src/app/services/api.service';
 import { ParticipantFeedbackComponent } from '../participant-feedback/participant-feedback.component';
+import { Invitation } from '../../../../models/invitation.interface';
+
+interface SelectValue {
+  value: number;
+  viewValue: string;
+}
 
 @Component({
   selector: 'app-participant-card',
@@ -11,26 +15,73 @@ import { ParticipantFeedbackComponent } from '../participant-feedback/participan
   styleUrls: ['./participant-card.component.scss'],
 })
 export class ParticipantCardComponent implements OnInit {
-  @Input() user: User;
+  @Input() invitation: Invitation;
   @Input() eventId: string;
   @Input() isOwner: boolean;
+  @Input() isOwnInvitation: boolean;
 
-  hasFeedback = false;
-  attendanceControl = new FormControl();
-  invitationAttendStatuses: string[] = [];
+  invitationStatuses: SelectValue[] = [];
+  invitationAttendStatuses: SelectValue[] = [];
+
+  updatedStatus: number | string;
+  statusDisabled = true;
+
+  updatedAttendStatus: number | string;
+  attendStatusDisabled = true;
 
   constructor(private dialog: MatDialog, private apiService: ApiService) {}
 
   ngOnInit(): void {
+
     this.apiService.getEventInvitationAttendStatuses().subscribe(res => {
-      Object.values(res).forEach((status) => this.invitationAttendStatuses.push(String(status)));
+      Object.entries(res).forEach((keyValue) => {
+        this.invitationAttendStatuses.push({
+          value: Number(keyValue[0]),
+          viewValue: keyValue[1],
+        });
+        this.updatedStatus = this.invitation.status;
+        this.statusDisabled = false;
+      });
+    });
+
+    this.apiService.getEventInvitationStatuses().subscribe(res => {
+      Object.entries(res).forEach((keyValue) => {
+        this.invitationStatuses.push({
+          value: Number(keyValue[0]),
+          viewValue: keyValue[1],
+        });
+        this.updatedAttendStatus = this.invitation.attendStatus;
+        this.attendStatusDisabled = false;
+      });
+    });
+  }
+
+  onStatusChange(): void {
+    this.statusDisabled = true;
+    this.apiService.patchInvitationStatus(
+      this.eventId,
+      this.invitation.id,
+      this.updatedStatus
+    ).subscribe(() => {
+      this.statusDisabled = false;
+    });
+  }
+
+  onAttendStatusChange(): void {
+    this.attendStatusDisabled = true;
+    this.apiService.patchInvitationAttendanceStatus(
+      this.eventId,
+      this.invitation.id,
+      this.updatedAttendStatus
+    ).subscribe(() => {
+      this.attendStatusDisabled = false;
     });
   }
 
   sendFeedback(): void {
     this.dialog.open(ParticipantFeedbackComponent, {
       data: {
-        user: this.user,
+        user: this.invitation.user,
         eventId: this.eventId,
       },
     });

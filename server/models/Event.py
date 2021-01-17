@@ -1,6 +1,6 @@
 from typing import List
 
-from mongoengine import Document, ReferenceField, IntField, StringField, PointField, DateTimeField
+from mongoengine import Document, ReferenceField, IntField, StringField, PointField, DateTimeField, CASCADE
 
 from config import GEOGRAPHICAL_APPROXIMATION_DIGITS, GEOGRAPHICAL_APPROXIMATION_METERS
 from utils.DualMap import DualMap
@@ -41,13 +41,13 @@ event_category_map = DualMap({
 
 
 class Event(Document):
-    owner = ReferenceField('User', required=True)
+    owner = ReferenceField('User', required=True, reverse_delete_rule=CASCADE)
     title = StringField(required=True)
     location = StringField()
     location_point = PointField()
     start_time = DateTimeField(required=True)
     end_time = DateTimeField(required=True)
-    no_participants = IntField(min_value=0, default=0)
+    no_participants = IntField(default=0)
     no_max_participants = IntField(min_value=0, default=0)
     description = StringField(required=True)
     min_trust_level = IntField(min_value=0, default=0)

@@ -1,4 +1,4 @@
-from mongoengine import Document, ReferenceField, IntField
+from mongoengine import Document, ReferenceField, IntField, CASCADE
 
 from utils.DualMap import DualMap
 
@@ -35,8 +35,8 @@ class EventInvitationData:
 
 
 class EventInvitation(Document):
-    user = ReferenceField('User', required=True)
-    event = ReferenceField('Event', required=True)
+    user = ReferenceField('User', required=True, reverse_delete_rule=CASCADE)
+    event = ReferenceField('Event', required=True, reverse_delete_rule=CASCADE)
     status = IntField(min_value=event_invitation_status_map.minimum_key(),
                       max_value=event_invitation_status_map.maximum_key(), required=True)
     attend_status = IntField(min_value=event_invitation_attend_status_map.minimum_key(),

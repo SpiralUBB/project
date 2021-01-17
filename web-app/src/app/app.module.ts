@@ -34,16 +34,12 @@ import { EventDetailsComponent } from './components/event-page/event-details/eve
 import { FilterPanelComponent } from './components/shared/filter-panel/filter-panel.component';
 import { ParticipantFeedbackComponent } from './components/event-page/event-participants/participant-feedback/participant-feedback.component';
 import { EventFormComponent } from './components/event-form/event-form.component';
-import { EventParticipantsConfirmComponent } from './components/event-page/event-participants-confirm/event-participants-confirm.component';
-import { EventParticipantConfirmCardComponent } from './components/event-page/event-participants-confirm/event-participant-confirm-card/event-participant-confirm-card.component';
 import { CategoryDialogComponent } from './components/shared/filter-panel/category-dialog/category-dialog.component';
 import { MarkerPopupComponent } from './components/map/marker-popup/marker-popup.component';
 import { ProfileViewComponent } from './components/shared/profile-view/profile-view.component';
 import { EventHistoryComponent } from './components/shared/event-history/event-history.component';
 import { DatePipe } from '@angular/common';
 import { EventsUpcomingComponent } from './components/shared/events-upcoming/events-upcoming.component';
-import { EventConfirmAttendanceComponent } from './components/event-page/event-confirm-attendance/event-confirm-attendance.component';
-import { EventConfirmAttendanceCardComponent } from './components/event-page/event-confirm-attendance/event-confirm-attendance-card/event-confirm-attendance-card.component';
 import { BarRatingModule } from 'ngx-bar-rating';
 import { ConfirmPopupComponent } from './components/shared/confirm-popup/confirm-popup.component';
 import { ListService } from './services/list.service';
@@ -72,16 +68,12 @@ import { ListService } from './services/list.service';
     FilterPanelComponent,
     ParticipantFeedbackComponent,
     EventFormComponent,
-    EventParticipantsConfirmComponent,
-    EventParticipantConfirmCardComponent,
     CategoryDialogComponent,
     MarkerPopupComponent,
     CategoryDialogComponent,
     ProfileViewComponent,
     EventHistoryComponent,
     EventsUpcomingComponent,
-    EventConfirmAttendanceComponent,
-    EventConfirmAttendanceCardComponent,
     ConfirmPopupComponent,
   ],
   imports: [

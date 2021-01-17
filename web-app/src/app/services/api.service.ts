@@ -117,17 +117,17 @@ export class ApiService {
   patchInvitationStatus(
     eventId: string,
     invitationId: string,
-    invitationStatus: string
+    status: number | string
   ): Observable<Invitation> {
     return this.http.patch<any>(`/events/${eventId}/invitations/${invitationId}`, {
-      status: invitationStatus,
+      status,
     });
   }
 
-  patchAttendanceStatus(
+  patchInvitationAttendanceStatus(
     eventId: string,
     invitationId: string,
-    attendStatus: string
+    attendStatus: number | string
   ): Observable<Invitation> {
     return this.http.patch<any>(`/events/${eventId}/invitations/${invitationId}`, {
       attend_status: attendStatus,
@@ -144,7 +144,11 @@ export class ApiService {
     return this.http.put<any>('/feedbacks', { points, message }, { params });
   }
 
-  getEventInvitationAttendStatuses(): Observable<any> {
+  getEventInvitationStatuses(): Observable<Record<string, string>> {
+    return this.http.get<any>('/events/invitation_statuses');
+  }
+
+  getEventInvitationAttendStatuses(): Observable<Record<string, string>> {
     return this.http.get<any>('/events/invitation_attend_statuses');
   }
 

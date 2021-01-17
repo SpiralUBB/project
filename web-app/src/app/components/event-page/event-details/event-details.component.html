@@ -11,7 +11,10 @@
 
     <mat-card-header>
       <mat-card-title>{{ appEvent.title }}</mat-card-title>
-      <div class="no-participants" *ngIf="appEvent.noParticipants >= 0 && !appEvent.isLimitedDetails">
+      <div
+        class="no-participants"
+        *ngIf="appEvent.noParticipants >= 0 && !appEvent.isLimitedDetails"
+      >
         <mat-icon aria-hidden="false">how_to_reg</mat-icon>
 
         <p class="no-participants-text">

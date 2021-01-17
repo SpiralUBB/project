@@ -1,8 +1,6 @@
 <div class="profile-view">
   <mat-card *ngIf="user">
-    <mat-card-title>
-      Profile
-    </mat-card-title>
+    <mat-card-title>Profile</mat-card-title>
 
     <mat-card-content>
       <div class="field">
@@ -31,13 +29,8 @@
       </div>
 
       <div class="progress-bar-container field">
-        <mat-progress-bar
-          mode="determinate"
-          [value]="pointsToNextLevel"
-        ></mat-progress-bar>
-        <div class="points">
-          {{ pointsToNextLevel }} / 100
-        </div>
+        <mat-progress-bar mode="determinate" [value]="pointsToNextLevel"></mat-progress-bar>
+        <div class="points">{{ pointsToNextLevel }} / 100</div>
       </div>
     </mat-card-content>
   </mat-card>

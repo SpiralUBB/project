@@ -17,24 +17,30 @@ export class HttpResponseParserService implements HttpInterceptor {
   private apiBasePath = 'http://localhost:5000/api/v1';
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const newReq = req.clone({
-      url: this.apiBasePath + req.url,
-      // body: this.remapKeysToSnakeCase(req.body),
-      body: this.objectToSnake(req.body),
-      withCredentials: true,
-    });
+    if(req.url.includes('https')){
+      return next.handle(req);
+    }
+    else{ 
+      const newReq = req.clone({
+        url: this.apiBasePath + req.url,
+        // body: this.remapKeysToSnakeCase(req.body),
+        body: this.objectToSnake(req.body),
+        withCredentials: true,
+      });
+  
+      return next.handle(newReq).pipe(
+        map((event: HttpEvent<any>) => {
+          if (event instanceof HttpResponse) {
+            // const camelCaseObject = this.remapKeysToCamelCase(event.body);
+            // return event.clone({ body: camelCaseObject });
+            return event.clone({
+              body: this.objectToCamel(event.body),
+            });
+          }
+        })
+      );
+    }
 
-    return next.handle(newReq).pipe(
-      map((event: HttpEvent<any>) => {
-        if (event instanceof HttpResponse) {
-          // const camelCaseObject = this.remapKeysToCamelCase(event.body);
-          // return event.clone({ body: camelCaseObject });
-          return event.clone({
-            body: this.objectToCamel(event.body),
-          });
-        }
-      })
-    );
   }
 
   // private remapKeysToCamelCase(o: object): object {

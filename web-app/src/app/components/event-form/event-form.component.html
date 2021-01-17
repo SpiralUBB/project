@@ -8,9 +8,17 @@
         <input matInput type="text" formControlName="title" />
       </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Location</mat-label>
-        <input matInput type="text" formControlName="location" />
+      <mat-form-field floatLabel="never" class="full-width">
+        <input matInput type="text" [matAutocomplete]="auto" 
+        [formControl]="inputFieldFormControl" placeholder="Enter location here" />
+      
+        <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption>
+          <mat-option *ngFor="let option of searchOptions | async" [value]="option.shortAddress" 
+            (onSelectionChange)="optionSelectionChange(option, $event)"
+            [matTooltip]="option.fullAddress" matTooltipShowDelay="1000">
+            <span class="mat-body">{{ option.shortAddress }}</span>
+          </mat-option>
+        </mat-autocomplete>
       </mat-form-field>
 
       <div
@@ -21,15 +29,17 @@
         (leafletMapReady)="onMapReady($event)"
       ></div>
 
-      <mat-form-field>
-        <mat-label>Latitude</mat-label>
-        <input matInput type="number" formControlName="x" />
-      </mat-form-field>
+      <div class="double-field-container">
+        <mat-form-field class="full-width">
+          <mat-label>Coords x</mat-label>
+          <input  readonly="true" matInput type="number" formControlName="x" />
+        </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Longitude</mat-label>
-        <input matInput type="number" formControlName="y" />
-      </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-label>Coords y</mat-label>
+          <input  readonly="true" matInput type="number" formControlName="y" />
+        </mat-form-field>
+      </div>
 
       <mat-form-field>
         <mat-label>Start date</mat-label>

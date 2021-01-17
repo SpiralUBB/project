@@ -110,13 +110,25 @@ export class EventFormComponent implements OnInit {
   }
 
   addEventsCategories(categoriesType: any): void {
+    let initialValue = null;
+
     Object.keys(categoriesType).forEach((key) => {
       const category = {
         value: key,
         viewValue: categoriesType[key],
       };
+
+      if (!initialValue) {
+        initialValue = key;
+      }
       this.categories.push(category);
     });
+
+    if (initialValue) {
+      this.eventForm.patchValue({
+        category: initialValue,
+      });
+    }
   }
 
   addTrustLevelOptions(currentUserTrustLevel: number): void {
@@ -133,6 +145,10 @@ export class EventFormComponent implements OnInit {
       };
       this.trustLevelOptions.push(checkBoxOption);
     }
+
+    this.eventForm.patchValue({
+      trustLevel: 0,
+    });
   }
 
   onChangeMaxNrParticipants(): void {

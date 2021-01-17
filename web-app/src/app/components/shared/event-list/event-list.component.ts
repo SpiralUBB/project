@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { start } from 'repl';
 import { AppEvent } from 'src/app/models/app-event.interface';
 import { ApiService } from 'src/app/services/api.service';
 import { ListService } from 'src/app/services/list.service';

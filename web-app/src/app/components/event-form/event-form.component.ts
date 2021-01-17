@@ -133,7 +133,6 @@ export class EventFormComponent implements OnInit {
 
     this.eventForm = new FormGroup({
       title: new FormControl('', [Validators.required]),
-      location: new FormControl('', [Validators.required]),
       startDate: new FormControl(initialStartDate, [Validators.required]),
       endDate: new FormControl(initialEndDate, [Validators.required]),
       startTime: new FormControl(initialStartTime, [Validators.required]),
@@ -227,11 +226,12 @@ export class EventFormComponent implements OnInit {
   }
 
   onSubmit(): void {
+    
     this.apiService
       .addEvent({
         title: this.eventForm.value.title,
         location: this.location,
-        description: this.eventForm.value.textarea,
+        description: this.eventForm.value.description,
         visibility: this.eventForm.value.visibility,
         category: this.eventForm.value.category,
         minTrustLevel: this.eventForm.value.trustLevel,
@@ -295,6 +295,18 @@ export class EventFormComponent implements OnInit {
         y: e.latlng.lng,
       });
       this.onNewLocation(e.latlng.lat, e.latlng.lng);
+      this.updateLocationText(e.latlng.lat, e.latlng.lng);
     });
+  }
+
+  updateLocationText(lat:number, lng:number){
+    this.geocodingService.getAddresBasedOnLocation(lat, lng).subscribe(
+      (value: any) => {
+        debugger;
+        let loc = value.features[0].properties.formatted;
+        this.location = loc;
+        this.inputFieldFormControl.patchValue(loc);
+      }
+    )
   }
 }

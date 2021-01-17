@@ -67,4 +67,9 @@ export class GeocodingService {
     fullAddress += (properties.country && properties.country !== properties.name) ? `, ${properties.country}` : '';
     return fullAddress;
   }
+
+  getAddresBasedOnLocation(lat: number, lng: number): any {
+    let url = `https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lng}&apiKey=1b48259b810e48ddb151889f9ea58db0`
+    return this.http.get(url);
+  }
 }

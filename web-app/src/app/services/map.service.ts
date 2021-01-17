@@ -47,7 +47,6 @@ export class MapService {
       Object.keys(eventsRes.items).forEach((key) => {
         this.events.push(eventsRes.items[key]);
       });
-      console.log(this.events);
 
       const locationEvents = new Map();
       const whiteListedEvents = new Map();

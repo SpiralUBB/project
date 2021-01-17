@@ -57,7 +57,6 @@ export class EventDetailsComponent implements OnInit, OnChanges {
     this.mapService.map.zoom = 14;
     this.mapService.map.center = markerLatLng;
     this.appEvent = res;
-    console.log(this.appEvent);
   }
 
   joinEvent(): void {

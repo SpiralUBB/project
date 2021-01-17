@@ -70,8 +70,6 @@ export class EventPageComponent implements OnInit {
         })
       )
       .subscribe(() => {
-        console.log(this.isOwner);
-        console.log(this.isEventPast);
       });
   }
 

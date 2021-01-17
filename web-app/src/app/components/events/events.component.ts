@@ -14,7 +14,6 @@ export class EventsComponent implements OnInit {
 
   ngOnInit(): void {
     this.apiService.getCurrentUser().subscribe((res) => {
-      console.log(res);
     });
   }
 

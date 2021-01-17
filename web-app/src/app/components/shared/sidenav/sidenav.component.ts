@@ -14,7 +14,6 @@ export class SidenavComponent implements OnInit {
   ngOnInit(): void {
     this.navigationService.sidenavToggled$.subscribe((val) => {
       // this.drawerElementRef.nativeElement.toggl
-      console.log(val);
     });
   }
 }

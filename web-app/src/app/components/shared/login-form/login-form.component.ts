@@ -21,7 +21,6 @@ export class LoginFormComponent implements OnInit {
 
   login(username: string, password: string): void {
     this.authService.login(username, password).subscribe((res) => {
-      console.log(res);
       this.router.navigateByUrl('/app');
       this.dialogRef.close();
     });

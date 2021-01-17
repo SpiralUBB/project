@@ -28,11 +28,9 @@ export class EventParticipantsComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     this.apiService.getEventInvitations(this.eventId).subscribe((invitations: ApiResponse<Invitation>) => {
-      console.log(invitations);
       this.participants = invitations.items
         .filter(invitation => invitation.status === 1)
         .map(invitation => invitation.user);
-      console.log(this.participants);
     });
   }
 

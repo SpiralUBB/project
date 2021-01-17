@@ -76,7 +76,7 @@ export class FilterPanelComponent implements OnInit {
         '-' +
         (selectedDate.getMonth() + 1) +
         '-' +
-        selectedDate.getDay();
+        selectedDate.getDate();
       date.startDate = startDate;
     }
 
@@ -88,7 +88,7 @@ export class FilterPanelComponent implements OnInit {
         '-' +
         (selectedDate.getMonth() + 1) +
         '-' +
-        selectedDate.getDay();
+        selectedDate.getDate();
       date.endDate = endDate;
     }
 
@@ -101,9 +101,11 @@ export class FilterPanelComponent implements OnInit {
   }
 
   clearEvents(): void {
-    this.checkedCategories = [];
-    this.range.value.start = null;
-    this.range.value.end = null;
+    this.categoriesControl.patchValue(null);
+    this.range.patchValue({
+      start:null,
+      end:null,
+    })
     this.filterProps.emit({
       supportTypeFilter: false,
       eventsTypeFilter: [],

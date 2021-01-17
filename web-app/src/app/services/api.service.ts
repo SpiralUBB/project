@@ -35,7 +35,7 @@ export class ApiService {
     categories: string[],
     startDate: string,
     endDate: string,
-    own = false,
+    own = null,
     invitationStatus = null,
     invitationAttendStatus = null
   ): Observable<any> {
@@ -44,9 +44,10 @@ export class ApiService {
     if (own === true) {
       params = params.append('own', 'true');
     }
-    // if (own === false) {
-    //   params = params.append('own', 'false');
-    // }
+    
+    if (own === false) {
+      params = params.append('own', 'false');
+    }
 
     if (categories) {
       for (const category of categories) {

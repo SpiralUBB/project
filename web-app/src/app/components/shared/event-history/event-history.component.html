@@ -1,3 +1,6 @@
+<button *ngIf="isLoggedIn" class="add-btn" mat-fab color="primary" (click)="openEventFormDialog()">
+  <mat-icon>add</mat-icon>
+</button>
 <mat-tab-group>
   <mat-tab label="Created">
     <div class="events-list" *ngFor="let event of eventsCreatedPast">

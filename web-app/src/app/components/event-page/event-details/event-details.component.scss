@@ -10,20 +10,14 @@
   margin-top: 16px;
 }
 
-.prop {
-  color: gray;
-  margin-bottom: 8px;
-  line-height: 20px;
-  height: 20px;
-}
-
-.prop > * {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.prop .mat-icon {
+.mat-icon {
+  font-size: 20px;
   margin-right: 8px;
+}
+
+.icon-with-text {
+  display: flex;
+  align-items: center;
 }
 
 .card-bottom {

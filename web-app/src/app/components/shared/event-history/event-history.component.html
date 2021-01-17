@@ -3,13 +3,13 @@
 </button>
 <mat-tab-group>
   <mat-tab label="Created">
-    <div class="events-list" *ngFor="let event of eventsCreatedPast">
-      <app-event-card [event]="event"></app-event-card>
+    <div class="events-list">
+      <app-event-card *ngFor="let event of eventsCreatedPast" [event]="event"></app-event-card>
     </div>
   </mat-tab>
   <mat-tab label="Participated">
-    <div class="events-list" *ngFor="let event of eventsParticipated">
-      <app-event-card [event]="event"></app-event-card>
+    <div class="events-list">
+      <app-event-card *ngFor="let event of eventsParticipated" [event]="event"></app-event-card>
     </div>
   </mat-tab>
 </mat-tab-group>

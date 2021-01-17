@@ -1,38 +1,37 @@
-<mat-card>
-  <mat-card-content>
-    <form class="comment-form">
-      <mat-form-field class="comment-input">
-        <mat-label>Leave a comment</mat-label>
-        <textarea
-          matInput
-          placeholder="Ex. It made me feel..."
-          [(ngModel)]="this.comment"
-          name="comment"
-          rows="1"
-          cdkTextareaAutosize
-          #autosize="cdkTextareaAutosize"
-          cdkAutosizeMinRows="1"
-          cdkAutosizeMaxRows="5"
-        ></textarea>
-      </mat-form-field>
+<div class="comments-list">
+  <mat-card>
+    <mat-card-content>
+      <form class="comment-form">
+        <mat-form-field class="comment-input">
+          <mat-label>Leave a comment</mat-label>
+          <textarea
+            matInput
+            [(ngModel)]="this.comment"
+            name="comment"
+            rows="1"
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"
+          ></textarea>
+        </mat-form-field>
 
-      <div class="send-btn-container">
-        <button class="send-btn" mat-raised-button color="primary" (click)="sendComment()">
-          Comment
-        </button>
-      </div>
-    </form>
-  </mat-card-content>
-</mat-card>
+        <div class="send-btn-container">
+          <button class="send-btn" mat-raised-button color="primary" (click)="sendComment()">
+            Comment
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
 
-<mat-card *ngIf="!comments?.length">
-  <mat-card-header>No content</mat-card-header>
-</mat-card>
+  <mat-card *ngIf="!comments?.length">
+    <mat-card-header>No content</mat-card-header>
+  </mat-card>
 
-<div class="comment-wrapper" *ngFor="let comment of comments">
   <app-comment-card
     [comment]="comment"
     [username]="user.username"
     (deleteString)="deleteComment($event)"
+    *ngFor="let comment of comments"
   ></app-comment-card>
 </div>

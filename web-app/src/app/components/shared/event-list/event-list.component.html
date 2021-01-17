@@ -1,5 +1,8 @@
-<app-filter-panel (filterProps)="onFilterProps($event)"></app-filter-panel>
+<div class="events-list">
+  <app-filter-panel (filterProps)="onFilterProps($event)"></app-filter-panel>
 
-<div class="mat-list-item-event" *ngFor="let event of events">
-  <app-event-card [event]="event"></app-event-card>
+  <app-event-card
+    *ngFor="let event of events"
+    [event]="event"
+  ></app-event-card>
 </div>

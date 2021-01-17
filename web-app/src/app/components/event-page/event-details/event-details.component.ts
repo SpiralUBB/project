@@ -19,7 +19,7 @@ export class EventDetailsComponent implements OnInit, OnChanges {
   appEvent: AppEvent;
   selectedEventMarker: Marker | Circle;
 
-  constructor(private apiService: ApiService, private mapService: MapService) {}
+  constructor(private apiService: ApiService, public mapService: MapService) {}
 
   ngOnInit(): void {}
 

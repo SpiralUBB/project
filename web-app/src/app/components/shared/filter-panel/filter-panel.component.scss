@@ -1,42 +1,9 @@
-// .category-list {
-//   list-style-type: none;
-//   cursor: pointer;
-//   display: flex;
-//   flex-direction: column;
-//   flex-wrap: wrap;
-// }
-
-// .category-item {
-//   display: inline-flex;
-// }
-
-// .category-text {
-//   margin-left: 5px;
-//   margin-top: 4px;
-// }
-
-// .filter-panel-container {
-//   display: block;
-//   max-width: 765px;
-//   margin: 0 auto;
-//   display: flex;
-//   flex-direction: column;
-// }
-
-// .date-container {
-//   margin: 5px;
-// }
-
 .button-filter-panel {
   margin: 8px;
 }
 
-// .mat-icon-delete {
-//   margin-top: 3px;
-// }
-
 .mat-card {
-  margin-top: 16px;
+  margin-bottom: 16px;
 }
 
 .mat-card-content {
@@ -54,8 +21,4 @@
 .action-btns {
   display: flex;
   flex-direction: column;
-}
-
-::ng-deep .mat-form-field-wrapper {
-  margin-bottom: -1.25em;
 }

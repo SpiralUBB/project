@@ -26,25 +26,8 @@ button {
   word-wrap: anywhere;
 }
 
-// .comment-container {
-//   display: flex;
-//   flex-direction: row;
-//   align-items: flex-end;
-// }
-// .comment-container{
-//   padding-right: 16px;
-//   padding-bottom: 25px;
-// }
-.mat-dialog {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  padding-right: 16px;
-  padding-bottom: 25px;
-}
-
 .mat-card {
-  width: -webkit-fill-available;
+  width: 100%;
   margin-bottom: 16px;
 }
 

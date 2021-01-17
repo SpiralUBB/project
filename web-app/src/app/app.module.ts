@@ -9,6 +9,7 @@ import { HttpClientModule, HttpResponse, HTTP_INTERCEPTORS } from '@angular/comm
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthService } from './services/auth.service';
 import { HttpResponseParserService } from './services/http-response-parser.service';
+import { CommonModule } from '@angular/common';
 
 import { RegisterFormComponent } from './components/shared/register-form/register-form.component';
 import { HttpErrorInterceptorService } from './services/http-error-interceptor.service';
@@ -81,6 +82,7 @@ import { BarRatingModule } from 'ngx-bar-rating';
     EventConfirmAttendanceCardComponent,
   ],
   imports: [
+    CommonModule,
     MaterialModule,
     BrowserModule,
     BrowserAnimationsModule,

@@ -1,44 +1,47 @@
-<mat-card *ngIf="appEvent" class="example-card">
-  <div
-    style="height: 25rem"
-    leaflet
-    [leafletOptions]="mapService.options"
-    [(leafletCenter)]="mapService.map.center"
-    [(leafletZoom)]="mapService.map.zoom"
-    [leafletLayers]="[selectedEventMarker]"
-  ></div>
-  <mat-card-header>
-    <mat-card-title>{{ appEvent.title }}</mat-card-title>
-    <div class="no-participants" *ngIf="appEvent.noParticipants >= 0 && !appEvent.isLimitedDetails">
-      <mat-icon aria-hidden="false">how_to_reg</mat-icon>
+<div class="event-details">
+  <mat-card *ngIf="appEvent">
+    <div
+      style="height: 25rem"
+      leaflet
+      [leafletOptions]="mapService.options"
+      [(leafletCenter)]="mapService.map.center"
+      [(leafletZoom)]="mapService.map.zoom"
+      [leafletLayers]="[selectedEventMarker]"
+    ></div>
 
-      <p class="no-participants-text">
-        {{ appEvent.noParticipants }} / {{ appEvent.noMaxParticipants }}
+    <mat-card-header>
+      <mat-card-title>{{ appEvent.title }}</mat-card-title>
+      <div class="no-participants" *ngIf="appEvent.noParticipants >= 0 && !appEvent.isLimitedDetails">
+        <mat-icon aria-hidden="false">how_to_reg</mat-icon>
+
+        <p class="no-participants-text">
+          {{ appEvent.noParticipants }} / {{ appEvent.noMaxParticipants }}
+        </p>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="prop" *ngIf="!appEvent?.isLimitedDetails">
+        <mat-icon inline="true">location_on</mat-icon>
+        {{ appEvent.location }}
+      </div>
+      <div class="prop">{{ appEvent.categoryText }}</div>
+      <div class="prop">
+        <mat-icon inline="true">date_range</mat-icon>
+        {{ appEvent.startTime | date: "medium" }} - {{ appEvent.endTime | date: "medium" }}
+      </div>
+      <p>
+        {{ appEvent.description }}
       </p>
-    </div>
-  </mat-card-header>
+    </mat-card-content>
 
-  <mat-card-content>
-    <div class="prop" *ngIf="!appEvent?.isLimitedDetails">
-      <mat-icon inline="true">location_on</mat-icon>
-      {{ appEvent.location }}
-    </div>
-    <div class="prop">{{ appEvent.categoryText }}</div>
-    <div class="prop">
-      <mat-icon inline="true">date_range</mat-icon>
-      {{ appEvent.startTime | date: "medium" }} - {{ appEvent.endTime | date: "medium" }}
-    </div>
-    <p>
-      {{ appEvent.description }}
-    </p>
-  </mat-card-content>
-
-  <mat-card-actions>
-    <button *ngIf="showJoinButton" (click)="joinEvent()" color="primary" mat-raised-button>
-      Join event
-    </button>
-    <mat-chip-list *ngIf="!showJoinButton">
-      <mat-chip color="primary">Invitation status: {{ invitationStatus }}</mat-chip>
-    </mat-chip-list>
-  </mat-card-actions>
-</mat-card>
+    <mat-card-actions>
+      <button *ngIf="showJoinButton" (click)="joinEvent()" color="primary" mat-raised-button>
+        Join event
+      </button>
+      <mat-chip-list *ngIf="!showJoinButton">
+        <mat-chip color="primary">Invitation status: {{ invitationStatus }}</mat-chip>
+      </mat-chip-list>
+    </mat-card-actions>
+  </mat-card>
+</div>

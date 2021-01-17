@@ -15,7 +15,7 @@
     <app-event-participants [isOwner]="isOwner" [eventId]="idTemplate"></app-event-participants>
   </mat-tab>
   <mat-tab *ngIf="shouldConfirmInvitations && isLoggedIn" label="Confirm Participants">
-    <app-event-participants-confirm [eventId]="idTemplate"></app-event-participants-confirm>
+    <app-event-participants-confirm [isOwner]="isOwner" [eventId]="idTemplate"></app-event-participants-confirm>
   </mat-tab>
   <mat-tab *ngIf="shouldConfirmAttendance && isLoggedIn" label="User Attendance">
     <app-event-confirm-attendance [eventId]="idTemplate"></app-event-confirm-attendance>

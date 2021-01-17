@@ -143,4 +143,8 @@ export class ApiService {
     const params: HttpParams = new HttpParams().set('to_user', username).set('event_id', eventId);
     return this.http.put<any>('/feedbacks', { points, message }, { params });
   }
+
+  getEventInvitationAttendStatuses(): Observable<any> {
+    return this.http.get<any>('/events/invitation_attend_statuses');
+  }
 }

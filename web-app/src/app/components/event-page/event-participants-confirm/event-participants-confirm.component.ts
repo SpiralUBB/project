@@ -9,6 +9,7 @@ import { ApiService } from 'src/app/services/api.service';
 })
 export class EventParticipantsConfirmComponent implements OnInit {
   @Input() eventId: string;
+  @Input() isOwner: boolean;
   constructor(private apiService: ApiService) {}
 
   invitations: Invitation[] = [];

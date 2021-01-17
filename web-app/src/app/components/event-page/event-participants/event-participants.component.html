@@ -2,7 +2,7 @@
   <app-participant-card
     *ngFor="let user of participants"
     [user]="user"
-    [canLeaveFeedback]="isOwner"
+    [isOwner]="isOwner"
     [eventId]="eventId"
   ></app-participant-card>
 </div>

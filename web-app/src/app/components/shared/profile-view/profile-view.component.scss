@@ -1,50 +1,20 @@
-.profile-view-container {
-  margin-left: 30px;
-}
-.profile-username {
-  margin-bottom: 20px;
-}
-
-.profile-firstname {
-  margin-bottom: 20px;
-}
-
-.profile-lastname {
-  margin-bottom: 20px;
-}
-.profile-points {
-  margin-top: 20px;
-}
-
-.profile-progress-bar {
-  margin-top: 10px;
-  margin-bottom: 20px;
-}
-
-.profile-title {
-  font-size: 30px;
-  font-weight: 500;
-}
 .profile-view {
-  min-width: 150px;
-  max-width: 300px;
-  width: 100%;
+  padding: 16px;
 }
 
-.full-width {
-  width: 100%;
+.field {
+  margin-bottom: 8px;
 }
 
-.profile-container {
-  max-width: 300px;
-  margin-left: 40px;
+.progress-bar-container {
+  display: flex;
+  align-items: center;
 }
 
-.profile-container {
-  overflow: auto;
+.progress-bar-container .mat-progress-bar {
+  margin-right: 8px;
 }
 
-.cancel-button {
-  float: right;
-  margin-right: 20px;
+.progress-bar-container .points {
+  flex-shrink: 0;
 }

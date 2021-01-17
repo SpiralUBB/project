@@ -11,20 +11,25 @@ import { ProfileFormComponent } from '../profile-form/profile-form.component';
   styleUrls: ['./profile-view.component.scss'],
 })
 export class ProfileViewComponent {
-  profile: User;
-  points: number;
+  user: User = null;
+  pointsToNextLevel: number;
 
   constructor(private authService: AuthService, private router: Router, private dialog: MatDialog) {
-    this.profile = authService.currentUserValue;
-    this.points = this.profile.points % 100;
+    authService.currentUser$.subscribe(user => {
+      if (!user) {
+        return;
+      }
+
+      this.user = user;
+      this.pointsToNextLevel = this.user.points % 100;
+    });
   }
 
   editProfile(): void {
-    const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    this.dialog.open(ProfileFormComponent, dialogConfig);
+    this.dialog.open(ProfileFormComponent, {
+      disableClose: true,
+      autoFocus: true,
+    });
   }
 
   close(): void {

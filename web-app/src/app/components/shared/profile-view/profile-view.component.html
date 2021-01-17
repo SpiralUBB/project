@@ -1,25 +1,44 @@
-<div class="profile-view-container">
-  <p class="profile-title">Profile</p>
-  <div class="profile-view">
-    <div class="profile-username">Username: {{ profile.username }}</div>
-    <div class="profile-firstname">Firstname: {{ profile.firstName }}</div>
-    <div class="profile-lastname">Lastname: {{ profile.lastName }}</div>
-    <div>
-      <div class="profile-trust-level">Trust level: {{ profile.trustLevel }}</div>
-      <div class="profile-progress-bar">
-        <div class="profile-points">
-          Points to next level:
-          <i>{{ this.points }}/100</i>
-        </div>
-        <br />
-        <mat-progress-bar mode="determinate" value="{{ this.points }}"></mat-progress-bar>
+<div class="profile-view">
+  <mat-card *ngIf="user">
+    <mat-card-title>
+      Profile
+    </mat-card-title>
+
+    <mat-card-content>
+      <div class="field">
+        <div class="mat-caption">Username</div>
+        <div class="mat-body">{{ user.username }}</div>
       </div>
-    </div>
-    <div class="buttons-container">
-      <button class="edit-button" mat-raised-button color="primary" (click)="editProfile()">
-        Edit
-      </button>
-      <button class="cancel-button" mat-raised-button (click)="close()">Cancel</button>
-    </div>
-  </div>
+
+      <div class="field">
+        <div class="mat-caption">Username</div>
+        <div class="mat-body">{{ user.username }}</div>
+      </div>
+
+      <div class="field">
+        <div class="mat-caption">First name</div>
+        <div class="mat-body">{{ user.firstName }}</div>
+      </div>
+
+      <div class="field">
+        <div class="mat-caption">Last name</div>
+        <div class="mat-body">{{ user.lastName }}</div>
+      </div>
+
+      <div class="field">
+        <div class="mat-caption">Trust level</div>
+        <div class="mat-body">{{ user.trustLevel }}</div>
+      </div>
+
+      <div class="progress-bar-container field">
+        <mat-progress-bar
+          mode="determinate"
+          [value]="pointsToNextLevel"
+        ></mat-progress-bar>
+        <div class="points">
+          {{ pointsToNextLevel }} / 100
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>

@@ -28,7 +28,7 @@
     "angular-material-clock-time-picker": "0.0.12",
     "js-convert-case": "^4.1.1",
     "leaflet": "^1.7.1",
-    "material-icons": "^0.3.1",
+    "material-icons": "^0.5.2",
     "moment": "^2.29.1",
     "ngx-bar-rating": "^2.0.0",
     "roboto-fontface": "^0.10.0",

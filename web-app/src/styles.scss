@@ -21,12 +21,13 @@ mat-drawer-container {
 }
 
 .mat-card-header-text {
-  margin: 0px !important;
+  margin: 0 !important;
 }
 
 .mat-card {
   max-width: 765px;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 @media (max-width: 800px) {

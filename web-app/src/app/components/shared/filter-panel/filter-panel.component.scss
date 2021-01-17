@@ -1,9 +1,6 @@
-.button-filter-panel {
-  margin: 8px;
-}
-
 .mat-card {
   margin-bottom: 16px;
+  padding: 8px;
 }
 
 .mat-card-content {
@@ -11,16 +8,17 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
 }
 
-.mat-form-field {
+.mat-form-field,
+.mat-card .mat-card-content .mat-form-field:first-child {
   flex-grow: 1;
-  margin: 0 8px;
+  margin: 8px;
 }
 
-.action-btns {
-  display: flex;
-  flex-direction: column;
+button {
+  margin: 8px;
 }
 
 ::ng-deep .mat-form-field-wrapper{

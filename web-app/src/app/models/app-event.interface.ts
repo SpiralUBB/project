@@ -18,4 +18,5 @@ export interface AppEvent {
   locationPointsRadiusMeters?: number;
   noMaxParticipants: number;
   noParticipants?: number;
+  minTrustLevel?: number;
 }

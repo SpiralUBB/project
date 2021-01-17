@@ -9,6 +9,7 @@ import { Invitation } from 'src/app/models/invitation.interface';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { MapService } from 'src/app/services/map.service';
+import { EventFormComponent } from '../../event-form/event-form.component';
 import { ConfirmPopupComponent } from '../../shared/confirm-popup/confirm-popup.component';
 
 @Component({
@@ -102,6 +103,15 @@ export class EventDetailsComponent implements OnInit, OnChanges {
   }
 
   editEvent(): void {
-    
+    console.log(this.event);
+    const dialogRef = this.dialog.open(EventFormComponent, {
+      data: {
+        event: this.event,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.loadEvent();
+    });
   }
 }

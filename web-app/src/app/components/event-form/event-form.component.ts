@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { latLng, tileLayer, Map, Marker, marker, icon } from 'leaflet';
 import { Observable, Subject, Subscription } from 'rxjs';
@@ -12,6 +12,8 @@ import { MatOptionSelectionChange } from '@angular/material/core';
 import { GeocodingService } from 'src/app/services/geocoding.service';
 import { GeocodingFeatureProperties } from 'src/app/models/geocoding-feature-properties.interface';
 import { ListService } from 'src/app/services/list.service';
+import { AppEvent } from 'src/app/models/app-event.interface';
+import { formatDate } from '@angular/common';
 
 interface CheckBoxSelection {
   value: number | string;
@@ -29,7 +31,9 @@ export class EventFormComponent implements OnInit {
     private apiService: ApiService,
     private dialog: MatDialogRef<EventFormComponent>,
     private geocodingService: GeocodingService,
-    private listService: ListService
+    private listService: ListService,
+    @Inject(MAT_DIALOG_DATA) public data: { event: AppEvent },
+    @Inject(LOCALE_ID) public locale: string
   ) {
     this.valueChangesSub = this.inputFieldFormControl.valueChanges.subscribe((value) => {
       if (this.userInputTimeout) {
@@ -54,6 +58,7 @@ export class EventFormComponent implements OnInit {
   }
   searchOptions: Subject<PlaceSuggestion[]> = new Subject<PlaceSuggestion[]>();
   inputFieldFormControl: FormControl = new FormControl();
+  limitParticipantsCheckControl = new FormControl();
   private valueChangesSub: Subscription;
   private userInputTimeout: number;
   private location: string;
@@ -128,20 +133,37 @@ export class EventFormComponent implements OnInit {
     const initialStartTime = this.getTimeFormat(initialStartDate);
     const initialEndTime = this.getTimeFormat(initialEndDate);
 
+    // console.log(this.data.event);
+    
+    const loadedStartTime = this.data?.event?.startTime ? formatDate(this.data?.event?.startTime, 'hh:mm', this.locale) : null;
+    const loadedEndTime = this.data?.event?.endTime ? formatDate(this.data?.event?.endTime, 'hh:mm', this.locale) : null;
+    const loadedStartDate = this.data?.event?.endTime ? formatDate(this.data?.event?.endTime, '', this.locale) : null;
+    const loadedEndDate = this.data?.event?.endTime ? formatDate(this.data?.event?.endTime, '', this.locale) : null;
+
+    if (this.data?.event?.location) {
+      this.inputFieldFormControl.patchValue(this.data?.event?.location);
+      // this.limitParticipantsCheckControl.patchValue(this.data?.event?.noMaxParticipants > 0);
+      if (this.data?.event?.noMaxParticipants > 0) {
+        this.showParticipantsLimit = !this.showParticipantsLimit;
+      }
+    }
+
     this.eventForm = new FormGroup({
-      title: new FormControl('', [Validators.required]),
-      startDate: new FormControl(initialStartDate, [Validators.required]),
-      endDate: new FormControl(initialEndDate, [Validators.required]),
-      startTime: new FormControl(initialStartTime, [Validators.required]),
-      endTime: new FormControl(initialEndTime, [Validators.required]),
-      visibility: new FormControl('public', [Validators.required]),
-      category: new FormControl('', [Validators.required]),
-      trustLevel: new FormControl('', [Validators.required]),
-      x: new FormControl(0, [Validators.required]),
-      y: new FormControl(0, [Validators.required]),
-      nrMaxParticipants: new FormControl(0),
-      description: new FormControl('', [Validators.required]),
+      title: new FormControl(this.data?.event?.title ?? '', [Validators.required]),
+      startDate: new FormControl(loadedStartDate ?? initialStartDate, [Validators.required]),
+      endDate: new FormControl(loadedEndDate ?? initialEndDate, [Validators.required]),
+      startTime: new FormControl(loadedStartTime ?? initialStartTime, [Validators.required]),
+      endTime: new FormControl(loadedEndTime ?? initialEndTime, [Validators.required]),
+      visibility: new FormControl(this.data?.event?.visibilityText ?? 'public', [Validators.required]),
+      category: new FormControl(this.data?.event?.category, [Validators.required]),
+      trustLevel: new FormControl(this.data?.event?.minTrustLevel ?? '', [Validators.required]),
+      x: new FormControl(this.data?.event?.locationPoints[0] ?? 0, [Validators.required]),
+      y: new FormControl(this.data?.event?.locationPoints[1] ?? 0, [Validators.required]),
+      nrMaxParticipants: new FormControl(this.data?.event?.noMaxParticipants ?? 0),
+      description: new FormControl(this.data?.event?.description ?? '', [Validators.required]),
     });
+
+
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -168,7 +190,7 @@ export class EventFormComponent implements OnInit {
   }
 
   addEventsCategories(categoriesType: any): void {
-    let initialValue = null;
+    // let initialValue = null;
 
     Object.keys(categoriesType).forEach((key) => {
       const category = {
@@ -176,15 +198,18 @@ export class EventFormComponent implements OnInit {
         viewValue: categoriesType[key],
       };
 
-      if (!initialValue) {
-        initialValue = key;
-      }
       this.categories.push(category);
     });
 
-    if (initialValue) {
+    console.log(this.data?.event?.category);
+
+    if (this.data?.event) {
       this.eventForm.patchValue({
-        category: initialValue,
+        category: this.data?.event?.category,
+      });
+    } else {
+      this.eventForm.patchValue({
+        category: 0,
       });
     }
   }
@@ -223,29 +248,33 @@ export class EventFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.apiService
-      .addEvent({
-        title: this.eventForm.value.title,
-        location: this.location,
-        description: this.eventForm.value.description,
-        visibility: this.eventForm.value.visibility,
-        category: this.eventForm.value.category,
-        minTrustLevel: this.eventForm.value.trustLevel,
-        noMaxParticipants: this.eventForm.value.nrMaxParticipants,
-        locationPoint: [this.eventForm.value.x, this.eventForm.value.y],
-        startTime: this.addHoursMinsToDate(
-          this.eventForm.value.startDate,
-          this.eventForm.value.startTime
-        ),
-        endTime: this.addHoursMinsToDate(
-          this.eventForm.value.endDate,
-          this.eventForm.value.endTime
-        ),
-      })
-      .subscribe(() => {
-        this.listService.listUpdated$.next(null);
-        this.dialog.close();
-      });
+    // if (this.data?.event) {
+      // this.apiService.upda
+    // } else {
+      this.apiService
+        .addEvent({
+          title: this.eventForm.value.title,
+          location: this.location,
+          description: this.eventForm.value.description,
+          visibility: this.eventForm.value.visibility,
+          category: this.eventForm.value.category,
+          minTrustLevel: this.eventForm.value.trustLevel,
+          noMaxParticipants: this.eventForm.value.nrMaxParticipants,
+          locationPoint: [this.eventForm.value.x, this.eventForm.value.y],
+          startTime: this.addHoursMinsToDate(
+            this.eventForm.value.startDate,
+            this.eventForm.value.startTime
+          ),
+          endTime: this.addHoursMinsToDate(
+            this.eventForm.value.endDate,
+            this.eventForm.value.endTime
+          ),
+        })
+        .subscribe(() => {
+          this.listService.listUpdated$.next(null);
+          this.dialog.close();
+        });
+    // }
   }
 
   optionSelectionChange(option: PlaceSuggestion, event: MatOptionSelectionChange): void {

@@ -141,7 +141,7 @@
         </div>
       </div>
       <div>
-        <mat-checkbox color="primary" (change)="onChangeMaxNrParticipants()">
+        <mat-checkbox [checked]="showParticipantsLimit" color="primary"  (change)="onChangeMaxNrParticipants()">
           <mat-label>Limit participants</mat-label>
         </mat-checkbox>
       </div>

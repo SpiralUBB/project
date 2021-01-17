@@ -22,7 +22,7 @@ export class EventsUpcomingComponent implements OnInit {
     private authService: AuthService,
     private datePipe: DatePipe,
     private dialog: MatDialog, 
-    private router: Router,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -46,7 +46,7 @@ export class EventsUpcomingComponent implements OnInit {
           this.eventsAcceptedFuture.push(eventsRes.items[key]);
         });
       });
-      this.authService.isLoggedIn().subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
+    this.authService.isLoggedIn().subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
   }
 
   openEventFormDialog(): void {

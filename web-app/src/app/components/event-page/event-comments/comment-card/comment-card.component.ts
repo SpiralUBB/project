@@ -14,6 +14,8 @@ export class CommentCardComponent implements OnInit {
   @Output()
   deleteString: EventEmitter<string> = new EventEmitter<string>();
 
+  allowModify = false;
+
   constructor() {}
 
   ngOnInit(): void {}

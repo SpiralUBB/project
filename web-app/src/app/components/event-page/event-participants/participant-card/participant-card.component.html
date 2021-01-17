@@ -1,21 +1,41 @@
 <mat-card>
-  <mat-card-content>
-    <div>
-      <mat-card-title>{{ user.firstName }} {{ user.lastName }}</mat-card-title>
-      <mat-card-subtitle>Level {{ user.trustLevel }}</mat-card-subtitle>
-    </div>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Attendance status</mat-label>
-      <mat-select [formControl]="attendanceControl">
-        <mat-option [value]="status" *ngFor="let status of invitationAttendStatuses">
-          {{ status }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <button mat-button (click)="sendFeedback()" *ngIf="!hasFeedback" color="primary">
-      Send feedback
+  <mat-card-header>
+    <mat-card-title>{{ invitation.user.firstName }} {{ invitation.user.lastName }}</mat-card-title>
+    <mat-card-subtitle>Level {{ invitation.user.trustLevel }}</mat-card-subtitle>
+    <button mat-icon-button color="primary" (click)="sendFeedback()" *ngIf="!this.isOwnInvitation">
+      <mat-icon>feedback</mat-icon>
     </button>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="actions">
+      <ng-template [ngIf]="!this.isOwnInvitation && isOwner">
+        <mat-form-field appearance="outline">
+          <mat-label>Invitation status</mat-label>
+          <mat-select
+            [(ngModel)]="updatedStatus"
+            (ngModelChange)="onStatusChange()"
+            [disabled]="statusDisabled"
+          >
+            <mat-option [value]="status.value" *ngFor="let status of invitationStatuses">
+              {{ status.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Attendance status</mat-label>
+          <mat-select
+            [(ngModel)]="updatedAttendStatus"
+            (ngModelChange)="onAttendStatusChange()"
+            [disabled]="attendStatusDisabled"
+          >
+            <mat-option [value]="status.value" *ngFor="let status of invitationAttendStatuses">
+              {{ status.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-template>
+    </div>
   </mat-card-content>
 </mat-card>

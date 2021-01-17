@@ -1,13 +1,30 @@
 .mat-card {
   margin-bottom: 16px;
+  padding: 8px;
 }
 
-.mat-card-content {
+//.mat-card-content {
+//  display: flex;
+//  flex-direction: row;
+//  justify-content: space-between;
+//}
+
+.actions {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
-.mat-card-subtitle {
-  margin-bottom: 0;
+.actions .mat-form-field {
+  flex-grow: 1;
+}
+
+.mat-card-title,
+.mat-card-subtitle,
+.mat-form-field,
+button {
+  margin: 8px;
+}
+
+:host ::ng-deep .mat-form-field .mat-form-field-wrapper {
+  margin-bottom: -1.25em;
 }

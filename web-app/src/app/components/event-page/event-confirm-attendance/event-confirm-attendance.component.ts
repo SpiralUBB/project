@@ -32,7 +32,7 @@ export class EventConfirmAttendanceComponent implements OnInit {
 
   patchInvitation(data: any): void {
     this.apiService
-      .patchAttendanceStatus(this.eventId, data.invitationId, data.status)
+      .patchInvitationAttendanceStatus(this.eventId, data.invitationId, data.status)
       .subscribe(() => {
         this.loadInvitations();
       });

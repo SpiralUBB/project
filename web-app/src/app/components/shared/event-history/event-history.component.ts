@@ -23,7 +23,7 @@ export class EventHistoryComponent implements OnInit {
     private datePipe: DatePipe,
     
     private dialog: MatDialog, 
-    private router: Router,
+    private router: Router
   ) {}
 
   ngOnInit(): void {

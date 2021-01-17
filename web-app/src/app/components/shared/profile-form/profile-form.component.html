@@ -1,28 +1,29 @@
-<div class="profile-container">
-  <p class="profile-title">Profile</p>
-  <div class="profile-form">
-    <mat-form-field class="profile-full-width">
-      <mat-label>Username</mat-label>
-      <input #usernameInput matInput placeholder="{{ profile.username }}" />
-    </mat-form-field>
-    <mat-form-field class="profile-full-width">
-      <mat-label>First name</mat-label>
-      <input #firstNameInput matInput placeholder="{{ profile.firstName }}" />
-    </mat-form-field>
-    <mat-form-field class="profile-full-width">
-      <mat-label>Last name</mat-label>
-      <input #lastNameInput matInput placeholder="{{ profile.lastName }}" />
-    </mat-form-field>
-  </div>
-  <div class="buttons-container">
-    <button
-      class="update-button"
-      mat-raised-button
-      color="primary"
-      (click)="updateProfile(usernameInput.value, firstNameInput.value, lastNameInput.value)"
-    >
-      Update
-    </button>
-    <button class="cancel-button" mat-raised-button (click)="close()">Cancel</button>
-  </div>
-</div>
+<h2 mat-dialog-title>Edit profile</h2>
+
+<mat-dialog-content>
+  <mat-form-field class="full-width">
+    <mat-label>Username</mat-label>
+    <input #usernameInput matInput />
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <mat-label>First name</mat-label>
+    <input #firstNameInput matInput />
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <mat-label>Last name</mat-label>
+    <input #lastNameInput matInput />
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button
+    class="update-button"
+    mat-raised-button
+    color="primary"
+    (click)="updateProfile(usernameInput.value, firstNameInput.value, lastNameInput.value)"
+  >
+    Update
+  </button>
+
+<button class="cancel-button" mat-raised-button (click)="close()">Cancel</button>
+</mat-dialog-actions>

@@ -17,6 +17,7 @@ export class NavigationService {
     { title: 'History events', url: '/app/event-history' },
     { title: 'Upcoming events', url: '/app/event-upcoming' },
     { title: 'Map', url: '/app/map' },
+    { title: 'Profile', url: '/app/profile' },
   ];
 
   public toggleSidenav(): void {

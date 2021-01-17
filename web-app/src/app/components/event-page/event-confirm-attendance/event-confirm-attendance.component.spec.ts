@@ -8,9 +8,8 @@ describe('EventConfirmAttendanceComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EventConfirmAttendanceComponent ],
-    })
-    .compileComponents();
+      declarations: [EventConfirmAttendanceComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

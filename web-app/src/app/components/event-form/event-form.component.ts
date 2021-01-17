@@ -23,24 +23,6 @@ interface CheckBoxSelection {
   styleUrls: ['./event-form.component.scss'],
 })
 export class EventFormComponent implements OnInit {
-
-  searchOptions: Subject<PlaceSuggestion[]> = new Subject<PlaceSuggestion[]>();
-  inputFieldFormControl: FormControl = new FormControl();
-  private valueChangesSub: Subscription;
-  private userInputTimeout: number;
-  private location: string;
-  private choosenOption: PlaceSuggestion;
-  private requestSub: Subscription;
-  map: Map;
-  eventId$: Observable<string>;
-  categories: CheckBoxSelection[] = [];
-  trustLevelOptions: CheckBoxSelection[] = [];
-  showParticipantsLimit = false;
-  mapCenter;
-  newLocationMarker: Marker;
-  eventForm: FormGroup;
-
-
   constructor(
     private activatedRoute: ActivatedRoute,
     private apiService: ApiService,
@@ -65,33 +47,24 @@ export class EventFormComponent implements OnInit {
 
       this.userInputTimeout = window.setTimeout(() => {
         this.generateSuggestions(value);
-        
       }, 300);
     });
   }
-
-  private generateSuggestions(text: string) {
-    
-    if (this.requestSub) {
-      this.requestSub.unsubscribe();
-    }
-
-    this.requestSub = this.geocodingService.getApiCall(text).subscribe((data: GeoJSON.FeatureCollection) => {
-      const placeSuggestions = data.features.map(feature => {
-        const properties: GeocodingFeatureProperties = (feature.properties as GeocodingFeatureProperties);
-
-        return {
-          shortAddress: this.geocodingService.generateShortAddress(properties),
-          fullAddress: this.geocodingService.generateFullAddress(properties),
-          data: properties
-        }
-      });
-
-      this.searchOptions.next(placeSuggestions.length ? placeSuggestions : null);
-    }, err => {
-      console.log(err);
-    });
-  }
+  searchOptions: Subject<PlaceSuggestion[]> = new Subject<PlaceSuggestion[]>();
+  inputFieldFormControl: FormControl = new FormControl();
+  private valueChangesSub: Subscription;
+  private userInputTimeout: number;
+  private location: string;
+  private choosenOption: PlaceSuggestion;
+  private requestSub: Subscription;
+  map: Map;
+  eventId$: Observable<string>;
+  categories: CheckBoxSelection[] = [];
+  trustLevelOptions: CheckBoxSelection[] = [];
+  showParticipantsLimit = false;
+  mapCenter;
+  newLocationMarker: Marker;
+  eventForm: FormGroup;
 
   public readonly locationPickerOptions = {
     layers: [
@@ -104,14 +77,40 @@ export class EventFormComponent implements OnInit {
     center: latLng(46.879966, -121.726909),
   };
 
+  @ViewChild('textarea')
+  private textarea;
+
+  private generateSuggestions(text: string): void {
+    if (this.requestSub) {
+      this.requestSub.unsubscribe();
+    }
+
+    this.requestSub = this.geocodingService.getApiCall(text).subscribe(
+      (data: GeoJSON.FeatureCollection) => {
+        const placeSuggestions = data.features.map((feature) => {
+          const properties: GeocodingFeatureProperties = feature.properties as GeocodingFeatureProperties;
+
+          return {
+            shortAddress: this.geocodingService.generateShortAddress(properties),
+            fullAddress: this.geocodingService.generateFullAddress(properties),
+            data: properties,
+          };
+        });
+
+        this.searchOptions.next(placeSuggestions.length ? placeSuggestions : null);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
   addLeadingZeros(n: number): string {
     return (n < 10 ? '0' : '') + n;
   }
 
   getTimeFormat(date: Date): string {
-    return [date.getHours(), date.getMinutes()]
-      .map(this.addLeadingZeros, this)
-      .join(':');
+    return [date.getHours(), date.getMinutes()].map(this.addLeadingZeros, this).join(':');
   }
 
   getDateNextHour(date: Date = new Date()): Date {
@@ -120,10 +119,6 @@ export class EventFormComponent implements OnInit {
     newDate.setMinutes(0);
     return newDate;
   }
-
-
-  @ViewChild('textarea')
-  private textarea;
 
   ngOnInit(): void {
     const initialStartDate = this.getDateNextHour();
@@ -226,7 +221,6 @@ export class EventFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    
     this.apiService
       .addEvent({
         title: this.eventForm.value.title,
@@ -251,23 +245,21 @@ export class EventFormComponent implements OnInit {
       });
   }
 
-  public optionSelectionChange(option: PlaceSuggestion, event: MatOptionSelectionChange) {
+  optionSelectionChange(option: PlaceSuggestion, event: MatOptionSelectionChange): void {
     if (event.isUserInput) {
-      debugger;
       this.choosenOption = option;
       this.autocompleteChanged(option);
     }
   }
 
   autocompleteChanged(data: any): void {
-    debugger;
-    latLng(data.data.lat, data.data.lon)
+    latLng(data.data.lat, data.data.lon);
     this.location = data.fullAddress;
     this.eventForm.patchValue({
-      x : data.data.lat,
-      y : data.data.lon
+      x: data.data.lat,
+      y: data.data.lon,
     });
-    this.onNewLocation(data.data.lat,  data.data.lon);
+    this.onNewLocation(data.data.lat, data.data.lon);
   }
 
   onNewLocation(lat, lng): void {
@@ -276,15 +268,13 @@ export class EventFormComponent implements OnInit {
     }
     this.newLocationMarker = marker(latLng(lat, lng), {
       icon: icon({
-        iconSize: [25, 41],
-        iconAnchor: [13, 41],
-        iconUrl: 'leaflet/marker-icon.png',
-        shadowUrl: 'leaflet/marker-shadow.png',
+        iconSize: [21, 37],
+        iconAnchor: [10, 37],
+        iconUrl: 'assets/pin.svg',
       }),
     });
     this.newLocationMarker.addTo(this.map);
   }
-
 
   onMapReady(leafletMap: Map): void {
     this.map = leafletMap;
@@ -299,13 +289,11 @@ export class EventFormComponent implements OnInit {
     });
   }
 
-  updateLocationText(lat: number, lng: number): void{
-    this.geocodingService.getAddresBasedOnLocation(lat, lng).subscribe(
-      (value: any) => {
-        const loc = value.features[0].properties.formatted;
-        this.location = loc;
-        this.inputFieldFormControl.patchValue(loc);
-      
+  updateLocationText(lat: number, lng: number): void {
+    this.geocodingService.getAddresBasedOnLocation(lat, lng).subscribe((value: any) => {
+      const loc = value.features[0].properties.formatted;
+      this.location = loc;
+      this.inputFieldFormControl.patchValue(loc);
 
       // this.newLocationMarker = marker(latLng(e.latlng.lat, e.latlng.lng), {
       //   icon: icon({

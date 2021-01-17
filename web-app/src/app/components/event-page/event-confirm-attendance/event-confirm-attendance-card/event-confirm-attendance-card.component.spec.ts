@@ -8,9 +8,8 @@ describe('EventConfirmAttendanceCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EventConfirmAttendanceCardComponent ],
-    })
-    .compileComponents();
+      declarations: [EventConfirmAttendanceCardComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

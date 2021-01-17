@@ -8,9 +8,8 @@ describe('EventsUpcomingComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EventsUpcomingComponent ],
-    })
-    .compileComponents();
+      declarations: [EventsUpcomingComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -9,7 +9,6 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./event-participant-confirm-card.component.scss'],
 })
 export class EventParticipantConfirmCardComponent {
-
   @Input() invitation: Invitation;
   @Output() patchInvitation = new EventEmitter<any>();
   constructor(private apiService: ApiService) {}

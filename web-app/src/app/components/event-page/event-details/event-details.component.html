@@ -25,9 +25,7 @@
           {{ appEvent.noParticipants }}
         </span>
 
-        <span *ngIf="!appEvent?.isUnlimitedParticipants">
-           / {{ appEvent.noMaxParticipants }}
-        </span>
+        <span *ngIf="!appEvent?.isUnlimitedParticipants">/ {{ appEvent.noMaxParticipants }}</span>
       </div>
       <div class="prop" *ngIf="!appEvent?.isLimitedDetails">
         <mat-icon inline="true">location_on</mat-icon>
@@ -37,17 +35,41 @@
         <mat-icon inline="true">category</mat-icon>
         {{ appEvent.categoryText }}
       </div>
-      <p>
-        {{ appEvent.description }}
-      </p>
+      <div class="card-bottom">
+        <div class="left-side">
+          {{ appEvent.description }}
+        </div>
+        <div *ngIf="!invitation" class="rigth-side">
+          <button (click)="joinEvent()" color="primary" mat-raised-button>Join event</button>
+        </div>
+      </div>
     </mat-card-content>
-
-    <mat-card-actions *ngIf="isLoggedIn">
-      <button *ngIf="showJoinButton" (click)="joinEvent()" color="primary" mat-raised-button>
-        Join event
-      </button>
-      <mat-chip-list *ngIf="!showJoinButton">
-        <mat-chip color="primary">Invitation status: {{ invitationStatus }}</mat-chip>
+    <mat-card-actions *ngIf="!isOwner">
+      <mat-chip-list class="right-side" *ngIf="invitation">
+        <mat-chip *ngIf="invitation.statusText === 'pending'" class="yellow-chip">
+          <mat-icon>pending</mat-icon>
+          {{ invitation.statusText }}
+        </mat-chip>
+        <mat-chip *ngIf="invitation.statusText === 'accepted'" class="green-chip">
+          <mat-icon>check_circle</mat-icon>
+          {{ invitation.statusText }}
+        </mat-chip>
+        <mat-chip *ngIf="invitation.statusText === 'denied'" class="red-chip">
+          <mat-icon>cancel</mat-icon>
+          {{ invitation.statusText }}
+        </mat-chip>
+        <mat-chip *ngIf="invitation.attendStatusText === 'unchecked'" class="yellow-chip">
+          <mat-icon>pending</mat-icon>
+          {{ invitation.attendStatusText }}
+        </mat-chip>
+        <mat-chip *ngIf="invitation.attendStatusText === 'attended'" class="green-chip">
+          <mat-icon>check_circle</mat-icon>
+          {{ invitation.attendStatusText }}
+        </mat-chip>
+        <mat-chip *ngIf="invitation.attendStatusText === 'missed'" class="red-chip">
+          <mat-icon>cancel</mat-icon>
+          {{ invitation.attendStatusText }}
+        </mat-chip>
       </mat-chip-list>
     </mat-card-actions>
   </mat-card>

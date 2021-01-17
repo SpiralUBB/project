@@ -44,7 +44,7 @@ export class ApiService {
     if (own === true) {
       params = params.append('own', 'true');
     }
-    
+
     if (own === false) {
       params = params.append('own', 'false');
     }

@@ -23,3 +23,54 @@
   color: gray;
   padding-bottom: 7px;
 }
+
+.card-bottom {
+  display: flex;
+  flex-direction: row;
+  margin-top: 8px;
+
+  .left-side {
+    flex-grow: 1;
+  }
+
+  .right-side {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.mat-chip-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.mat-chip {
+  background: rgba(0, 0, 0, 0.05);
+
+  .mat-icon {
+    margin-right: 8px;
+  }
+}
+
+.yellow-chip {
+  .mat-icon {
+    color: #ffde03;
+  }
+}
+
+.green-chip {
+  .mat-icon {
+    color: #64dd17;
+  }
+}
+
+.red-chip {
+  .mat-icon {
+    color: #b00020;
+  }
+}
+
+::ng-deep .mat-chip .mat-icon {
+  color: black;
+  fill: black;
+}

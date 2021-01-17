@@ -9,16 +9,13 @@ import { NavigationService } from 'src/app/services/navigation.service';
   styleUrls: ['./sidenav-content.component.scss'],
 })
 export class SidenavContentComponent implements OnInit {
-  constructor(
-    public navigationService: NavigationService,
-    private authService: AuthService
-  ) { }
+  constructor(public navigationService: NavigationService, private authService: AuthService) {}
 
   isLoggedIn: boolean;
   menuEntries: MenuEntry[];
 
   ngOnInit(): void {
-    this.authService.isLoggedIn().subscribe(isLoggedIn => {
+    this.authService.isLoggedIn().subscribe((isLoggedIn) => {
       this.isLoggedIn = isLoggedIn;
       if (this.isLoggedIn) {
         this.menuEntries = this.navigationService.menuEntries;

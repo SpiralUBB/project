@@ -15,7 +15,7 @@ export class ProfileViewComponent {
   pointsToNextLevel: number;
 
   constructor(private authService: AuthService, private router: Router, private dialog: MatDialog) {
-    authService.currentUser$.subscribe(user => {
+    authService.currentUser$.subscribe((user) => {
       if (!user) {
         return;
       }

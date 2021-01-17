@@ -12,8 +12,8 @@ export class EventCardComponent implements OnInit {
 
   constructor(private router: Router) {}
 
-  ngOnInit(): void { }
-  
+  ngOnInit(): void {}
+
   onCardClick(): void {
     setTimeout(() => {
       this.router.navigate(['/event', this.event.id]);

@@ -13,12 +13,10 @@ export class ParticipantCardComponent implements OnInit {
   @Input() canLeaveFeedback = true;
   @Input() eventId: string;
 
-  constructor(
-    private dialog: MatDialog
-  ) {}
+  constructor(private dialog: MatDialog) {}
 
   ngOnInit(): void {}
-  
+
   sendFeedback(): void {
     this.dialog.open(ParticipantFeedbackComponent, {
       data: {

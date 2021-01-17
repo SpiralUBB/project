@@ -7,16 +7,13 @@ import { Invitation } from 'src/app/models/invitation.interface';
   styleUrls: ['./event-confirm-attendance-card.component.scss'],
 })
 export class EventConfirmAttendanceCardComponent implements OnInit {
-
   @Input() invitation: Invitation;
   @Output() patchInvitation = new EventEmitter<any>();
   shouldDisplayStatus: boolean;
-  constructor() {
-
-  }
+  constructor() {}
 
   ngOnInit(): void {
-    this.shouldDisplayStatus =  this.invitation.attendStatus !== 0;
+    this.shouldDisplayStatus = this.invitation.attendStatus !== 0;
   }
 
   confirmAttendance(): void {

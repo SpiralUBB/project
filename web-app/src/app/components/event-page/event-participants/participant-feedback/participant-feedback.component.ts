@@ -16,18 +16,20 @@ export class ParticipantFeedbackComponent {
   rateThirdQuestion = 3;
   textareaInput: string;
 
-
   constructor(
     private authService: AuthService,
     private apiService: ApiService,
-    @Inject(MAT_DIALOG_DATA) public data: {user: User, eventId: string}
-    ) {}
+    @Inject(MAT_DIALOG_DATA) public data: { user: User; eventId: string }
+  ) {}
 
-    submitFeedback(): void {
-      this.apiService.putFeedback(
+  submitFeedback(): void {
+    this.apiService
+      .putFeedback(
         this.data.user.username,
         this.data.eventId,
         this.rateFirstQuestion + this.rateSecondQuestion + this.rateThirdQuestion - 9,
-        this.textareaInput).subscribe();
-    }
+        this.textareaInput
+      )
+      .subscribe();
+  }
 }

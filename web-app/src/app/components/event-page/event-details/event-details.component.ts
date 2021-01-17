@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { circle, Circle, icon, latLng, marker, Marker } from 'leaflet';
-import { take } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { catchError, map, mergeMap, take } from 'rxjs/operators';
 import { AppEvent } from 'src/app/models/app-event.interface';
 import { Invitation } from 'src/app/models/invitation.interface';
 import { ApiService } from 'src/app/services/api.service';
@@ -16,15 +17,21 @@ export class EventDetailsComponent implements OnInit, OnChanges {
   @Input() eventId: string;
   @Input() showJoinButton = false;
   @Input() invitationStatus: string;
+  @Input() isOwner: boolean;
   @Output() joinedEvent = new EventEmitter<Invitation>();
   appEvent: AppEvent;
   selectedEventMarker: Marker | Circle;
   isLoggedIn: boolean;
+  invitation: Invitation;
 
-  constructor(private apiService: ApiService, public mapService: MapService, private authService: AuthService) {}
+  constructor(
+    private apiService: ApiService,
+    public mapService: MapService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
-    this.authService.isLoggedIn().subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
+    this.authService.isLoggedIn().subscribe((isLoggedIn) => (this.isLoggedIn = isLoggedIn));
   }
 
   ngOnChanges(): void {
@@ -34,9 +41,17 @@ export class EventDetailsComponent implements OnInit, OnChanges {
   loadEvent(id?: string): void {
     this.apiService
       .getEventById(id ?? this.eventId)
-      .pipe(take(1))
-      .subscribe((res: AppEvent) => {
-        this.setEventRes(res);
+      .pipe(
+        mergeMap((event: AppEvent) =>
+          this.apiService.getEventInvitationForUser(event.id).pipe(
+            catchError((e) => of(null)),
+            map((invitation) => ({ invitation, event }))
+          )
+        )
+      )
+      .subscribe(({ event, invitation }) => {
+        this.setEventRes(event);
+        this.invitation = invitation;
       });
   }
 

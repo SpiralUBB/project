@@ -19,7 +19,7 @@ export class EventCommentsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getComments();
-    this.authService.isLoggedIn().subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
+    this.authService.isLoggedIn().subscribe((isLoggedIn) => (this.isLoggedIn = isLoggedIn));
     this.authService.currentUser$.subscribe((user) => (this.user = user));
   }
 

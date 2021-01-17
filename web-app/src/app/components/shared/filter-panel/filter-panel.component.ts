@@ -22,10 +22,7 @@ export class FilterPanelComponent implements OnInit {
 
   categoriesControl = new FormControl();
 
-  constructor(
-    public dialog: MatDialog,
-    private apiService: ApiService
-  ) { }
+  constructor(public dialog: MatDialog, private apiService: ApiService) {}
 
   ngOnInit(): void {
     this.getCategories();
@@ -33,12 +30,11 @@ export class FilterPanelComponent implements OnInit {
 
   getCategories(): void {
     this.apiService.getCategories().subscribe((eventsRes) => {
-      Object.keys(eventsRes).forEach(key => {
+      Object.keys(eventsRes).forEach((key) => {
         this.categories.push({ id: key, name: eventsRes[key] });
       });
     });
   }
-
 
   // openDialog(): void {
   //   const dialogConfig = new MatDialogConfig();
@@ -103,9 +99,9 @@ export class FilterPanelComponent implements OnInit {
   clearEvents(): void {
     this.categoriesControl.patchValue(null);
     this.range.patchValue({
-      start:null,
-      end:null,
-    })
+      start: null,
+      end: null,
+    });
     this.filterProps.emit({
       supportTypeFilter: false,
       eventsTypeFilter: [],

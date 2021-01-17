@@ -9,13 +9,22 @@
       </mat-form-field>
 
       <mat-form-field floatLabel="never" class="full-width">
-        <input matInput type="text" [matAutocomplete]="auto" 
-        [formControl]="inputFieldFormControl" placeholder="Enter location here" />
-      
+        <input
+          matInput
+          type="text"
+          [matAutocomplete]="auto"
+          [formControl]="inputFieldFormControl"
+          placeholder="Enter location here"
+        />
+
         <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption>
-          <mat-option *ngFor="let option of searchOptions | async" [value]="option.shortAddress" 
+          <mat-option
+            *ngFor="let option of searchOptions | async"
+            [value]="option.shortAddress"
             (onSelectionChange)="optionSelectionChange(option, $event)"
-            [matTooltip]="option.fullAddress" matTooltipShowDelay="1000">
+            [matTooltip]="option.fullAddress"
+            matTooltipShowDelay="1000"
+          >
             <span class="mat-body">{{ option.shortAddress }}</span>
           </mat-option>
         </mat-autocomplete>
@@ -32,12 +41,12 @@
       <div class="double-field-container">
         <mat-form-field class="full-width">
           <mat-label>Coords x</mat-label>
-          <input  readonly="true" matInput type="number" formControlName="x" />
+          <input readonly="true" matInput type="number" formControlName="x" />
         </mat-form-field>
 
         <mat-form-field class="full-width">
           <mat-label>Coords y</mat-label>
-          <input  readonly="true" matInput type="number" formControlName="y" />
+          <input readonly="true" matInput type="number" formControlName="y" />
         </mat-form-field>
       </div>
 
@@ -65,14 +74,43 @@
         <input matInput type="time" value="12:00 AM" formControlName="endTime" />
       </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Visibility</mat-label>
-        <mat-select formControlName="visibility">
-          <mat-option value="public">Public</mat-option>
-          <mat-option value="whitelisted">Whitelisted</mat-option>
-          <mat-option value="unlisted">Unlisted</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <div class="form-field-with-helper">
+        <mat-form-field>
+          <mat-label>Visibility</mat-label>
+          <mat-select formControlName="visibility">
+            <mat-option value="public">Public</mat-option>
+            <mat-option value="whitelisted">Whitelisted</mat-option>
+            <mat-option value="unlisted">Unlisted</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="mat-caption">
+          A
+          <b>public event</b>
+          is fully visible to everyone.
+          <br />
+          All details are shown. Users can join the event freely.
+          <br />
+          A
+          <b>whitelisted event</b>
+          is partially visible to everyone.
+          <br />
+          Details like location and the current participants are hidden.
+          <br />
+          Users can send a join request, but you must approve their request.
+          <br />
+          An
+          <b>unlisted event</b>
+          is only visible to the users that you send a link to.
+          <br />
+          Users will see limited details about your event.
+          <br />
+          Details like location and current participants are hidden.
+          <br />
+          Users can send a join request, and you must still approve their request.
+          <br />
+        </div>
+      </div>
 
       <mat-form-field>
         <mat-label>Category</mat-label>
@@ -83,18 +121,25 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Minimum Trust level</mat-label>
-        <mat-select formControlName="trustLevel">
-          <mat-option
-            *ngFor="let trustLevelOption of trustLevelOptions"
-            [value]="trustLevelOption.value"
-          >
-            {{ trustLevelOption.viewValue }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+      <div class="form-field-with-helper">
+        <mat-form-field>
+          <mat-label>Minimum Trust level</mat-label>
+          <mat-select formControlName="trustLevel">
+            <mat-option
+              *ngFor="let trustLevelOption of trustLevelOptions"
+              [value]="trustLevelOption.value"
+            >
+              {{ trustLevelOption.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
+        <div class="mat-caption">
+          Users that don't meet this minimum
+          <b>trust level</b>
+          won't be able to join the event.
+        </div>
+      </div>
       <div>
         <mat-checkbox color="primary" (change)="onChangeMaxNrParticipants()">
           <mat-label>Limit participants</mat-label>

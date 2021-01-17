@@ -19,19 +19,18 @@ export class EventParticipantsComponent implements OnInit, OnChanges {
 
   participants: User[];
 
-  constructor(
-    private apiService: ApiService,
-    private dialog: MatDialog
-  ) { }
+  constructor(private apiService: ApiService, private dialog: MatDialog) {}
 
   ngOnInit(): void {}
 
   ngOnChanges(): void {
-    this.apiService.getEventInvitations(this.eventId).subscribe((invitations: ApiResponse<Invitation>) => {
-      this.participants = invitations.items
-        .filter(invitation => invitation.status === 1)
-        .map(invitation => invitation.user);
-    });
+    this.apiService
+      .getEventInvitations(this.eventId)
+      .subscribe((invitations: ApiResponse<Invitation>) => {
+        this.participants = invitations.items
+          .filter((invitation) => invitation.status === 1)
+          .map((invitation) => invitation.user);
+      });
   }
 
   leaveFeedback(): void {

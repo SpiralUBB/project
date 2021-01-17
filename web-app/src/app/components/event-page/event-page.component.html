@@ -5,6 +5,7 @@
       [invitationStatus]="userInvitationType"
       [showJoinButton]="!isOwner && !isEventPast && isViewer"
       [eventId]="idTemplate"
+      [isOwner]="isOwner"
     ></app-event-details>
   </mat-tab>
   <mat-tab label="Comments">
@@ -12,7 +13,7 @@
   </mat-tab>
   <mat-tab label="Participants" *ngIf="!event?.isLimitedDetails && isLoggedIn">
     <app-event-participants [isOwner]="isOwner" [eventId]="idTemplate"></app-event-participants>
-</mat-tab>
+  </mat-tab>
   <mat-tab *ngIf="shouldConfirmInvitations && isLoggedIn" label="Confirm Participants">
     <app-event-participants-confirm [eventId]="idTemplate"></app-event-participants-confirm>
   </mat-tab>

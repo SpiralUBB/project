@@ -41,10 +41,10 @@ import { MarkerPopupComponent } from './components/map/marker-popup/marker-popup
 import { ProfileViewComponent } from './components/shared/profile-view/profile-view.component';
 import { EventHistoryComponent } from './components/shared/event-history/event-history.component';
 import { DatePipe } from '@angular/common';
-import { EventsUpcomingComponent} from './components/shared/events-upcoming/events-upcoming.component';
+import { EventsUpcomingComponent } from './components/shared/events-upcoming/events-upcoming.component';
 import { EventConfirmAttendanceComponent } from './components/event-page/event-confirm-attendance/event-confirm-attendance.component';
 import { EventConfirmAttendanceCardComponent } from './components/event-page/event-confirm-attendance/event-confirm-attendance-card/event-confirm-attendance-card.component';
-import { BarRatingModule } from "ngx-bar-rating";
+import { BarRatingModule } from 'ngx-bar-rating';
 
 @NgModule({
   declarations: [

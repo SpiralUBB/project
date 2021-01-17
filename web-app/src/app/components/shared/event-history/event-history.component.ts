@@ -28,18 +28,14 @@ export class EventHistoryComponent implements OnInit {
 
   ngOnInit(): void {
     this.apiService
-      .getFilterEvents(
-        [],
-        null,
-        this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-        true
-      )
+      .getFilterEvents([], null, this.datePipe.transform(new Date(), 'yyyy-MM-dd'), true)
       .subscribe((eventsRes) => {
         Object.keys(eventsRes.items).forEach((key) => {
           this.eventsCreatedPast.push(eventsRes.items[key]);
         });
       });
-    this.apiService.getFilterEvents(
+    this.apiService
+      .getFilterEvents(
         [],
         null,
         this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
@@ -48,13 +44,14 @@ export class EventHistoryComponent implements OnInit {
         'attended'
       )
       .subscribe((eventsRes) => {
-      Object.keys(eventsRes.items).forEach((key) => {
-        this.eventsParticipated.push(eventsRes.items[key]);
+        Object.keys(eventsRes.items).forEach((key) => {
+          this.eventsParticipated.push(eventsRes.items[key]);
+        });
       });
-    });
 
     this.authService.isLoggedIn().subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
   }
+  
   openEventFormDialog(): void {
     const dialogRef = this.dialog.open(EventFormComponent);
     dialogRef.afterClosed().subscribe(() => {

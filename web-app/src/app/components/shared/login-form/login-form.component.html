@@ -1,14 +1,26 @@
 <h2 mat-dialog-title>Login</h2>
 <mat-dialog-content>
-  <form class="login-form" (keydown)=submitOnEnterKey($event)>
+  <form class="login-form" (keydown)="submitOnEnterKey($event)">
     <mat-error *ngIf="hasLoginError">Authentication error.</mat-error>
     <mat-form-field class="full-width">
       <mat-label>Email</mat-label>
-      <input #emailInput [ngModelOptions]="{standalone: true}" [(ngModel)]="formStatus.emailValue" matInput placeholder="Ex. name@example.com" />
+      <input
+        #emailInput
+        [ngModelOptions]="{ standalone: true }"
+        [(ngModel)]="formStatus.emailValue"
+        matInput
+        placeholder="Ex. name@example.com"
+      />
     </mat-form-field>
     <mat-form-field class="full-width">
       <mat-label>Password</mat-label>
-      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="formStatus.passwordValue" #passwordInput matInput type="password" />
+      <input
+        [ngModelOptions]="{ standalone: true }"
+        [(ngModel)]="formStatus.passwordValue"
+        #passwordInput
+        matInput
+        type="password"
+      />
     </mat-form-field>
   </form>
 </mat-dialog-content>

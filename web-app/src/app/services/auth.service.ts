@@ -8,7 +8,7 @@ import { ApiService } from './api.service';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService  {
+export class AuthService {
   private currentUserSubject = new BehaviorSubject<User>(undefined);
   public currentUser$ = this.currentUserSubject.asObservable();
 
@@ -17,17 +17,20 @@ export class AuthService  {
   }
 
   public getUserData(): void {
-    this.apiService.getCurrentUser().subscribe((user) => {
-      this.currentUserSubject.next(user);
-    }, (err) => {
+    this.apiService.getCurrentUser().subscribe(
+      (user) => {
+        this.currentUserSubject.next(user);
+      },
+      (err) => {
         this.currentUserSubject.next(null);
-    });
+      }
+    );
   }
 
   public isLoggedIn(): Observable<boolean> {
     return this.currentUser$.pipe(
-      filter(user => user !== undefined),
-      map(user => !!user)
+      filter((user) => user !== undefined),
+      map((user) => !!user)
     );
     // if (this.triedToLogin) {
     //   return of(!!this.currentUserSubject.value);

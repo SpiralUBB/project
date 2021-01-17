@@ -7,7 +7,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { EventFormComponent } from '../../event-form/event-form.component';
 
-
 @Component({
   selector: 'app-events-upcoming',
   templateUrl: './events-upcoming.component.html',
@@ -28,12 +27,7 @@ export class EventsUpcomingComponent implements OnInit {
 
   ngOnInit(): void {
     this.apiService
-      .getFilterEvents(
-        [],
-        this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-        null,
-        true
-      )
+      .getFilterEvents([], this.datePipe.transform(new Date(), 'yyyy-MM-dd'), null, true)
       .subscribe((eventsRes) => {
         Object.keys(eventsRes.items).forEach((key) => {
           this.eventsCreatedFuture.push(eventsRes.items[key]);

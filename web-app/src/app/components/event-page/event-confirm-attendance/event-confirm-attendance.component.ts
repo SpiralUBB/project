@@ -8,11 +8,10 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./event-confirm-attendance.component.scss'],
 })
 export class EventConfirmAttendanceComponent implements OnInit {
-
   @Input() eventId: string;
   invitations: Invitation[] = [];
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
     this.loadInvitations();
@@ -32,11 +31,10 @@ export class EventConfirmAttendanceComponent implements OnInit {
   }
 
   patchInvitation(data: any): void {
-    this.apiService.patchAttendanceStatus(this.eventId, data.invitationId, data.status).subscribe(
-      () => {
+    this.apiService
+      .patchAttendanceStatus(this.eventId, data.invitationId, data.status)
+      .subscribe(() => {
         this.loadInvitations();
-      }
-    );
+      });
   }
-
 }

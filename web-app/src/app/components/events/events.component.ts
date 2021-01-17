@@ -11,21 +11,19 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./events.component.scss'],
 })
 export class EventsComponent implements OnInit {
-
   isLoggedIn: boolean;
 
   constructor(
-    private apiService: ApiService, 
-    private dialog: MatDialog, 
+    private apiService: ApiService,
+    private dialog: MatDialog,
     private router: Router,
     private authService: AuthService
   ) {}
-  
 
   ngOnInit(): void {
     // this.apiService.getCurrentUser().subscribe((res) => {
     // });
-    this.authService.isLoggedIn().subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
+    this.authService.isLoggedIn().subscribe((isLoggedIn) => (this.isLoggedIn = isLoggedIn));
   }
 
   openEventFormDialog(): void {

@@ -31,10 +31,10 @@ export class EventParticipantsConfirmComponent implements OnInit {
   }
 
   patchInvitation(data: any): void {
-    this.apiService.patchInvitationStatus(this.eventId, data.invitationId, data.status).subscribe(
-      () => {
+    this.apiService
+      .patchInvitationStatus(this.eventId, data.invitationId, data.status)
+      .subscribe(() => {
         this.loadInvitations();
-      }
-    );
+      });
   }
 }

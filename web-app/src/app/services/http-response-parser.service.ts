@@ -17,17 +17,16 @@ export class HttpResponseParserService implements HttpInterceptor {
   private apiBasePath = 'http://localhost:5000/api/v1';
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if(req.url.includes('https')){
+    if (req.url.includes('https')) {
       return next.handle(req);
-    }
-    else{ 
+    } else {
       const newReq = req.clone({
         url: this.apiBasePath + req.url,
         // body: this.remapKeysToSnakeCase(req.body),
         body: this.objectToSnake(req.body),
         withCredentials: true,
       });
-  
+
       return next.handle(newReq).pipe(
         map((event: HttpEvent<any>) => {
           if (event instanceof HttpResponse) {
@@ -40,7 +39,6 @@ export class HttpResponseParserService implements HttpInterceptor {
         })
       );
     }
-
   }
 
   // private remapKeysToCamelCase(o: object): object {

@@ -14,7 +14,7 @@ export class EventListComponent implements OnInit {
 
   ngOnInit(): void {
     const startDate = new Date().toISOString();
-    this.apiService.getFilterEvents(null, startDate,null).subscribe((eventsRes) => {
+    this.apiService.getFilterEvents(null, startDate, null).subscribe((eventsRes) => {
       this.events = [];
       Object.keys(eventsRes.items).forEach((key) => {
         this.events.push(eventsRes.items[key]);
@@ -23,7 +23,6 @@ export class EventListComponent implements OnInit {
   }
 
   onFilterProps(data: any): void {
-
     const categories = data.eventsTypeFilter;
     const startDate = data.eventsDateFilter.startDate;
     const endDate = data.eventsDateFilter.endDate;

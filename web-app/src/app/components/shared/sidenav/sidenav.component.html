@@ -1,4 +1,4 @@
-<mat-sidenav-container>
+<mat-sidenav-container [hasBackdrop]="false">
   <mat-sidenav [opened]="navigationService.sidenavToggled$ | async">
     <app-sidenav-content></app-sidenav-content>
   </mat-sidenav>

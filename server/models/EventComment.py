@@ -1,11 +1,11 @@
 from datetime import datetime
 
-from mongoengine import Document, ReferenceField, DateTimeField, StringField
+from mongoengine import Document, ReferenceField, DateTimeField, StringField, CASCADE
 
 
 class EventComment(Document):
-    author = ReferenceField('User', required=True)
-    event = ReferenceField('Event', required=True)
+    author = ReferenceField('User', required=True, reverse_delete_rule=CASCADE)
+    event = ReferenceField('Event', required=True, reverse_delete_rule=CASCADE)
     time = DateTimeField(default=datetime.now)
     text = StringField(required=True)
 

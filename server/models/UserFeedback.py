@@ -1,10 +1,10 @@
-from mongoengine import Document, ReferenceField, IntField, StringField
+from mongoengine import Document, ReferenceField, IntField, StringField, CASCADE
 
 
 class UserFeedback(Document):
-    from_user = ReferenceField('User', required=True)
-    to_user = ReferenceField('User', required=True)
-    event = ReferenceField('Event')
+    from_user = ReferenceField('User', required=True, reverse_delete_rule=CASCADE)
+    to_user = ReferenceField('User', required=True, reverse_delete_rule=CASCADE)
+    event = ReferenceField('Event', reverse_delete_rule=CASCADE)
     message = StringField()
     points = IntField(required=True)
 

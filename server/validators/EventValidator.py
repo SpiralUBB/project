@@ -33,8 +33,8 @@ class EventValidator:
             raise EventLocationPointInvalid(message='Event location point must be a list with 2 values')
 
         for x in value:
-            if type(x) != float:
-                raise EventLocationPointInvalid(message='Event location point must be a list with 2 floats')
+            if type(x) != float and type(x) != int:
+                raise EventLocationPointInvalid(message='Event location point must be a list with 2 numbers')
 
     def validate_time(self, value, name):
         if type(value) != datetime:

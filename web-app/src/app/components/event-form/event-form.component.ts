@@ -43,9 +43,6 @@ export class EventFormComponent implements OnInit {
     center: latLng(46.879966, -121.726909),
   };
 
-  @ViewChild('textarea')
-  private textarea;
-
   addLeadingZeros(n: number): string {
     return (n < 10 ? '0' : '') + n;
   }
@@ -82,7 +79,7 @@ export class EventFormComponent implements OnInit {
       x: new FormControl(0, [Validators.required]),
       y: new FormControl(0, [Validators.required]),
       nrMaxParticipants: new FormControl(0),
-      textarea: new FormControl(''),
+      description: new FormControl('', [Validators.required]),
     });
 
     if (navigator.geolocation) {
@@ -169,7 +166,7 @@ export class EventFormComponent implements OnInit {
       .addEvent({
         title: this.eventForm.value.title,
         location: this.eventForm.value.location,
-        description: this.eventForm.value.textarea,
+        description: this.eventForm.value.description,
         visibility: this.eventForm.value.visibility,
         category: this.eventForm.value.category,
         minTrustLevel: this.eventForm.value.trustLevel,

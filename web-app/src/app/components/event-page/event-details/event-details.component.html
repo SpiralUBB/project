@@ -11,27 +11,31 @@
 
     <mat-card-header>
       <mat-card-title>{{ appEvent.title }}</mat-card-title>
-      <div
-        class="no-participants"
-        *ngIf="appEvent.noParticipants >= 0 && !appEvent.isLimitedDetails"
-      >
-        <mat-icon aria-hidden="false">how_to_reg</mat-icon>
-
-        <p class="no-participants-text">
-          {{ appEvent.noParticipants }} / {{ appEvent.noMaxParticipants }}
-        </p>
-      </div>
     </mat-card-header>
 
     <mat-card-content>
+      <div class="prop">
+        <mat-icon inline="true">date_range</mat-icon>
+        {{ appEvent.startTime | date: "medium" }} - {{ appEvent.endTime | date: "medium" }}
+      </div>
+      <div class="prop" *ngIf="!appEvent?.isLimitedDetails">
+        <mat-icon inline="true">how_to_reg</mat-icon>
+
+        <span>
+          {{ appEvent.noParticipants }}
+        </span>
+
+        <span *ngIf="!appEvent?.isUnlimitedParticipants">
+           / {{ appEvent.noMaxParticipants }}
+        </span>
+      </div>
       <div class="prop" *ngIf="!appEvent?.isLimitedDetails">
         <mat-icon inline="true">location_on</mat-icon>
         {{ appEvent.location }}
       </div>
-      <div class="prop">{{ appEvent.categoryText }}</div>
       <div class="prop">
-        <mat-icon inline="true">date_range</mat-icon>
-        {{ appEvent.startTime | date: "medium" }} - {{ appEvent.endTime | date: "medium" }}
+        <mat-icon inline="true">category</mat-icon>
+        {{ appEvent.categoryText }}
       </div>
       <p>
         {{ appEvent.description }}

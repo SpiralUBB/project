@@ -1,5 +1,5 @@
 .event-details {
-  padding: 16px;
+  padding: 16px 16px 128px;
 }
 
 .mat-card-content {
@@ -73,4 +73,22 @@
 ::ng-deep .mat-chip .mat-icon {
   color: black;
   fill: black;
+}
+
+.join-button {
+  position: absolute;
+  right: -8px;
+  bottom: -24px;
+}
+
+.edit-button {
+  position: absolute;
+  right: -8px;
+  bottom: -24px;
+}
+
+.delete-button {
+  position: absolute;
+  right: -8px;
+  bottom: 48px;
 }

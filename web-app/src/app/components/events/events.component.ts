@@ -28,10 +28,10 @@ export class EventsComponent implements OnInit {
 
   openEventFormDialog(): void {
     const dialogRef = this.dialog.open(EventFormComponent);
-    dialogRef.afterClosed().subscribe(() => {
-      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-        this.router.navigate(['/events']);
-      });
-    });
+    // dialogRef.afterClosed().subscribe(() => {
+    //   this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+    //     this.router.navigate(['/events']);
+    //   });
+    // });
   }
 }

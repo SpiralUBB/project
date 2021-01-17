@@ -45,6 +45,8 @@ import { EventsUpcomingComponent } from './components/shared/events-upcoming/eve
 import { EventConfirmAttendanceComponent } from './components/event-page/event-confirm-attendance/event-confirm-attendance.component';
 import { EventConfirmAttendanceCardComponent } from './components/event-page/event-confirm-attendance/event-confirm-attendance-card/event-confirm-attendance-card.component';
 import { BarRatingModule } from 'ngx-bar-rating';
+import { ConfirmPopupComponent } from './components/shared/confirm-popup/confirm-popup.component';
+import { ListService } from './services/list.service';
 
 @NgModule({
   declarations: [
@@ -80,6 +82,7 @@ import { BarRatingModule } from 'ngx-bar-rating';
     EventsUpcomingComponent,
     EventConfirmAttendanceComponent,
     EventConfirmAttendanceCardComponent,
+    ConfirmPopupComponent,
   ],
   imports: [
     CommonModule,
@@ -92,6 +95,7 @@ import { BarRatingModule } from 'ngx-bar-rating';
     BarRatingModule,
   ],
   providers: [
+    ListService,
     AuthService,
     {
       provide: HTTP_INTERCEPTORS,

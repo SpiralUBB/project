@@ -11,6 +11,7 @@ import { PlaceSuggestion } from 'src/app/models/place-suggestion.interface';
 import { MatOptionSelectionChange } from '@angular/material/core';
 import { GeocodingService } from 'src/app/services/geocoding.service';
 import { GeocodingFeatureProperties } from 'src/app/models/geocoding-feature-properties.interface';
+import { ListService } from 'src/app/services/list.service';
 
 interface CheckBoxSelection {
   value: number | string;
@@ -27,7 +28,8 @@ export class EventFormComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private apiService: ApiService,
     private dialog: MatDialogRef<EventFormComponent>,
-    private geocodingService: GeocodingService
+    private geocodingService: GeocodingService,
+    private listService: ListService
   ) {
     this.valueChangesSub = this.inputFieldFormControl.valueChanges.subscribe((value) => {
       if (this.userInputTimeout) {
@@ -241,6 +243,7 @@ export class EventFormComponent implements OnInit {
         ),
       })
       .subscribe(() => {
+        this.listService.listUpdated$.next(null);
         this.dialog.close();
       });
   }

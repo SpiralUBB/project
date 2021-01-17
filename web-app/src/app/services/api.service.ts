@@ -147,4 +147,8 @@ export class ApiService {
   getEventInvitationAttendStatuses(): Observable<any> {
     return this.http.get<any>('/events/invitation_attend_statuses');
   }
+
+  deleteEvent(id: string): Observable<AppEvent> {
+    return this.http.delete<AppEvent>(`/events/${id}`);
+  }
 }

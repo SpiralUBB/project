@@ -39,10 +39,19 @@
         <div class="left-side">
           {{ appEvent.description }}
         </div>
-        <div *ngIf="!invitation" class="rigth-side">
+        <!-- <div *ngIf="!invitation" class="rigth-side">
           <button (click)="joinEvent()" color="primary" mat-raised-button>Join event</button>
-        </div>
+        </div> -->
       </div>
+      <button class="join-button" (click)="joinEvent()" *ngIf="!invitation" mat-fab color="primary">
+        <mat-icon>keyboard_arrow_right</mat-icon>
+      </button>
+      <button (click)="editEvent()" class="edit-button" *ngIf="isOwner" mat-fab color="primary">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button (click)="deleteEvent()" *ngIf="isOwner" class="delete-button" mat-fab color="primary">
+        <mat-icon>delete</mat-icon>
+      </button>
     </mat-card-content>
     <mat-card-actions *ngIf="!isOwner">
       <mat-chip-list class="right-side" *ngIf="invitation">

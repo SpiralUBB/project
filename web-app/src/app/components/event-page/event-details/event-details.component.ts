@@ -1,12 +1,15 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { circle, Circle, icon, latLng, marker, Marker } from 'leaflet';
 import { of } from 'rxjs';
-import { catchError, map, mergeMap, take } from 'rxjs/operators';
+import { catchError, filter, map, mergeMap, take } from 'rxjs/operators';
 import { AppEvent } from 'src/app/models/app-event.interface';
 import { Invitation } from 'src/app/models/invitation.interface';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { MapService } from 'src/app/services/map.service';
+import { ConfirmPopupComponent } from '../../shared/confirm-popup/confirm-popup.component';
 
 @Component({
   selector: 'app-event-details',
@@ -27,7 +30,9 @@ export class EventDetailsComponent implements OnInit, OnChanges {
   constructor(
     private apiService: ApiService,
     public mapService: MapService,
-    private authService: AuthService
+    private authService: AuthService,
+    private dialog: MatDialog,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -82,5 +87,21 @@ export class EventDetailsComponent implements OnInit, OnChanges {
       this.joinedEvent.emit(invitation);
       this.loadEvent();
     });
+  }
+
+  deleteEvent(): void {
+    const dialogRef = this.dialog.open(ConfirmPopupComponent, {
+    });
+
+    dialogRef.afterClosed().pipe(
+      filter(res => res),
+      mergeMap(deleteConfirmResult => this.apiService.deleteEvent(this.eventId))
+    ).subscribe(event => {
+      this.router.navigate(['/events']);
+    });
+  }
+
+  editEvent(): void {
+    
   }
 }

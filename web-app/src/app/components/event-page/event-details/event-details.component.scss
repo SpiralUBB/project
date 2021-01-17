@@ -12,7 +12,6 @@
 
 .mat-icon {
   font-size: 20px;
-  margin-right: 8px;
 }
 
 .icon-with-text {
@@ -45,6 +44,7 @@
 
   .mat-icon {
     margin-right: 8px;
+    font-size: 24px;
   }
 }
 
@@ -79,12 +79,12 @@
 
 .edit-button {
   position: absolute;
-  right: -8px;
+  right: 124px;
   bottom: -24px;
 }
 
 .delete-button {
   position: absolute;
-  right: -8px;
-  bottom: 48px;
+  right: 40px;
+  bottom: -24px;
 }

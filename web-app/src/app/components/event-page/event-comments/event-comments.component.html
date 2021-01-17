@@ -1,4 +1,4 @@
-<div class="comments-list">
+<div class="comments-list" *ngIf="comments">
   <mat-card *ngIf="isLoggedIn">
     <mat-card-content>
       <form class="comment-form">
@@ -30,7 +30,7 @@
 
   <app-comment-card
     [comment]="comment"
-    [username]="user.username"
+    [username]="user?.username"
     (deleteString)="deleteComment($event)"
     *ngFor="let comment of comments"
   ></app-comment-card>

@@ -11,7 +11,7 @@ import { User } from 'src/app/models/user';
 export class EventCommentsComponent implements OnInit {
   @Input() comment = '';
   @Input() eventId: string;
-  public comments: AppComment[];
+  public comments: AppComment[] = [];
   public user: User;
   isLoggedIn: boolean;
 
@@ -28,8 +28,9 @@ export class EventCommentsComponent implements OnInit {
   }
 
   private getComments(): void {
-    this.apiService.getComments(this.eventId).subscribe((components) => {
-      this.comments = Object.values(components.items);
+    this.apiService.getComments(this.eventId).subscribe((comments) => {
+      console.log(comments.items);
+      this.comments = comments.items;
     });
   }
 

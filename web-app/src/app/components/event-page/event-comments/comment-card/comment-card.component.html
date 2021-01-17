@@ -9,7 +9,7 @@
           mat-button
           color="accent"
           (click)="deleteComment()"
-          *ngIf="comment.author.username == username"
+          *ngIf="comment.author.username === username"
           disableRipple="true"
         >
           Delete

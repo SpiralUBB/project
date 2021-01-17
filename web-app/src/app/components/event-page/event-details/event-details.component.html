@@ -56,7 +56,7 @@
           {{ event.description }}
         </div>
       </div>
-      <button class="join-button" (click)="joinEvent()" *ngIf="!invitation" mat-fab color="primary">
+      <button class="join-button" (click)="joinEvent()" *ngIf="!invitation && isLoggedIn" mat-fab color="primary">
         <mat-icon>keyboard_arrow_right</mat-icon>
       </button>
       <button (click)="editEvent()" class="edit-button" *ngIf="isOwner" mat-fab color="primary">

@@ -28,11 +28,11 @@ import { EventPageComponent } from './components/event-page/event-page.component
 import { ProfileFormComponent } from './components/shared/profile-form/profile-form.component';
 import { EventCommentsComponent } from './components/event-page/event-comments/event-comments.component';
 import { CommentCardComponent } from './components/event-page/event-comments/comment-card/comment-card.component';
-import { EventParticipantsComponent } from './components/event-page/event-participants/event-participants.component';
-import { ParticipantCardComponent } from './components/event-page/event-participants/participant-card/participant-card.component';
+import { EventParticipantsSimpleComponent } from './components/event-page/event-participants-simple/event-participants-simple.component';
+import { ParticipantCardComponent } from './components/event-page/event-participants-simple/participant-card/participant-card.component';
 import { EventDetailsComponent } from './components/event-page/event-details/event-details.component';
 import { FilterPanelComponent } from './components/shared/filter-panel/filter-panel.component';
-import { ParticipantFeedbackComponent } from './components/event-page/event-participants/participant-feedback/participant-feedback.component';
+import { ParticipantFeedbackComponent } from './components/event-page/event-participants-simple/participant-feedback/participant-feedback.component';
 import { EventFormComponent } from './components/event-form/event-form.component';
 import { EventParticipantsConfirmComponent } from './components/event-page/event-participants-confirm/event-participants-confirm.component';
 import { EventParticipantConfirmCardComponent } from './components/event-page/event-participants-confirm/event-participant-confirm-card/event-participant-confirm-card.component';
@@ -64,7 +64,7 @@ import { BarRatingModule } from 'ngx-bar-rating';
     ProfileFormComponent,
     EventCommentsComponent,
     CommentCardComponent,
-    EventParticipantsComponent,
+    EventParticipantsSimpleComponent,
     ParticipantCardComponent,
     EventDetailsComponent,
     FilterPanelComponent,

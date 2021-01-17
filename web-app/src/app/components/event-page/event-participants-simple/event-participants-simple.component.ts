@@ -9,11 +9,11 @@ import { ApiService } from 'src/app/services/api.service';
 import { ParticipantFeedbackComponent } from './participant-feedback/participant-feedback.component';
 
 @Component({
-  selector: 'app-event-participants',
-  templateUrl: './event-participants.component.html',
-  styleUrls: ['./event-participants.component.scss'],
+  selector: 'app-event-participants-simple',
+  templateUrl: './event-participants-simple.component.html',
+  styleUrls: ['./event-participants-simple.component.scss'],
 })
-export class EventParticipantsComponent implements OnInit, OnChanges {
+export class EventParticipantsSimpleComponent implements OnInit, OnChanges {
   @Input() eventId: string;
   @Input() isOwner: boolean;
 

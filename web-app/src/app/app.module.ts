@@ -45,7 +45,6 @@ import { EventsUpcomingComponent} from './components/shared/events-upcoming/even
 import { EventConfirmAttendanceComponent } from './components/event-page/event-confirm-attendance/event-confirm-attendance.component';
 import { EventConfirmAttendanceCardComponent } from './components/event-page/event-confirm-attendance/event-confirm-attendance-card/event-confirm-attendance-card.component';
 import { BarRatingModule } from "ngx-bar-rating";
-import { LocationComponent } from './components/event-form/location/location.component';
 
 @NgModule({
   declarations: [
@@ -81,7 +80,6 @@ import { LocationComponent } from './components/event-form/location/location.com
     EventsUpcomingComponent,
     EventConfirmAttendanceComponent,
     EventConfirmAttendanceCardComponent,
-    LocationComponent,
   ],
   imports: [
     CommonModule,

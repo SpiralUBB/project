@@ -47,7 +47,7 @@ class Event(Document):
     location_point = PointField()
     start_time = DateTimeField(required=True)
     end_time = DateTimeField(required=True)
-    no_participants = IntField(min_value=0, default=0)
+    no_participants = IntField(default=0)
     no_max_participants = IntField(min_value=0, default=0)
     description = StringField(required=True)
     min_trust_level = IntField(min_value=0, default=0)

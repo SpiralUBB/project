@@ -187,7 +187,6 @@ export class EventFormComponent implements OnInit {
   }
 
   onMapReady(leafletMap: Map): void {
-    console.log('map ready');
     leafletMap.on('click', <LeafletMouseEvent>(e) => {
       this.eventForm.patchValue({
         x: e.latlng.lat,

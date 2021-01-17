@@ -19,7 +19,6 @@ export class CommentCardComponent implements OnInit {
   ngOnInit(): void {}
 
   deleteComment(): void {
-    console.log(this.comment.id);
     this.deleteString.emit(this.comment.id);
   }
 }

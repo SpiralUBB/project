@@ -25,15 +25,11 @@ export class HttpErrorInterceptorService implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         let errorMsg = '';
         if (error.error instanceof ErrorEvent) {
-          console.log('this is client side error');
           errorMsg = `Error: ${error.error.message}`;
         } else {
-          console.log('this is server side error');
           errorMsg = `Error Code: ${error.status},  Message: ${error.message}`;
         }
-        console.log(errorMsg);
         const backendCustomError = error.error;
-        console.log(backendCustomError);
         errorMsg = errorMsg.concat(`\n${backendCustomError.code}\n${backendCustomError.message}`);
         const snackBarRef = this.snackbar.open(errorMsg, null, {
           duration: 5000,

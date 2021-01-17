@@ -21,7 +21,6 @@ export class EventListComponent implements OnInit {
   }
 
   onFilterProps(data: any): void {
-    console.log('onFilterProps');
     const categories = data.eventsTypeFilter;
     const startDate = data.eventsDateFilter.startDate;
     const endDate = data.eventsDateFilter.endDate;

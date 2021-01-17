@@ -22,13 +22,11 @@ export class EventCommentsComponent implements OnInit {
   }
 
   public deleteComment(commentId: string): void {
-    console.log(commentId);
     this.apiService.deleteComment(this.eventId, commentId).subscribe(() => this.getComments());
   }
 
   private getComments(): void {
     this.apiService.getComments(this.eventId).subscribe((components) => {
-      console.log(components);
       this.comments = Object.values(components.items);
     });
   }

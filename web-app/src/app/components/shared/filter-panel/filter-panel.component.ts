@@ -52,13 +52,11 @@ export class FilterPanelComponent implements OnInit {
   // }
 
   filterEvents(): void {
-    console.log('filterEvents');
     let supportTypeFilter = false;
     let supportDateFilter = false;
     let startDate = '';
     let endDate = '';
 
-    console.log(this.categories);
     this.checkedCategories = this.categoriesControl.value;
 
     if (this.checkedCategories?.length > 0) {
@@ -103,7 +101,6 @@ export class FilterPanelComponent implements OnInit {
   }
 
   clearEvents(): void {
-    console.log('clearEvents');
     this.checkedCategories = [];
     this.range.value.start = null;
     this.range.value.end = null;
@@ -116,7 +113,6 @@ export class FilterPanelComponent implements OnInit {
   }
 
   deleteCategory(name: string): void {
-    console.log(name);
     for (let i = 0; i < this.checkedCategories.length; i++) {
       if (this.checkedCategories[i] === name) {
         this.checkedCategories.splice(i, 1);

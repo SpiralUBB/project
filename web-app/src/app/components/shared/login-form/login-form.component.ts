@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MatInput } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -9,6 +10,10 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./login-form.component.scss'],
 })
 export class LoginFormComponent implements OnInit {
+  formStatus: any = {
+    emailValue: '',
+    passwordValue: '',
+  };
   hasLoginError = false;
 
   constructor(
@@ -21,8 +26,14 @@ export class LoginFormComponent implements OnInit {
 
   login(username: string, password: string): void {
     this.authService.login(username, password).subscribe((res) => {
-      this.router.navigateByUrl('/app');
+      this.router.navigateByUrl('/events');
       this.dialogRef.close();
     });
+  }
+
+  submitOnEnterKey(event): void {
+    if (event.keyCode === 13) {
+      this.login(this.formStatus.emailValue, this.formStatus.passwordValue);
+    }
   }
 }

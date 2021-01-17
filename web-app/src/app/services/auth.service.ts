@@ -1,39 +1,45 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 import { User } from '../models/user';
 import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
-  private currentUserSubject: BehaviorSubject<User>;
-  public currentUser$: Observable<User>;
-  private triedToLogin = false;
+export class AuthService  {
+  private currentUserSubject = new BehaviorSubject<User>(undefined);
+  public currentUser$ = this.currentUserSubject.asObservable();
 
   constructor(private apiService: ApiService, private router: Router) {
-    this.currentUserSubject = new BehaviorSubject<User>(null);
-    this.currentUser$ = this.currentUserSubject.asObservable();
+    this.getUserData();
+  }
 
+  public getUserData(): void {
     this.apiService.getCurrentUser().subscribe((user) => {
       this.currentUserSubject.next(user);
+    }, (err) => {
+        this.currentUserSubject.next(null);
     });
   }
 
-  public isAuthenticated(): Observable<boolean> {
-    if (this.triedToLogin) {
-      return of(!!this.currentUserSubject.value);
-    } else {
-      return this.apiService.getCurrentUser().pipe(
-        tap((currentUser) => {
-          this.triedToLogin = true;
-          this.currentUserSubject.next(currentUser);
-        }),
-        map((currentUser) => !!currentUser)
-      );
-    }
+  public isLoggedIn(): Observable<boolean> {
+    return this.currentUser$.pipe(
+      filter(user => user !== undefined),
+      map(user => !!user)
+    );
+    // if (this.triedToLogin) {
+    //   return of(!!this.currentUserSubject.value);
+    // } else {
+    //   return this.apiService.getCurrentUser().pipe(
+    //     tap((currentUser) => {
+    //       this.triedToLogin = true;
+    //       this.currentUserSubject.next(currentUser);
+    //     }),
+    //     map((currentUser) => !!currentUser)
+    //   );
+    // }
   }
 
   public get currentUserValue(): User {
@@ -51,7 +57,7 @@ export class AuthService {
   logout(): void {
     this.apiService.logout().subscribe(() => {
       this.currentUserSubject.next(null);
-      this.router.navigateByUrl('/landing-page');
+      this.router.navigateByUrl('/events');
     });
   }
 }

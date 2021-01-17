@@ -42,7 +42,7 @@
       </p>
     </mat-card-content>
 
-    <mat-card-actions>
+    <mat-card-actions *ngIf="isLoggedIn">
       <button *ngIf="showJoinButton" (click)="joinEvent()" color="primary" mat-raised-button>
         Join event
       </button>

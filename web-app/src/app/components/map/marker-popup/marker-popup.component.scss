@@ -1,21 +1,10 @@
-::ng-deep mat-dialog-container {
-  padding: 0 !important;
-  // width: 90vw !important;
+::ng-deep .marker-popup-container > .mat-dialog-container {
+  background-color: transparent !important;
+  box-shadow: none;
 }
 
-.dialog {
-  position: relative;
-}
-
-.close-button {
-  //   float: right;
-  position: absolute;
-  z-index: 1000;
-  top: 15px;
-  right: 15px;
-}
-
-.event-cards {
-  overflow: auto;
-  max-height: 90vh;
+.mat-dialog-actions {
+  margin-bottom: 0;
+  display: flex;
+  justify-content: flex-end;
 }

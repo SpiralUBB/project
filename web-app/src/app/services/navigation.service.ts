@@ -12,12 +12,16 @@ export class NavigationService {
 
   constructor() {}
   menuEntries: MenuEntry[] = [
-    { title: 'Landing Page', url: '/landing-page' },
-    { title: 'All Events', url: '/app/events' },
-    { title: 'History events', url: '/app/event-history' },
-    { title: 'Upcoming events', url: '/app/event-upcoming' },
-    { title: 'Map', url: '/app/map' },
-    { title: 'Profile', url: '/app/profile' },
+    { title: 'All Events', url: '/events' },
+    { title: 'History events', url: '/event-history' },
+    { title: 'Upcoming events', url: '/event-upcoming' },
+    { title: 'Map', url: '/map' },
+    { title: 'Profile', url: '/profile' },
+  ];
+
+  visitorMenuEntries: MenuEntry[] = [
+    { title: 'All Events', url: '/events' },
+    { title: 'Map', url: '/map' },
   ];
 
   public toggleSidenav(): void {

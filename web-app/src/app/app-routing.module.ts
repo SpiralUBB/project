@@ -11,46 +11,39 @@ import { AuthGuardService } from './guards/auth-guard.service';
 import { EventsUpcomingComponent} from './components/shared/events-upcoming/events-upcoming.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/landing-page', pathMatch: 'full' },
-  { path: 'landing-page', component: LandingPageComponent },
+  { path: '', redirectTo: '/events', pathMatch: 'full' },
   {
-    path: 'app',
-    canActivate: [AuthGuardService],
-    children: [
-      {
-        path: '',
-        redirectTo: 'events',
-        pathMatch: 'full',
-      },
-      {
-        path: 'events',
-        component: EventsComponent,
-      },
-      {
-        path: 'map',
-        component: MapComponent,
-      },
-      {
-        path: 'event/:id',
-        component: EventPageComponent,
-      },
-      {
-        path: 'event-form/:id',
-        component: EventFormComponent,
-      },
-      {
-        path: 'profile',
-        component: ProfileViewComponent,
-      },
-      {
-        path: 'event-history',
-        component: EventHistoryComponent,
-      },
-      {
-        path: 'event-upcoming',
-        component: EventsUpcomingComponent,
-      },
-    ],
+    path: '',
+    redirectTo: 'events',
+    pathMatch: 'full',
+  },
+  {
+    path: 'events',
+    component: EventsComponent,
+  },
+  {
+    path: 'map',
+    component: MapComponent,
+  },
+  {
+    path: 'event/:id',
+    component: EventPageComponent,
+  },
+  {
+    path: 'event-form/:id',
+    component: EventFormComponent,
+  },
+  {
+    path: 'profile',
+    component: ProfileViewComponent,
+  },
+  {
+    path: 'event-history',
+    component: EventHistoryComponent,
+  },
+  {
+    path: 'event-upcoming',
+    component: EventsUpcomingComponent,
   },
 ];
 

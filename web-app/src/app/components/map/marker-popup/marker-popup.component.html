@@ -1,9 +1,11 @@
-<div class="dialog">
-  <button mat-icon-button class="close-button" [mat-dialog-close]="true">
-    <mat-icon class="close-icon">close</mat-icon>
+<mat-dialog-actions>
+  <button mat-mini-fab mat-dialog-close color="white">
+    <mat-icon>close</mat-icon>
   </button>
+</mat-dialog-actions>
 
+<mat-dialog-content> 
   <div class="event-cards">
-    <app-event-card *ngFor="let event of events" cdk-focus-start [event]="event"></app-event-card>
+    <app-event-card *ngFor="let event of events" [event]="event"></app-event-card>
   </div>
-</div>
+</mat-dialog-content>

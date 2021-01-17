@@ -33,6 +33,6 @@ export class ProfileViewComponent {
   }
 
   close(): void {
-    this.router.navigateByUrl('/app/events');
+    this.router.navigateByUrl('/events');
   }
 }

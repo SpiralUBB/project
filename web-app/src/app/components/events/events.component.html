@@ -1,5 +1,4 @@
-<button class="add-btn" mat-fab color="primary" (click)="openEventFormDialog()">
+<button *ngIf="isLoggedIn" class="add-btn" mat-fab color="primary" (click)="openEventFormDialog()">
   <mat-icon>add</mat-icon>
 </button>
 <app-event-list></app-event-list>
-<!--[routerLink]="['/app', 'event-form', '0']"-->

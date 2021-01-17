@@ -199,10 +199,9 @@ export class EventFormComponent implements OnInit {
 
       this.newLocationMarker = marker(latLng(e.latlng.lat, e.latlng.lng), {
         icon: icon({
-          iconSize: [25, 41],
-          iconAnchor: [13, 41],
-          iconUrl: 'leaflet/marker-icon.png',
-          shadowUrl: 'leaflet/marker-shadow.png',
+          iconSize: [21, 37],
+          iconAnchor: [10, 37],
+          iconUrl: 'assets/pin.svg',
         }),
       });
 

@@ -8,6 +8,7 @@ import { User } from '../models/user';
 import { AppComment } from '../models/comment.interface';
 import { ApiResponse } from '../models/api-response.interface';
 import { Invitation } from '../models/invitation.interface';
+import { retry } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
@@ -15,7 +16,7 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   login(user: LoginUser): Observable<User> {
-    return this.http.post<User>('/user/login', user);
+    return this.http.post<User>('/user/login', user).pipe(retry(3));
   }
 
   getCurrentUser(): Observable<User> {

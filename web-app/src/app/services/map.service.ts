@@ -75,10 +75,9 @@ export class MapService {
       locationEvents.forEach((events, locationPoints) => {
         const m = marker(latLng(events[0].locationPoints[0], events[0].locationPoints[1]), {
           icon: icon({
-            iconSize: [25, 41],
-            iconAnchor: [13, 41],
-            iconUrl: 'leaflet/marker-icon.png',
-            shadowUrl: 'leaflet/marker-shadow.png',
+            iconSize: [21, 37],
+            iconAnchor: [10, 37],
+            iconUrl: 'assets/pin.svg',
           }),
         }).on('click', (e) => this.openEventCard(events));
 
@@ -100,6 +99,7 @@ export class MapService {
       this.dialog.open(MarkerPopupComponent, {
         data: { events },
         width: '765px',
+        panelClass: 'marker-popup-container',
       });
     });
   }

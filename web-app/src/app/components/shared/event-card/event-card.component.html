@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card (click)="onCardClick()" matRipple>
   <mat-card-header class="event-header">
     <mat-card-title>{{ event.title }}</mat-card-title>
     <mat-card-subtitle class="icon-with-text">
@@ -15,10 +15,4 @@
   <mat-card-content>
     {{ event.description | slice: 0:250 }}
   </mat-card-content>
-
-  <mat-card-actions>
-    <button color="primary" [routerLink]="['/app', 'event', event.id]" mat-button>
-      View Event
-    </button>
-  </mat-card-actions>
 </mat-card>

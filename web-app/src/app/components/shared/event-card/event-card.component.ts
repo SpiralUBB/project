@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AppEvent } from 'src/app/models/app-event.interface';
 
 @Component({
@@ -9,7 +10,13 @@ import { AppEvent } from 'src/app/models/app-event.interface';
 export class EventCardComponent implements OnInit {
   @Input() event: AppEvent;
 
-  constructor() {}
+  constructor(private router: Router) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
+  
+  onCardClick(): void {
+    setTimeout(() => {
+      this.router.navigate(['/event', this.event.id]);
+    }, 150);
+  }
 }

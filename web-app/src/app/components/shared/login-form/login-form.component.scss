@@ -1,27 +1,11 @@
-.login-form {
-  min-width: 150px;
-  max-width: 300px;
+.full-width {
   width: 100%;
 }
 
-.login-full-width {
-  width: 100%;
+.mat-form-field {
+  margin-bottom: 16px;
 }
 
-.login-container {
-  max-width: 300px;
-}
-
-.buttons-container {
-  overflow: auto;
-}
-
-.login-button {
-  float: left;
-  margin-right: 10px;
-}
-
-.cancel-button {
-  float: right;
-  margin-right: 20px;
+:host ::ng-deep .mat-dialog-content {
+  overflow: hidden;
 }

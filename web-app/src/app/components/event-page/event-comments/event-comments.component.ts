@@ -13,11 +13,13 @@ export class EventCommentsComponent implements OnInit {
   @Input() eventId: string;
   public comments: AppComment[];
   public user: User;
+  isLoggedIn: boolean;
 
   constructor(private apiService: ApiService, public authService: AuthService) {}
 
   ngOnInit(): void {
     this.getComments();
+    this.authService.isLoggedIn().subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
     this.authService.currentUser$.subscribe((user) => (this.user = user));
   }
 

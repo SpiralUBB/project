@@ -4,6 +4,7 @@ import { take } from 'rxjs/operators';
 import { AppEvent } from 'src/app/models/app-event.interface';
 import { Invitation } from 'src/app/models/invitation.interface';
 import { ApiService } from 'src/app/services/api.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { MapService } from 'src/app/services/map.service';
 
 @Component({
@@ -18,10 +19,13 @@ export class EventDetailsComponent implements OnInit, OnChanges {
   @Output() joinedEvent = new EventEmitter<Invitation>();
   appEvent: AppEvent;
   selectedEventMarker: Marker | Circle;
+  isLoggedIn: boolean;
 
-  constructor(private apiService: ApiService, public mapService: MapService) {}
+  constructor(private apiService: ApiService, public mapService: MapService, private authService: AuthService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.authService.isLoggedIn().subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
+  }
 
   ngOnChanges(): void {
     this.loadEvent();
@@ -46,10 +50,9 @@ export class EventDetailsComponent implements OnInit, OnChanges {
     } else {
       this.selectedEventMarker = marker(markerLatLng, {
         icon: icon({
-          iconSize: [25, 41],
-          iconAnchor: [13, 41],
-          iconUrl: 'leaflet/marker-icon.png',
-          shadowUrl: 'leaflet/marker-shadow.png',
+          iconSize: [21, 37],
+          iconAnchor: [10, 37],
+          iconUrl: 'assets/pin.svg',
         }),
       });
     }

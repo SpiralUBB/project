@@ -35,7 +35,7 @@ export class NavbarComponent implements OnInit {
   }
 
   openProfile(): void {
-    this.router.navigateByUrl('/app/profile');
+    this.router.navigateByUrl('/profile');
   }
 
   logout(): void {

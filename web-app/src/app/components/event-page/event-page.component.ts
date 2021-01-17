@@ -6,6 +6,7 @@ import { AppEvent } from 'src/app/models/app-event.interface';
 import { Invitation } from 'src/app/models/invitation.interface';
 import { User } from 'src/app/models/user';
 import { ApiService } from 'src/app/services/api.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-event-page',
@@ -13,22 +14,26 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./event-page.component.scss'],
 })
 export class EventPageComponent implements OnInit {
-  constructor(private activatedRoute: ActivatedRoute, private apiService: ApiService) {}
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private apiService: ApiService,
+    private authService: AuthService
+  ) { }
 
-  public eventId$: Observable<string>;
-  private id: string;
-  private event: AppEvent;
-  private user: User;
+  eventId$: Observable<string>;
+  id: string;
+  event: AppEvent;
+  user: User;
+  isOwner = false;
+  isEventPast = false;
+  isEventOngoing = false;
+  isEventInFuture = false;
+  isViewer = true;
+  userInvitationType: string;
+  isLoggedIn: boolean;
 
-  private isOwner = false;
-  private isEventPast = false;
-  private isEventOngoing = false;
-  private isEventInFuture = false;
-  private isViewer = true;
-  private userInvitationType: string;
-
-  private shouldConfirmInvitations = false;
-  private shouldConfirmAttendance = false;
+  shouldConfirmInvitations = false;
+  shouldConfirmAttendance = false;
 
   ngOnInit(): void {
     // daca navighezi pe un url nou unde difera doar id-ul nu se incarca pagina noua, doar se emite o alta valoare in observable
@@ -36,6 +41,8 @@ export class EventPageComponent implements OnInit {
       filter((params) => !!params.id),
       map((params) => params.id)
     );
+
+    this.authService.isLoggedIn().subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
 
     // Ii dai subscribe aici daca ai nevoie de el in ts
     this.eventId$.subscribe((id) => {

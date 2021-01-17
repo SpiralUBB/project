@@ -102,8 +102,6 @@ export class FilterPanelComponent implements OnInit {
 
   clearEvents(): void {
     this.categoriesControl.patchValue(null);
-    // this.range.value.start = null;
-    // this.range.value.end = null;
     this.range.patchValue({
       start:null,
       end:null,

@@ -1,18 +1,14 @@
 .map {
-  width: 100%;
-
   height: 300px;
 }
 
-.full-width {
+.mat-checkbox {
+  display: block;
+}
+
+.map,
+.mat-form-field,
+.mat-checkbox {
   width: 100%;
-}
-
-.double-field-container {
-  display: flex;
   margin-top: 16px;
-}
-
-.double-field-container > :first-child {
-  margin-right: 16px;
 }

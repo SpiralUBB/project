@@ -27,9 +27,10 @@ export class EventFormComponent implements OnInit {
   eventId$: Observable<string>;
   categories: CheckBoxSelection[] = [];
   trustLevelOptions: CheckBoxSelection[] = [];
-  show = false;
+  showParticipantsLimit = false;
   mapCenter;
   newLocationMarker: Marker;
+  eventForm: FormGroup;
 
   public readonly locationPickerOptions = {
     layers: [
@@ -42,26 +43,48 @@ export class EventFormComponent implements OnInit {
     center: latLng(46.879966, -121.726909),
   };
 
-  eventForm = new FormGroup({
-    title: new FormControl('', [Validators.required]),
-    location: new FormControl('', [Validators.required]),
-    startDate: new FormControl('', [Validators.required]),
-    endDate: new FormControl('', [Validators.required]),
-    startTime: new FormControl('', [Validators.required]),
-    endTime: new FormControl('', [Validators.required]),
-    visibility: new FormControl('', [Validators.required]),
-    category: new FormControl('', [Validators.required]),
-    trustLevel: new FormControl('', [Validators.required]),
-    x: new FormControl(0, [Validators.required]),
-    y: new FormControl(0, [Validators.required]),
-    nrMaxParticipants: new FormControl(0),
-    textarea: new FormControl(''),
-  });
-
   @ViewChild('textarea')
   private textarea;
 
+  addLeadingZeros(n: number): string {
+    return (n < 10 ? '0' : '') + n;
+  }
+
+  getTimeFormat(date: Date): string {
+    return [date.getHours(), date.getMinutes()]
+      .map(this.addLeadingZeros, this)
+      .join(':');
+  }
+
+  getDateNextHour(date: Date = new Date()): Date {
+    const newDate = new Date(date);
+    newDate.setHours(date.getHours() + 1);
+    newDate.setMinutes(0);
+    return newDate;
+  }
+
   ngOnInit(): void {
+    const initialStartDate = this.getDateNextHour();
+    const initialEndDate = this.getDateNextHour(initialStartDate);
+    const initialStartTime = this.getTimeFormat(initialStartDate);
+    const initialEndTime = this.getTimeFormat(initialEndDate);
+
+    this.eventForm = new FormGroup({
+      title: new FormControl('', [Validators.required]),
+      location: new FormControl('', [Validators.required]),
+      startDate: new FormControl(initialStartDate, [Validators.required]),
+      endDate: new FormControl(initialEndDate, [Validators.required]),
+      startTime: new FormControl(initialStartTime, [Validators.required]),
+      endTime: new FormControl(initialEndTime, [Validators.required]),
+      visibility: new FormControl('public', [Validators.required]),
+      category: new FormControl('', [Validators.required]),
+      trustLevel: new FormControl('', [Validators.required]),
+      x: new FormControl(0, [Validators.required]),
+      y: new FormControl(0, [Validators.required]),
+      nrMaxParticipants: new FormControl(0),
+      textarea: new FormControl(''),
+    });
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const latitude = position.coords.latitude;
@@ -86,11 +109,11 @@ export class EventFormComponent implements OnInit {
       .subscribe((currentUser) => this.addTrustLevelOptions(currentUser.trustLevel));
   }
 
-  addEventsCategories(categroiesType: any): void {
-    Object.keys(categroiesType).forEach((key) => {
+  addEventsCategories(categoriesType: any): void {
+    Object.keys(categoriesType).forEach((key) => {
       const category = {
         value: key,
-        viewValue: categroiesType[key],
+        viewValue: categoriesType[key],
       };
       this.categories.push(category);
     });
@@ -113,17 +136,7 @@ export class EventFormComponent implements OnInit {
   }
 
   onChangeMaxNrParticipants(): void {
-    this.show = !this.show;
-  }
-
-  onMouseOver(): void {
-    if (this.textarea.nativeElement !== document.activeElement) {
-      this.textarea.nativeElement.style.border = '2px solid black';
-    }
-  }
-
-  onMouseLeave(): void {
-    this.textarea.nativeElement.style.border = '1px solid rgb(128, 128, 128)';
+    this.showParticipantsLimit = !this.showParticipantsLimit;
   }
 
   addHoursMinsToDate(date: any, hoursMins: string): string {
@@ -154,10 +167,6 @@ export class EventFormComponent implements OnInit {
           this.eventForm.value.endDate,
           this.eventForm.value.endTime
         ),
-        // startTime:
-        //   this.eventForm.value.startDate + 'T' + this.eventForm.value.startTime,
-        // endTime:
-        //   this.eventForm.value.endDate + 'T' + this.eventForm.value.endTime,
       })
       .subscribe(() => {
         this.dialog.close();

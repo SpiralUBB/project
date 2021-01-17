@@ -43,6 +43,6 @@ button {
   align-items: center;
 }
 
-::ng-deep .mat-form-field-wrapper {
+:host ::ng-deep .mat-form-field-wrapper {
   margin-bottom: -1.25em;
 }

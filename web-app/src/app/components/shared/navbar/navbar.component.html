@@ -1,5 +1,5 @@
-<mat-toolbar color="primary">
-  <div class="logo">
+<mat-toolbar class="mat-elevation-z2" color="primary">
+  <div class="nav">
     <button
       (click)="toggleSidenav()"
       mat-icon-button
@@ -8,9 +8,13 @@
     >
       <mat-icon>menu</mat-icon>
     </button>
+  </div>
+
+  <div class="logo">
     <span>HypΣvent</span>
   </div>
-  <div>
+
+  <div class="actions">
     <button
       *ngIf="this.isLoggedIn === false"
       (click)="openLoginDialog()"

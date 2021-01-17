@@ -6,22 +6,18 @@
   font-size: 16px;
 }
 
-.no-participants {
-  display: flex;
-}
-
-.no-participants-text {
-  margin-top: 3px;
-  margin-left: 8px;
-}
-
 .mat-card-header {
   margin-top: 16px;
 }
 
-.prop {
-  color: gray;
-  padding-bottom: 7px;
+.mat-icon {
+  font-size: 20px;
+  margin-right: 8px;
+}
+
+.icon-with-text {
+  display: flex;
+  align-items: center;
 }
 
 .card-bottom {
@@ -70,7 +66,7 @@
   }
 }
 
-::ng-deep .mat-chip .mat-icon {
+:host ::ng-deep .mat-chip .mat-icon {
   color: black;
   fill: black;
 }

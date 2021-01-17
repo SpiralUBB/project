@@ -22,7 +22,7 @@ export class EventDetailsComponent implements OnInit, OnChanges {
   @Input() invitationStatus: string;
   @Input() isOwner: boolean;
   @Output() joinedEvent = new EventEmitter<Invitation>();
-  appEvent: AppEvent;
+  event: AppEvent;
   selectedEventMarker: Marker | Circle;
   isLoggedIn: boolean;
   invitation: Invitation;
@@ -79,7 +79,7 @@ export class EventDetailsComponent implements OnInit, OnChanges {
 
     this.mapService.map.zoom = 14;
     this.mapService.map.center = markerLatLng;
-    this.appEvent = res;
+    this.event = res;
   }
 
   joinEvent(): void {

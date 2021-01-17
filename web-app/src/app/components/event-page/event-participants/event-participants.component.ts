@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { ApiResponse } from 'src/app/models/api-response.interface';
-import { Invitation } from 'src/app/models/invitaion.interface';
+import { Invitation } from 'src/app/models/invitation.interface';
 import { User } from 'src/app/models/user';
 import { ApiService } from 'src/app/services/api.service';
 import { ParticipantFeedbackComponent } from './participant-feedback/participant-feedback.component';

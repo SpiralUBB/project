@@ -49,7 +49,7 @@ const routes: Routes = [
       {
         path: 'event-upcoming',
         component: EventsUpcomingComponent,
-      }
+      },
     ],
   },
 ];

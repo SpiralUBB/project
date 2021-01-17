@@ -1,14 +1,8 @@
+import { User } from './user';
+
 export interface AppComment {
   id: string;
   text: string;
-  author: Author;
+  author: User;
   time: string;
-}
-
-export interface Author {
-  firstName: string;
-  lastName: string;
-  points: number;
-  trustLevel: number;
-  username: string;
 }

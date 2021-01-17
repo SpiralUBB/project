@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { Invitation } from 'src/app/models/invitaion.interface';
+import { Invitation } from 'src/app/models/invitation.interface';
 import { ApiService } from 'src/app/services/api.service';
 
 @Component({
@@ -30,8 +30,8 @@ export class EventParticipantsConfirmComponent implements OnInit {
     });
   }
 
-  patchInvitaion(data: any): void {
-    this.apiService.patchInvitationStatus(this.eventId, data.invitaionId, data.status).subscribe(
+  patchInvitation(data: any): void {
+    this.apiService.patchInvitationStatus(this.eventId, data.invitationId, data.status).subscribe(
       () => {
         this.loadInvitations();
       }

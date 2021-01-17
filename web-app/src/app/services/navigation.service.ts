@@ -15,7 +15,7 @@ export class NavigationService {
     { title: 'Landing Page', url: '/landing-page' },
     { title: 'All Events', url: '/app/events' },
     { title: 'History events', url: '/app/event-history' },
-    { title: 'Upcoming events', url: '/app/event-upcoming'},
+    { title: 'Upcoming events', url: '/app/event-upcoming' },
     { title: 'Map', url: '/app/map' },
   ];
 

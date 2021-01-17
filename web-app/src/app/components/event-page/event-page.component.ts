@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import { AppEvent } from 'src/app/models/app-event.interface';
-import { Invitation } from 'src/app/models/invitaion.interface';
+import { Invitation } from 'src/app/models/invitation.interface';
 import { User } from 'src/app/models/user';
 import { ApiService } from 'src/app/services/api.service';
 
@@ -55,7 +55,6 @@ export class EventPageComponent implements OnInit {
         switchMap((user: User) => {
           this.user = user;
           this.isOwner = this.user.username === this.event.owner.username;
-          debugger;
           this.shouldConfirmInvitations = this.isOwner && this.isEventInFuture && this.event.visibility === 2;
           this.shouldConfirmAttendance = this.isOwner && ( this.isEventOngoing || this.isEventPast );
           return this.apiService.getEventInvitationForUser(this.id);

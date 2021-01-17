@@ -53,14 +53,17 @@ export class MapService {
       const whiteListedEvents = new Map();
       Object.values(this.events).forEach((event: AppEvent) => {
         if (event.isLimitedDetails) {
-          const location = String(event.locationPoints[0]) + ',' + String(event.locationPoints[1] + String(event.locationPointsRadiusMeters)); 
+          const location =
+            String(event.locationPoints[0]) +
+            ',' +
+            String(event.locationPoints[1] + String(event.locationPointsRadiusMeters));
           if (!whiteListedEvents.has(location)) {
             whiteListedEvents.set(location, []);
           }
 
           whiteListedEvents.set(location, [...whiteListedEvents.get(location), event]);
         } else {
-          const location = String(event.locationPoints[0]) + ',' + String(event.locationPoints[1]); 
+          const location = String(event.locationPoints[0]) + ',' + String(event.locationPoints[1]);
           if (!locationEvents.has(location)) {
             locationEvents.set(location, []);
           }

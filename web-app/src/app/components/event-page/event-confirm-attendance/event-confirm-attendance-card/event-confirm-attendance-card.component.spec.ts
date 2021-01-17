@@ -8,7 +8,7 @@ describe('EventConfirmAttendanceCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EventConfirmAttendanceCardComponent ]
+      declarations: [ EventConfirmAttendanceCardComponent ],
     })
     .compileComponents();
   });

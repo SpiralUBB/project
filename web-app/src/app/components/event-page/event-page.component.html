@@ -1,6 +1,11 @@
 <mat-tab-group *ngIf="eventId$ | async as idTemplate">
   <mat-tab label="Details">
-    <app-event-details (joinedEvent)="handleJoinedEvent($event)" [invitationStatus]="userInvitationType" [showJoinButton]="!isOwner && !isEventPast && isViewer" [eventId]="idTemplate"></app-event-details>
+    <app-event-details
+      (joinedEvent)="handleJoinedEvent($event)"
+      [invitationStatus]="userInvitationType"
+      [showJoinButton]="!isOwner && !isEventPast && isViewer"
+      [eventId]="idTemplate"
+    ></app-event-details>
   </mat-tab>
   <mat-tab label="Comments">
     <app-event-comments [eventId]="idTemplate"></app-event-comments>

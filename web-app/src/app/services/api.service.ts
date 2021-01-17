@@ -7,12 +7,12 @@ import { RegisterUser } from '../models/register-user.interface';
 import { User } from '../models/user';
 import { AppComment } from '../models/comment.interface';
 import { ApiResponse } from '../models/api-response.interface';
-import { Invitation } from '../models/invitaion.interface';
+import { Invitation } from '../models/invitation.interface';
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   login(user: LoginUser): Observable<User> {
     return this.http.post<User>('/user/login', user);
@@ -35,9 +35,8 @@ export class ApiService {
     startDate: string,
     endDate: string,
     own = false,
-    invitation_status = null,
-    invitation_attend_status = null,
-
+    invitationStatus = null,
+    invitationAttendStatus = null
   ): Observable<any> {
     let params: HttpParams = new HttpParams();
 
@@ -62,12 +61,12 @@ export class ApiService {
       params = params.append('date_end', endDate.toString());
     }
 
-    if (invitation_status) {
-      params = params.append('invitation_status', invitation_status);
+    if (invitationStatus) {
+      params = params.append('invitation_status', invitationStatus);
     }
-    
-    if (invitation_attend_status) {
-      params = params.append('invitation_attend_status', invitation_attend_status);
+
+    if (invitationAttendStatus) {
+      params = params.append('invitation_attend_status', invitationAttendStatus);
     }
 
     return this.http.get<any>('/events', { params });
@@ -113,17 +112,33 @@ export class ApiService {
     return this.http.put<Invitation>(`/events/${eventId}/invitation`, {});
   }
 
-  patchInvitationStatus(eventId: string, invitationId: string, invitaitonStatus: string) {
-    return this.http.patch<any>(`/events/${eventId}/invitations/${invitationId}`, {status: invitaitonStatus});
+  patchInvitationStatus(
+    eventId: string,
+    invitationId: string,
+    invitationStatus: string
+  ): Observable<Invitation> {
+    return this.http.patch<any>(`/events/${eventId}/invitations/${invitationId}`, {
+      status: invitationStatus,
+    });
   }
 
-  patchAttendenceStatus(eventId: string, invitationId: string, attStatus: string) {
-    return this.http.patch<any>(`/events/${eventId}/invitations/${invitationId}`, {attend_status: attStatus});
+  patchAttendanceStatus(
+    eventId: string,
+    invitationId: string,
+    attendStatus: string
+  ): Observable<Invitation> {
+    return this.http.patch<any>(`/events/${eventId}/invitations/${invitationId}`, {
+      attend_status: attendStatus,
+    });
   }
-  
-  putFeedback(username: string, eventId: string, points: number, message: string) {
-    const params: HttpParams = new HttpParams().set("to_user", username).set("event_id", eventId);
-    return this.http.put<any>("/feedbacks", {points, message}, {params});
+
+  putFeedback(
+    username: string,
+    eventId: string,
+    points: number,
+    message: string
+  ): Observable<void> {
+    const params: HttpParams = new HttpParams().set('to_user', username).set('event_id', eventId);
+    return this.http.put<any>('/feedbacks', { points, message }, { params });
   }
-  
 }

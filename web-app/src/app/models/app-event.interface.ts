@@ -1,6 +1,5 @@
-import { User } from "./user";
+import { User } from './user';
 
-// Cause Event already exists in angular
 export interface AppEvent {
   id: string;
   category: number;
@@ -9,7 +8,7 @@ export interface AppEvent {
   endTime: string;
   title: string;
   description: string;
-  owner: EventOwner;
+  owner: User;
   visibility: number;
   visibilityText: string;
   location?: string;
@@ -19,12 +18,4 @@ export interface AppEvent {
   locationPointsRadiusMeters?: number;
   noMaxParticipants: number;
   noParticipants?: number;
-}
-
-export interface EventOwner {
-  firstName: string;
-  lastName: string;
-  username: string;
-  points: number;
-  trustLevel: number;
 }

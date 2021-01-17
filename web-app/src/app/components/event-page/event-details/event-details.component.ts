@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angu
 import { circle, Circle, icon, latLng, marker, Marker } from 'leaflet';
 import { take } from 'rxjs/operators';
 import { AppEvent } from 'src/app/models/app-event.interface';
-import { Invitation } from 'src/app/models/invitaion.interface';
+import { Invitation } from 'src/app/models/invitation.interface';
 import { ApiService } from 'src/app/services/api.service';
 import { MapService } from 'src/app/services/map.service';
 

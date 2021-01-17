@@ -1,6 +1,5 @@
 <mat-card>
   <mat-card-content>
-
     <form class="comment-form">
       <mat-form-field class="comment-input">
         <mat-label>Leave a comment</mat-label>
@@ -18,16 +17,16 @@
       </mat-form-field>
 
       <div class="send-btn-container">
-        <button class="send-btn" mat-raised-button color="primary" (click)="sendComment()">Comment</button>
+        <button class="send-btn" mat-raised-button color="primary" (click)="sendComment()">
+          Comment
+        </button>
       </div>
     </form>
   </mat-card-content>
 </mat-card>
 
 <mat-card *ngIf="!comments?.length">
-  <mat-card-header>
-    No content
-  </mat-card-header>
+  <mat-card-header>No content</mat-card-header>
 </mat-card>
 
 <div class="comment-wrapper" *ngFor="let comment of comments">

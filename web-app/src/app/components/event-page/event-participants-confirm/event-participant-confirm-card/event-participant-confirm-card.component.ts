@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Invitation } from 'src/app/models/invitaion.interface';
+import { Invitation } from 'src/app/models/invitation.interface';
 import { User } from 'src/app/models/user';
 import { ApiService } from 'src/app/services/api.service';
 
@@ -15,17 +15,17 @@ export class EventParticipantConfirmCardComponent {
   constructor(private apiService: ApiService) {}
 
   acceptInvitation(): void {
-    let data = {
-      invitaionId: this.invitation.id,
-      status: "accepted"
+    const data = {
+      invitationId: this.invitation.id,
+      status: 'accepted',
     };
     this.patchInvitation.emit(data);
   }
 
   declineInvitation(): void {
-    let data = {
-      invitaionId: this.invitation.id,
-      status: "denied"
+    const data = {
+      invitationId: this.invitation.id,
+      status: 'denied',
     };
     this.patchInvitation.emit(data);
   }

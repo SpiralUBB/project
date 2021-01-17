@@ -11,9 +11,9 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./participant-feedback.component.scss'],
 })
 export class ParticipantFeedbackComponent {
-  rateFirstQuestion: number = 3;
-  rateSecondQuestion: number = 3;
-  rateThirdQuestion: number = 3;
+  rateFirstQuestion = 3;
+  rateSecondQuestion = 3;
+  rateThirdQuestion = 3;
   textareaInput: string;
 
 
@@ -23,10 +23,10 @@ export class ParticipantFeedbackComponent {
     @Inject(MAT_DIALOG_DATA) public data: {user: User, eventId: string}
     ) {}
 
-    submitFeedback() {
+    submitFeedback(): void {
       this.apiService.putFeedback(
-        this.data.user.username, 
-        this.data.eventId, 
+        this.data.user.username,
+        this.data.eventId,
         this.rateFirstQuestion + this.rateSecondQuestion + this.rateThirdQuestion - 9,
         this.textareaInput).subscribe();
     }

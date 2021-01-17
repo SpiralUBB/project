@@ -8,7 +8,7 @@ import { DatePipe, formatDate } from '@angular/common';
 @Component({
   selector: 'app-events-upcoming',
   templateUrl: './events-upcoming.component.html',
-  styleUrls: ['./events-upcoming.component.scss']
+  styleUrls: ['./events-upcoming.component.scss'],
 })
 export class EventsUpcomingComponent implements OnInit {
   eventsCreatedFuture: AppEvent[] = [];

@@ -1,17 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Invitation } from 'src/app/models/invitaion.interface';
+import { Invitation } from 'src/app/models/invitation.interface';
 import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-event-confirm-attendance',
   templateUrl: './event-confirm-attendance.component.html',
-  styleUrls: ['./event-confirm-attendance.component.scss']
+  styleUrls: ['./event-confirm-attendance.component.scss'],
 })
 export class EventConfirmAttendanceComponent implements OnInit {
 
   @Input() eventId: string;
   invitations: Invitation[] = [];
-  
+
   constructor(private apiService: ApiService) { }
 
   ngOnInit(): void {
@@ -31,12 +31,12 @@ export class EventConfirmAttendanceComponent implements OnInit {
     });
   }
 
-  patchInvitaion(data: any): void {
-    this.apiService.patchAttendenceStatus(this.eventId, data.invitaionId, data.status).subscribe(
+  patchInvitation(data: any): void {
+    this.apiService.patchAttendanceStatus(this.eventId, data.invitationId, data.status).subscribe(
       () => {
         this.loadInvitations();
       }
-    )
+    );
   }
 
 }

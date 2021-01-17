@@ -25,7 +25,7 @@ export class EventHistoryComponent implements OnInit {
         [],
         null,
         this.datePipe.transform(new Date(), 'yyyy-MM-dd'),
-        true,
+        true
       )
       .subscribe((eventsRes) => {
         Object.keys(eventsRes.items).forEach((key) => {

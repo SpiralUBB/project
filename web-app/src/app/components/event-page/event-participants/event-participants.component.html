@@ -1,4 +1,8 @@
 <div class="participants-list">
-  <app-participant-card *ngFor="let user of participants" [user]="user" [canLeaveFeedback]="isOwner" [eventId]="eventId">
-  </app-participant-card>
+  <app-participant-card
+    *ngFor="let user of participants"
+    [user]="user"
+    [canLeaveFeedback]="isOwner"
+    [eventId]="eventId"
+  ></app-participant-card>
 </div>

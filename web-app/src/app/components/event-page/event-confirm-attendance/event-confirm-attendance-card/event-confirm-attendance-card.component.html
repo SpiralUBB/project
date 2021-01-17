@@ -1,17 +1,19 @@
 <mat-card>
-    <mat-card-content>
-      <div>
-        <mat-card-title>{{ invitation.user.firstName }} {{invitation.user.lastName}}</mat-card-title>
-        <mat-card-subtitle>Level {{invitation.user.trustLevel}}</mat-card-subtitle>
-      </div>
+  <mat-card-content>
+    <div>
+      <mat-card-title>
+        {{ invitation.user.firstName }} {{ invitation.user.lastName }}
+      </mat-card-title>
+      <mat-card-subtitle>Level {{ invitation.user.trustLevel }}</mat-card-subtitle>
+    </div>
 
-      <div *ngIf="!shouldDisplayStatus">
-        <button mat-icon-button (click)="confirmAttendence()"><mat-icon>check</mat-icon></button>
-        <button mat-icon-button  (click)="declineAttendence()"><mat-icon>clear</mat-icon></button>
-      </div>
+    <div *ngIf="!shouldDisplayStatus">
+      <button mat-icon-button (click)="confirmAttendance()"><mat-icon>check</mat-icon></button>
+      <button mat-icon-button (click)="declineAttendance()"><mat-icon>clear</mat-icon></button>
+    </div>
 
-      <div *ngIf="shouldDisplayStatus">
-          {{invitation.attendStatusText}}
-      </div>
-    </mat-card-content>
-  </mat-card>
+    <div *ngIf="shouldDisplayStatus">
+      {{ invitation.attendStatusText }}
+    </div>
+  </mat-card-content>
+</mat-card>

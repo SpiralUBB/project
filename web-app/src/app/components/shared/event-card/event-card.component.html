@@ -1,26 +1,26 @@
 <!-- <div class="event-card-container"> -->
-  <mat-card>
-    <mat-card-header class="event-header">
-      <mat-card-title>{{ event.title }}</mat-card-title>
-      <mat-card-subtitle class="icon-with-text">
-        <mat-icon inline="true">event</mat-icon>
-        {{ event.startTime | date:'medium' }} -
-        {{ event.endTime | date:'medium' }}
-      </mat-card-subtitle>
-      <mat-card-subtitle *ngIf="event.isLimitedDetails" class="icon-with-text">
-        <mat-icon inline="true">location_on</mat-icon>
-        {{ event.location }}
-      </mat-card-subtitle>
-    </mat-card-header>
+<mat-card>
+  <mat-card-header class="event-header">
+    <mat-card-title>{{ event.title }}</mat-card-title>
+    <mat-card-subtitle class="icon-with-text">
+      <mat-icon inline="true">event</mat-icon>
+      {{ event.startTime | date: "medium" }} -
+      {{ event.endTime | date: "medium" }}
+    </mat-card-subtitle>
+    <mat-card-subtitle *ngIf="event.isLimitedDetails" class="icon-with-text">
+      <mat-icon inline="true">location_on</mat-icon>
+      {{ event.location }}
+    </mat-card-subtitle>
+  </mat-card-header>
 
-    <mat-card-content>
-      {{ event.description | slice: 0:250 }}
-    </mat-card-content>
+  <mat-card-content>
+    {{ event.description | slice: 0:250 }}
+  </mat-card-content>
 
-    <mat-card-actions>
-      <button color="primary" [routerLink]="['/app', 'event', event.id]" mat-button>
-        View Event
-      </button>
-    </mat-card-actions>
-  </mat-card>
+  <mat-card-actions>
+    <button color="primary" [routerLink]="['/app', 'event', event.id]" mat-button>
+      View Event
+    </button>
+  </mat-card-actions>
+</mat-card>
 <!-- </div> -->

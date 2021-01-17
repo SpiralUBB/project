@@ -6,22 +6,24 @@
   font-size: 16px;
 }
 
-.no-participants {
-  display: flex;
-}
-
-.no-participants-text {
-  margin-top: 3px;
-  margin-left: 8px;
-}
-
 .mat-card-header {
   margin-top: 16px;
 }
 
 .prop {
   color: gray;
-  padding-bottom: 7px;
+  margin-bottom: 8px;
+  line-height: 20px;
+  height: 20px;
+}
+
+.prop > * {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.prop .mat-icon {
+  margin-right: 8px;
 }
 
 .card-bottom {

@@ -16,7 +16,13 @@
     <mat-card-content>
       <div class="prop">
         <mat-icon inline="true">date_range</mat-icon>
-        {{ appEvent.startTime | date: "medium" }} - {{ appEvent.endTime | date: "medium" }}
+        <span>
+          {{ appEvent.startTime | date: "medium" }} - {{ appEvent.endTime | date: "medium" }}
+        </span>
+      </div>
+      <div class="prop" *ngIf="appEvent?.visibilityText">
+        <mat-icon inline="true">visibility</mat-icon>
+        <span>{{ appEvent.visibilityText }}</span>
       </div>
       <div class="prop" *ngIf="!appEvent?.isLimitedDetails">
         <mat-icon inline="true">how_to_reg</mat-icon>
@@ -29,17 +35,18 @@
       </div>
       <div class="prop" *ngIf="!appEvent?.isLimitedDetails">
         <mat-icon inline="true">location_on</mat-icon>
-        {{ appEvent.location }}
+        <span>{{ appEvent.location }}</span>
       </div>
       <div class="prop">
         <mat-icon inline="true">category</mat-icon>
-        {{ appEvent.categoryText }}
+        <span>{{ appEvent.categoryText }}</span>
       </div>
+
       <div class="card-bottom">
         <div class="left-side">
           {{ appEvent.description }}
         </div>
-        <div *ngIf="!invitation" class="rigth-side">
+        <div *ngIf="!invitation && isLoggedIn" class="rigth-side">
           <button (click)="joinEvent()" color="primary" mat-raised-button>Join event</button>
         </div>
       </div>

@@ -165,7 +165,7 @@ def events_delete_event(event_service: EventService):
 
 
 @api.route('/<string:event_id>/comments')
-@retrieve_logged_in_user()
+@retrieve_logged_in_user(optional=True)
 @retrieve_event(EventRetrievalType.ID)
 def events_get_event_comments(event_comments_service: EventCommentService):
     event = request.event

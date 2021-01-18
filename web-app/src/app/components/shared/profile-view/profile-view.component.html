@@ -9,11 +9,6 @@
       </div>
 
       <div class="field">
-        <div class="mat-caption">Username</div>
-        <div class="mat-body">{{ user.username }}</div>
-      </div>
-
-      <div class="field">
         <div class="mat-caption">First name</div>
         <div class="mat-body">{{ user.firstName }}</div>
       </div>
@@ -34,4 +29,11 @@
       </div>
     </mat-card-content>
   </mat-card>
+
+  <div class="feedbacks-list">
+    <app-user-feedback-card
+      *ngFor="let feedback of feedbacks"
+      [feedback]="feedback"
+    ></app-user-feedback-card>
+  </div>
 </div>

@@ -43,6 +43,7 @@ import { EventsUpcomingComponent } from './components/shared/events-upcoming/eve
 import { BarRatingModule } from 'ngx-bar-rating';
 import { ConfirmPopupComponent } from './components/shared/confirm-popup/confirm-popup.component';
 import { ListService } from './services/list.service';
+import { UserFeedbackCardComponent } from "./components/shared/profile-view/user-feedback-card/user-feedback-card.component";
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { ListService } from './services/list.service';
     EventHistoryComponent,
     EventsUpcomingComponent,
     ConfirmPopupComponent,
+    UserFeedbackCardComponent,
   ],
   imports: [
     CommonModule,

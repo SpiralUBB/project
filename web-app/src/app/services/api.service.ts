@@ -9,6 +9,7 @@ import { AppComment } from '../models/comment.interface';
 import { ApiResponse } from '../models/api-response.interface';
 import { Invitation } from '../models/invitation.interface';
 import { retry } from 'rxjs/operators';
+import { UserFeedback } from '../models/user-feedback.interface';
 @Injectable({
   providedIn: 'root',
 })
@@ -21,6 +22,10 @@ export class ApiService {
 
   getCurrentUser(): Observable<User> {
     return this.http.get<User>('/user');
+  }
+
+  getUserFeedbacks(): Observable<ApiResponse<UserFeedback>> {
+    return this.http.get<any>('/user/feedbacks');
   }
 
   register(user: RegisterUser): Observable<RegisterUser> {

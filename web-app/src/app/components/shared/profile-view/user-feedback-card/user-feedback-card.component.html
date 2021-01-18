@@ -1,0 +1,25 @@
+<mat-card>
+  <mat-card-title>
+    {{ feedback.fromUser.firstName }} {{ feedback.fromUser.lastName }}
+    <ng-template [ngIf]="feedback.event">
+      @
+      {{ feedback.event.title }}
+    </ng-template>
+  </mat-card-title>
+
+  <mat-card-subtitle >
+    <div class="bar-rating-container">
+      <bar-rating
+        [(rate)]="absoluteFeedbackPoints"
+        [max]="5"
+        [theme]="'stars'"
+      ></bar-rating>
+    </div>
+  </mat-card-subtitle>
+
+  <mat-card-content>
+    <div>
+      {{ feedback.message }}
+    </div>
+  </mat-card-content>
+</mat-card>

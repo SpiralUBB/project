@@ -3,11 +3,14 @@
   padding: 8px;
 }
 
-//.mat-card-content {
-//  display: flex;
-//  flex-direction: row;
-//  justify-content: space-between;
-//}
+:host ::ng-deep .mat-card .mat-card-header-text {
+  display: none;
+}
+
+.mat-card-header {
+  display: flex;
+  justify-content: space-between;
+}
 
 .actions {
   display: flex;

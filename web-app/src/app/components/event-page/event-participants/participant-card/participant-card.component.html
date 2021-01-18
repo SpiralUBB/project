@@ -1,15 +1,24 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title>{{ invitation.user.firstName }} {{ invitation.user.lastName }}</mat-card-title>
-    <mat-card-subtitle>Level {{ invitation.user.trustLevel }}</mat-card-subtitle>
-    <button mat-icon-button color="primary" (click)="sendFeedback()" *ngIf="!this.isOwnInvitation">
-      <mat-icon>feedback</mat-icon>
-    </button>
+    <div>
+      <mat-card-title>{{ invitation.user.firstName }} {{ invitation.user.lastName }}</mat-card-title>
+      <mat-card-subtitle>Level {{ invitation.user.trustLevel }}</mat-card-subtitle>
+    </div>
+    <div>
+      <button
+        mat-icon-button
+        color="primary"
+        (click)="sendFeedback()"
+        *ngIf="!isOwnInvitation && updatedStatus == 1"
+      >
+        <mat-icon>feedback</mat-icon>
+      </button>
+    </div>
   </mat-card-header>
 
   <mat-card-content>
     <div class="actions">
-      <ng-template [ngIf]="!this.isOwnInvitation && isOwner">
+      <ng-template [ngIf]="!isOwnInvitation && isOwner">
         <mat-form-field appearance="outline">
           <mat-label>Invitation status</mat-label>
           <mat-select

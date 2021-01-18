@@ -32,7 +32,6 @@ export class ParticipantCardComponent implements OnInit {
   constructor(private dialog: MatDialog, private apiService: ApiService) {}
 
   ngOnInit(): void {
-
     this.apiService.getEventInvitationAttendStatuses().subscribe(res => {
       Object.entries(res).forEach((keyValue) => {
         this.invitationAttendStatuses.push({

@@ -186,6 +186,10 @@ export class EventFormComponent implements OnInit {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           });
+          this.geocodingService.getAddresBasedOnLocation(position.coords.latitude, position.coords.longitude).subscribe(locationName => {
+            // console.log(this.geocodingService.generateFullAddress(locationName.features[0]));
+            this.eventForm.patchValue({ location: this.geocodingService.generateShortAddress(locationName.features[0].properties) });
+          });
         });
       }
     }

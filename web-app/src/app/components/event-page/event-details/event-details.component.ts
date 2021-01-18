@@ -8,6 +8,7 @@ import { AppEvent } from 'src/app/models/app-event.interface';
 import { Invitation } from 'src/app/models/invitation.interface';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { ListService } from 'src/app/services/list.service';
 import { MapService } from 'src/app/services/map.service';
 import { EventFormComponent } from '../../event-form/event-form.component';
 import { ConfirmPopupComponent } from '../../shared/confirm-popup/confirm-popup.component';
@@ -33,7 +34,8 @@ export class EventDetailsComponent implements OnInit, OnChanges {
     public mapService: MapService,
     private authService: AuthService,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private listService: ListService
   ) {}
 
   ngOnInit(): void {
@@ -86,6 +88,7 @@ export class EventDetailsComponent implements OnInit, OnChanges {
   joinEvent(): void {
     this.apiService.joinEvent(this.eventId).subscribe((invitation) => {
       this.joinedEvent.emit(invitation);
+      this.listService.eventUpdated$.next(null);
       this.loadEvent();
     });
   }

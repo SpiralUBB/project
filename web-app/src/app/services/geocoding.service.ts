@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { retry } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
 import { GeocodingFeatureProperties } from '../models/geocoding-feature-properties.interface';
 
 @Injectable({
@@ -65,6 +64,7 @@ export class GeocodingService {
   }
 
   generateFullAddress(properties: GeocodingFeatureProperties): string {
+    console.log(properties);
     let fullAddress = properties.name;
     fullAddress += properties.street ? `, ${properties.street}` : '';
     fullAddress += properties.housenumber ? ` ${properties.housenumber}` : '';
@@ -80,7 +80,7 @@ export class GeocodingService {
     return fullAddress;
   }
 
-  getAddresBasedOnLocation(lat: number, lng: number): any {
+  getAddresBasedOnLocation(lat: number, lng: number): Observable<any> {
     const url = `https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${lng}&apiKey=1b48259b810e48ddb151889f9ea58db0`;
     return this.http.get(url);
   }

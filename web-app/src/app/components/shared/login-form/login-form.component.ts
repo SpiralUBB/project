@@ -32,7 +32,7 @@ export class LoginFormComponent implements OnInit {
       this.dialogRef.close();
     }, (err) => {
         console.log(err);
-        this.snackService.open('Failed to login. Wrong username/password');
+        this.snackService.open('Failed to login. Wrong username/password', null, {duration: 3000});
     });
   }
 

@@ -18,6 +18,9 @@ export class EventListComponent implements OnInit {
 
   ngOnInit(): void {
     const startDate = new Date().toISOString();
+    this.categories = null;
+    this.startDate = startDate;
+    this.endDate = null;
     this.getFilterEvents(null, startDate, null);
     this.listService.listUpdated$.subscribe(() => {
       this.getFilterEvents(this.categories, this.startDate, this.endDate);

@@ -12,41 +12,6 @@ from utils.errors import UserDoesNotExist, EventDoesNotExist, UserFeedbackAlread
 api = Blueprint('api_v1_feedbacks', __name__)
 
 
-@api.route('')
-@retrieve_logged_in_user()
-def feedbacks_get_feedback(user_service: UserService, event_service: EventService,
-                           event_invitation_service: EventInvitationService,
-                           user_feedback_service: UserFeedbackService):
-    username = get_jwt_identity()
-    user = user_service.find_one_by(username=username)
-    if user is None:
-        raise UserDoesNotExist()
-
-    to_user_username = request.args.get('to_user')
-    if not to_user_username:
-        raise UserDoesNotExist()
-
-    to_user = user_service.find_one_by(username=to_user_username)
-    if not to_user:
-        raise UserDoesNotExist()
-
-    event_id = request.args.get('event_id')
-    if event_id is None:
-        event = None
-    else:
-        # User must have an accepted invite to the event this feedback is tied to
-        full_details_event_ids = event_invitation_service.find_accepted_user_invitations_event_ids(user)
-        event = event_service.find_one_visible_for_user(user, event_id, full_details_event_ids)
-        if event is None:
-            raise EventDoesNotExist()
-
-    user_feedback = user_feedback_service.find_one_by(from_user=user, to_user=to_user, event=event)
-    if user_feedback is None:
-        raise UserFeedbackDoesNotExist()
-
-    return jsonify(user_feedback.to_dict(with_details=True))
-
-
 @api.route('', methods=['PUT'])
 @retrieve_logged_in_user()
 def feedbacks_put_feedback(user_service: UserService, event_service: EventService,
@@ -92,7 +57,7 @@ def feedbacks_put_feedback(user_service: UserService, event_service: EventServic
         user_feedback = user_feedback_service.find_one_by(from_user=user, to_user=to_user, event=event)
         user_feedback_service.update(user_feedback, points=points, message=message)
 
-    return jsonify(user_feedback.to_dict(with_details=True))
+    return jsonify(user_feedback.to_dict(with_to_user=True, with_event=True))
 
 
 def register_blueprint(app: Flask, prefix: str):

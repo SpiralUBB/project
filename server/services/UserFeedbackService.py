@@ -1,7 +1,7 @@
 from enum import Enum
-from typing import Union
+from typing import Union, List
 
-from mongoengine import DoesNotExist, NotUniqueError
+from mongoengine import DoesNotExist, NotUniqueError, QuerySet
 from pyee import BaseEventEmitter
 
 from models.Event import Event
@@ -48,6 +48,9 @@ class UserFeedbackService:
         self.emitter.emit(UserFeedbackServiceEvents.FEEDBACK_POINTS_UPDATED, user_feedback.to_user, old_points, points)
 
         return user_feedback
+
+    def find_by(self, *args, **kwargs):
+        return UserFeedback.objects(*args, **kwargs)
 
     def find_one_by(self, *args, **kwargs) -> Union[UserFeedback, None]:
         try:

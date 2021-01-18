@@ -1,9 +1,10 @@
 from flask import Blueprint, jsonify, request, Flask, Response
-from flask_jwt_extended import jwt_required
 
 from api.v1.helpers import retrieve_logged_in_user, set_new_tokens, unset_tokens
+from services.UserFeedbackService import UserFeedbackService
 from services.UserService import UserService
 from utils.errors import UserLoginFailed
+from utils.pagination import get_paginated_items_from_qs
 
 api = Blueprint('api_v1_user', __name__)
 
@@ -30,6 +31,16 @@ def login_post(service: UserService):
     set_new_tokens(response, username)
 
     return response
+
+
+@api.route('/feedbacks', methods=['GET'])
+@retrieve_logged_in_user()
+def feedbacks_get(user_feedback_service: UserFeedbackService):
+    user = request.user
+
+    feedbacks = user_feedback_service.find_by(to_user=user)
+
+    return jsonify(get_paginated_items_from_qs(feedbacks, with_event=True, with_from_user=True))
 
 
 @api.route('/logout', methods=['POST'])

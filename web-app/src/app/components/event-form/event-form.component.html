@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>Create an event</h2>
 
-<form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="eventForm">
   <mat-dialog-content>
     <div>
       <mat-form-field>
@@ -160,7 +160,7 @@
   </mat-dialog-content>
 
   <mat-dialog-actions>
-    <button [disabled]="!eventForm.valid" type="submit" mat-raised-button color="primary">
+    <button (click)="onSubmit()" [disabled]="!eventForm.valid" mat-raised-button color="primary">
       Submit
     </button>
   </mat-dialog-actions>

@@ -98,6 +98,9 @@ class EventInvitationService:
 
     def find_for_user_status_event_ids(self, user: User = None, statuses: List[Union[str, int]] = None,
                                        attend_statuses: List[Union[str, int]] = None):
+        if not user:
+            return []
+
         query = Q()
         query &= self.build_query_filters(user, statuses, attend_statuses)
         event_invitations = self.find_by(query)

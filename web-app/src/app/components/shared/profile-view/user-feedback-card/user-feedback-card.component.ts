@@ -12,6 +12,7 @@ export class UserFeedbackCardComponent implements OnInit {
   absoluteFeedbackPoints: number;
 
   ngOnInit(): void {
-    this.absoluteFeedbackPoints = (this.feedback.points + 6) / 12 * 5;
+    // this.absoluteFeedbackPoints = (this.feedback.points + 6) / 12 * 5;
+    this.absoluteFeedbackPoints = (this.feedback.points + 7);
   }
 }

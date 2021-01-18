@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ApiService } from 'src/app/services/api.service';
 import { ParticipantFeedbackComponent } from '../participant-feedback/participant-feedback.component';
@@ -14,10 +14,11 @@ interface SelectValue {
   templateUrl: './participant-card.component.html',
   styleUrls: ['./participant-card.component.scss'],
 })
-export class ParticipantCardComponent implements OnInit {
+export class ParticipantCardComponent implements OnInit, OnChanges {
   @Input() invitation: Invitation;
   @Input() eventId: string;
   @Input() isOwner: boolean;
+  @Input() eventStartDate: Date;
   @Input() isOwnInvitation: boolean;
 
   invitationStatuses: SelectValue[] = [];
@@ -28,6 +29,9 @@ export class ParticipantCardComponent implements OnInit {
 
   updatedAttendStatus: number | string;
   attendStatusDisabled = true;
+
+  nowTimestamp = Date.parse(new Date().toISOString());
+  startTimestamp: number;
 
   constructor(private dialog: MatDialog, private apiService: ApiService) {}
 
@@ -53,6 +57,12 @@ export class ParticipantCardComponent implements OnInit {
         this.attendStatusDisabled = false;
       });
     });
+  }
+
+  ngOnChanges(): void {
+    this.startTimestamp = Date.parse(new Date(this.eventStartDate).toISOString());
+    console.log(this.startTimestamp);
+    console.log(this.nowTimestamp);
   }
 
   onStatusChange(): void {

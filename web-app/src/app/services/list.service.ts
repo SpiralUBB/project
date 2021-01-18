@@ -6,4 +6,5 @@ export class ListService {
   constructor() {}
 
   listUpdated$ = new Subject();
+  eventUpdated$ = new Subject();
 }

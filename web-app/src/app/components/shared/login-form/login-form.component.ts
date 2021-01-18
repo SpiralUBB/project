@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatInput } from '@angular/material/input';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -19,7 +20,8 @@ export class LoginFormComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private dialogRef: MatDialogRef<LoginFormComponent>
+    private dialogRef: MatDialogRef<LoginFormComponent>,
+    private snackService: MatSnackBar
   ) {}
 
   ngOnInit(): void {}
@@ -28,6 +30,9 @@ export class LoginFormComponent implements OnInit {
     this.authService.login(username, password).subscribe((res) => {
       this.router.navigateByUrl('/events');
       this.dialogRef.close();
+    }, (err) => {
+        console.log(err);
+        this.snackService.open('Failed to login. Wrong username/password');
     });
   }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import { AppEvent } from 'src/app/models/app-event.interface';
@@ -7,6 +7,7 @@ import { Invitation } from 'src/app/models/invitation.interface';
 import { User } from 'src/app/models/user';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { ListService } from 'src/app/services/list.service';
 
 @Component({
   selector: 'app-event-page',
@@ -17,7 +18,9 @@ export class EventPageComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private apiService: ApiService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router,
+    private listService: ListService
   ) {}
 
   eventId$: Observable<string>;
@@ -39,6 +42,10 @@ export class EventPageComponent implements OnInit {
       map((params) => params.id)
     );
 
+    this.listService.eventUpdated$.subscribe(() => {
+      this.reloadEvent();
+    });
+
     this.authService.isLoggedIn().subscribe((isLoggedIn) => (this.isLoggedIn = isLoggedIn));
 
     // Ii dai subscribe aici daca ai nevoie de el in ts
@@ -56,9 +63,13 @@ export class EventPageComponent implements OnInit {
           this.compareTime(event.startTime, event.endTime);
           return this.apiService.getCurrentUser();
         }),
+        catchError((err) => {
+            this.router.navigate(['/events']);
+            return of(null);
+        }),
         switchMap((user: User) => {
           this.user = user;
-          this.isOwner = this.user.username === this.event.owner.username;
+          this.isOwner = this.user?.username === this.event?.owner.username;
 
           return this.apiService.getEventInvitationForUser(this.id);
         }),
@@ -73,6 +84,36 @@ export class EventPageComponent implements OnInit {
         })
       )
       .subscribe(() => {});
+  }
+
+  reloadEvent(): void {  
+    this.apiService.getEventById(this.id).pipe(
+      switchMap((event: AppEvent) => {
+        this.event = event;
+        this.compareTime(event.startTime, event.endTime);
+        return this.apiService.getCurrentUser();
+      }),
+      catchError((err) => {
+          this.router.navigate(['/events']);
+          return of(null);
+      }),
+      switchMap((user: User) => {
+        this.user = user;
+        this.isOwner = this.user?.username === this.event?.owner.username;
+
+        return this.apiService.getEventInvitationForUser(this.id);
+      }),
+      switchMap((value: Invitation) => {
+        this.userInvitationType = value.statusText;
+        this.isViewer = false;
+        return of([]);
+      }),
+      catchError((error: any) => {
+        this.isViewer = true;
+        return of([]);
+      })
+    )
+    .subscribe(() => {});
   }
 
   compareTime(startDate: string, endDate: string): void {

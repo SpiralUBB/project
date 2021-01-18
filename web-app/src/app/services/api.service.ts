@@ -17,7 +17,7 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   login(user: LoginUser): Observable<User> {
-    return this.http.post<User>('/user/login', user).pipe(retry(3));
+    return this.http.post<User>('/user/login', user).pipe(retry(1));
   }
 
   getCurrentUser(): Observable<User> {

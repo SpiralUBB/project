@@ -11,11 +11,12 @@
   <mat-tab label="Comments">
     <app-event-comments [eventId]="idTemplate"></app-event-comments>
   </mat-tab>
-  <mat-tab label="Participants" *ngIf="!event?.isLimitedDetails && isLoggedIn">
+  <mat-tab label="Participants" *ngIf="!event?.isLimitedDetails && isLoggedIn && user">
     <app-event-participants
       [user]="user"
       [isOwner]="isOwner"
       [eventId]="idTemplate"
+      [eventStartDate]="event.startTime"
     ></app-event-participants>
   </mat-tab>
 </mat-tab-group>

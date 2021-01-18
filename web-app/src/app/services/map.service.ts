@@ -14,7 +14,8 @@ export class MapService {
 
   public map = {
     zoom: 5,
-    center: latLng(46.879966, -121.726909),
+    // center: latLng(46.879966, -121.726909),
+    center: null,
   };
 
   public readonly options = {
@@ -24,16 +25,15 @@ export class MapService {
         attribution: '...',
       }),
     ],
-    zoom: 7,
-    center: latLng(46.879966, -121.726909),
+    zoom: 5,
+    // center: latLng(46.879966, -121.726909),
   };
 
   constructor(private apiService: ApiService, private dialog: MatDialog, private ngZone: NgZone) {
     this.initMap();
   }
 
-  initMap(): void {
-    // marker([46.879966, -121.726909]);
+  centerMap(): void {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const latitude = position.coords.latitude;
@@ -42,6 +42,18 @@ export class MapService {
         this.map.zoom = 14;
       });
     }
+  }
+
+  initMap(): void {
+    // marker([46.879966, -121.726909]);
+    // if (navigator.geolocation) {
+    //   navigator.geolocation.getCurrentPosition((position) => {
+    //     const latitude = position.coords.latitude;
+    //     const longitude = position.coords.longitude;
+    //     this.map.center = latLng(latitude, longitude);
+    //     this.map.zoom = 14;
+    //   });
+    // }
 
     this.apiService.getAllEvents().subscribe((eventsRes) => {
       Object.keys(eventsRes.items).forEach((key) => {

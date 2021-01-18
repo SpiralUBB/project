@@ -313,7 +313,12 @@ export class EventFormComponent implements OnInit {
   }
 
   onChangeNoMaxParticipants(event: any): void {
-    this.showParticipantsLimit = event.currentTarget.checked;
+    this.showParticipantsLimit = !this.showParticipantsLimit;
+    if (!this.showParticipantsLimit) {
+      this.eventForm.patchValue({
+        noMaxParticipants: 0,
+      });
+    }
   }
 
   formAsObject(): object {
@@ -339,6 +344,7 @@ export class EventFormComponent implements OnInit {
 
   onSubmitFinish(): void {
     this.listService.listUpdated$.next(null);
+    this.listService.eventUpdated$.next(null);
     this.dialog.close();
   }
 

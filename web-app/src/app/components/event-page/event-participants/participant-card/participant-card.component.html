@@ -9,7 +9,7 @@
         mat-icon-button
         color="primary"
         (click)="sendFeedback()"
-        *ngIf="!isOwnInvitation && updatedStatus == 1"
+        *ngIf="!isOwnInvitation && updatedStatus == 1 && nowTimestamp >= startTimestamp"
       >
         <mat-icon>feedback</mat-icon>
       </button>

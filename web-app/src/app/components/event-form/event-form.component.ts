@@ -13,6 +13,7 @@ import { GeocodingService } from 'src/app/services/geocoding.service';
 import { GeocodingFeatureProperties } from 'src/app/models/geocoding-feature-properties.interface';
 import { ListService } from 'src/app/services/list.service';
 import { AppEvent } from 'src/app/models/app-event.interface';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface SelectOption {
   value: number | string;
@@ -33,7 +34,8 @@ export class EventFormComponent implements OnInit {
     private geocodingService: GeocodingService,
     private listService: ListService,
     @Inject(MAT_DIALOG_DATA) public data: { event: AppEvent },
-    @Inject(LOCALE_ID) public locale: string
+    @Inject(LOCALE_ID) public locale: string,
+    private snackService: MatSnackBar,
   ) {}
 
   searchOptions: Subject<PlaceSuggestion[]> = new Subject<PlaceSuggestion[]>();
@@ -350,12 +352,22 @@ export class EventFormComponent implements OnInit {
 
   onSubmitAdd(): void {
     this.apiService.addEvent(this.formAsObject())
-      .subscribe(() => this.onSubmitFinish());
+      .subscribe(
+        () => this.onSubmitFinish(),
+        (err) => {
+          this.snackService.open(err?.error?.message ?? 'Something went wrong...', null, {duration: 4000});
+        }
+      );
   }
 
   onSubmitUpdate(): void {
     this.apiService.updateEvent(this.data.event.id, this.formAsObject())
-      .subscribe(() => this.onSubmitFinish());
+      .subscribe(
+        () => this.onSubmitFinish(),
+        (err) => {
+          this.snackService.open(err?.error?.message ?? 'Something went wrong...', null, {duration: 4000});
+        }
+    );
   }
 
   onSubmit(): void {

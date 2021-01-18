@@ -33,11 +33,6 @@ button {
   justify-content: space-between;
 }
 
-.mat-card-subtitle {
-  display: flex;
-  flex-direction: row;
-}
-
 :host ::ng-deep .mat-form-field .mat-form-field-wrapper {
   margin-bottom: -1.25em;
 }
@@ -62,5 +57,23 @@ button {
 
 .mat-card-content {
   padding: 8px;
+}
+
+
+@media (max-width: 765px) {
+  .mat-card-title {
+    display: flex;
+    flex-direction: column;
+
+    .bar-rating-container {
+      order: 2;
+      flex-direction: row;
+      justify-content: flex-start;
+    }
+
+    .feedback-form {
+      order: 1
+    }
+  }
 }
 

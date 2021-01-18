@@ -1,5 +1,4 @@
-from typing import List
-
+import arrow
 from mongoengine import Document, ReferenceField, IntField, StringField, PointField, DateTimeField, CASCADE
 
 from config import GEOGRAPHICAL_APPROXIMATION_DIGITS, GEOGRAPHICAL_APPROXIMATION_METERS
@@ -84,8 +83,8 @@ class Event(Document):
             'id': str(self.id),
             'owner': self.owner.to_dict(),
             'title': self.title,
-            'start_time': self.start_time.isoformat(),
-            'end_time': self.end_time.isoformat(),
+            'start_time': arrow.get(self.start_time).isoformat(),
+            'end_time': arrow.get(self.end_time).isoformat(),
             'description': self.description,
             'visibility': self.visibility,
             'visibility_text': event_visibility_map.to_value(self.visibility),

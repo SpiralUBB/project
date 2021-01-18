@@ -35,7 +35,7 @@ export class EventFormComponent implements OnInit {
     private listService: ListService,
     @Inject(MAT_DIALOG_DATA) public data: { event: AppEvent },
     @Inject(LOCALE_ID) public locale: string,
-    private snackService: MatSnackBar,
+    private snackService: MatSnackBar
   ) {}
 
   searchOptions: Subject<PlaceSuggestion[]> = new Subject<PlaceSuggestion[]>();

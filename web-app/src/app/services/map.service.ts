@@ -30,7 +30,7 @@ export class MapService {
   };
 
   constructor(private apiService: ApiService, private dialog: MatDialog, private ngZone: NgZone) {
-    this.initMap();
+    // this.initMap();
   }
 
   centerMap(): void {
@@ -54,6 +54,8 @@ export class MapService {
     //     this.map.zoom = 14;
     //   });
     // }
+
+    this.events = [];
 
     this.apiService.getAllEvents().subscribe((eventsRes) => {
       Object.keys(eventsRes.items).forEach((key) => {

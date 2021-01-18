@@ -45,7 +45,7 @@ export class GeocodingService {
   }
 
   generateShortAddress(properties: GeocodingFeatureProperties): string {
-    let shortAddress = properties.name;
+    let shortAddress = properties.name ?? properties.city;
 
     if (!shortAddress && properties.street && properties.housenumber) {
       // name is not set for buildings

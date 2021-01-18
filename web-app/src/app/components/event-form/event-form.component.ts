@@ -1,10 +1,10 @@
-import { Component, Inject, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, LOCALE_ID, NgZone, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { GeoJSON, icon, latLng, Map, marker, Marker, tileLayer } from "leaflet";
-import { Observable, Subject, Subscription } from 'rxjs';
-import { filter, map, take } from 'rxjs/operators';
+import { GeoJSON, icon, latLng, LatLng, LatLngLiteral, Map, Layer, LeafletMouseEvent, marker, tileLayer } from 'leaflet';
+import { Subject, Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
 import * as moment from 'moment';
 import { PlaceSuggestion } from 'src/app/models/place-suggestion.interface';
@@ -26,6 +26,7 @@ interface SelectOption {
 })
 export class EventFormComponent implements OnInit {
   constructor(
+    private zone: NgZone,
     private activatedRoute: ActivatedRoute,
     private apiService: ApiService,
     private dialog: MatDialogRef<EventFormComponent>,
@@ -33,59 +34,54 @@ export class EventFormComponent implements OnInit {
     private listService: ListService,
     @Inject(MAT_DIALOG_DATA) public data: { event: AppEvent },
     @Inject(LOCALE_ID) public locale: string
-  ) {
-    this.valueChangesSub = this.inputFieldFormControl.valueChanges.subscribe((value) => {
-      if (this.userInputTimeout) {
-        window.clearTimeout(this.userInputTimeout);
-      }
-
-      if (this.chosenOption && this.chosenOption.shortAddress === value) {
-        this.searchOptions.next(null);
-        return;
-      }
-
-      if (!value || value.length < 3) {
-        // do not need suggestions until for less than 3 letters
-        this.searchOptions.next(null);
-        return;
-      }
-
-      this.userInputTimeout = window.setTimeout(() => {
-        this.generateSuggestions(value);
-      }, 300);
-    });
-  }
+  ) {}
 
   searchOptions: Subject<PlaceSuggestion[]> = new Subject<PlaceSuggestion[]>();
-  inputFieldFormControl: FormControl = new FormControl();
   private valueChangesSub: Subscription;
   private userInputTimeout: number;
   private location: string;
   private chosenOption: PlaceSuggestion;
   private requestSub: Subscription;
 
-  map: Map;
-  eventId$: Observable<string>;
+  private map: Map = null;
+  mapZoom = 7;
+  mapCenter: LatLng = latLng({
+    lat: 0,
+    lng: 0,
+  });
+  mapCenterMarker = marker([0, 0], {
+    icon: icon({
+      iconSize: [21, 37],
+      iconAnchor: [10, 37],
+      iconUrl: 'assets/pin.svg',
+    }),
+  });
+  mapLayers: Layer[] = [
+    tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 20,
+    }),
+    this.mapCenterMarker,
+  ];
+
   categories: SelectOption[] = [];
   visibilities: SelectOption[] = [];
   trustLevelOptions: SelectOption[] = [];
   showParticipantsLimit = false;
-  mapCenter;
-  newLocationMarker: Marker;
-  eventForm: FormGroup;
-
-  public readonly locationPickerOptions = {
-    layers: [
-      tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 20,
-      }),
-    ],
-    zoom: 7,
-    center: latLng(46.879966, -121.726909),
-  };
-
-  @ViewChild('textarea')
-  private textarea;
+  eventForm = new FormGroup({
+    title: new FormControl(null, [Validators.required]),
+    location: new FormControl(null, [Validators.required]),
+    startDate: new FormControl(null, [Validators.required]),
+    endDate: new FormControl(null, [Validators.required]),
+    startTime: new FormControl(null, [Validators.required]),
+    endTime: new FormControl(null, [Validators.required]),
+    visibility: new FormControl(null, [Validators.required]),
+    category: new FormControl(null, [Validators.required]),
+    trustLevel: new FormControl(null, [Validators.required]),
+    x: new FormControl(null, [Validators.required]),
+    y: new FormControl(null, [Validators.required]),
+    noMaxParticipants: new FormControl(),
+    description: new FormControl(null, [Validators.required]),
+  });
 
   private generateSuggestions(text: string): void {
     if (this.requestSub) {
@@ -95,7 +91,7 @@ export class EventFormComponent implements OnInit {
     this.requestSub = this.geocodingService.getApiCall(text).subscribe(
       (data: GeoJSON.FeatureCollection) => {
         const placeSuggestions = data.features.map((feature) => {
-          const properties: GeocodingFeatureProperties = feature.properties as GeocodingFeatureProperties;
+          const properties = feature.properties as GeocodingFeatureProperties;
 
           return {
             shortAddress: this.geocodingService.generateShortAddress(properties),
@@ -120,9 +116,9 @@ export class EventFormComponent implements OnInit {
     return [date.getHours(), date.getMinutes()].map(this.addLeadingZeros, this).join(':');
   }
 
-  getDateNextHour(date: Date = new Date()): Date {
+  dateAddHours(date: Date = new Date(), hours: number = 0): Date {
     const newDate = new Date(date);
-    newDate.setHours(date.getHours() + 1);
+    newDate.setHours(date.getHours() + hours);
     newDate.setMinutes(0);
     newDate.setSeconds(0);
     return newDate;
@@ -143,69 +139,85 @@ export class EventFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let initialTitle: string;
-    let initialStartDate: Date;
-    let initialEndDate: Date;
-    let initialStartTime: string;
-    let initialEndTime: string;
-    let initialLocationPointsX: number;
-    let initialLocationPointsY: number;
-    let initialNoMaxParticipants: number;
-    let initialDescription: string;
+    let initialPatchData;
+    let initialLatLng;
 
     if (this.data?.event) {
-      initialTitle = this.data.event.title;
-      initialStartDate = this.utcStringToLocalDateTime(this.data.event.startTime);
-      initialEndDate = this.utcStringToLocalDateTime(this.data.event.endTime);
-      initialLocationPointsX = this.data.event.locationPoints[0];
-      initialLocationPointsY = this.data.event.locationPoints[1];
-      initialNoMaxParticipants = this.data.event.noMaxParticipants;
-      initialDescription = this.data.event.description;
+      initialPatchData = {
+        title: this.data.event.title,
+        startDate: this.utcStringToLocalDateTime(this.data.event.startTime),
+        endDate: this.utcStringToLocalDateTime(this.data.event.endTime),
+        x: this.data.event.locationPoints[0],
+        y: this.data.event.locationPoints[1],
+        noMaxParticipants: this.data.event.noMaxParticipants,
+        description: this.data.event.description,
+        location: this.data.event.location,
+      };
 
-      this.inputFieldFormControl.patchValue(this.data.event.location);
+      initialLatLng = {
+        lat: this.data.event.locationPoints[0],
+        lng: this.data.event.locationPoints[1],
+      };
+
       if (this.data.event.noMaxParticipants > 0) {
         this.showParticipantsLimit = true;
       }
     } else {
-      initialTitle = '';
-      initialStartDate = this.getDateNextHour();
-      initialEndDate = this.getDateNextHour(initialStartDate);
-      initialLocationPointsX = 0;
-      initialLocationPointsY = 0;
-      initialNoMaxParticipants = 0;
-      initialDescription = '';
+      initialPatchData = {
+        title: '',
+        startDate: this.dateAddHours(undefined, 1),
+        endDate: this.dateAddHours(undefined, 2),
+        x: 0,
+        y: 0,
+        noMaxParticipants: 0,
+        description: '',
+      };
+
+      initialLatLng = {
+        lat: 0,
+        lng: 0,
+      };
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          this.setLatLon({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        });
+      }
     }
 
-    initialStartTime = this.getTimeFormat(initialStartDate);
-    initialEndTime = this.getTimeFormat(initialEndDate);
-
-    this.eventForm = new FormGroup({
-      title: new FormControl(initialTitle, [Validators.required]),
-      startDate: new FormControl(initialStartDate, [Validators.required]),
-      endDate: new FormControl(initialEndDate, [Validators.required]),
-      startTime: new FormControl(initialStartTime, [Validators.required]),
-      endTime: new FormControl(initialEndTime, [Validators.required]),
-      visibility: new FormControl('', [Validators.required]),
-      category: new FormControl('', [Validators.required]),
-      trustLevel: new FormControl('', [Validators.required]),
-      x: new FormControl(initialLocationPointsX, [Validators.required]),
-      y: new FormControl(initialLocationPointsY, [Validators.required]),
-      nrMaxParticipants: new FormControl(initialNoMaxParticipants),
-      description: new FormControl(initialDescription, [Validators.required]),
+    Object.assign(initialPatchData, {
+      startTime: this.getTimeFormat(initialPatchData.startDate),
+      endTime: this.getTimeFormat(initialPatchData.endDate),
     });
 
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-        this.mapCenter = latLng(latitude, longitude);
-      });
-    }
+    this.eventForm.patchValue(initialPatchData);
+    this.setLatLon(initialLatLng);
 
-    this.eventId$ = this.activatedRoute.params.pipe(
-      filter((params) => !!params.id),
-      map((params) => params.id)
-    );
+    this.valueChangesSub = this.eventForm
+      .get('location')
+      .valueChanges.subscribe((value) => {
+        if (this.userInputTimeout) {
+          clearTimeout(this.userInputTimeout);
+        }
+
+        if (this.chosenOption && this.chosenOption.shortAddress === value) {
+          this.searchOptions.next(null);
+          return;
+        }
+
+        if (!value || value.length < 3) {
+          // do not need suggestions until for less than 3 letters
+          this.searchOptions.next(null);
+          return;
+        }
+
+        this.userInputTimeout = window.setTimeout(() => {
+          this.generateSuggestions(value);
+        }, 300);
+      });
 
     this.apiService
       .getCategories()
@@ -300,19 +312,19 @@ export class EventFormComponent implements OnInit {
     }
   }
 
-  onChangeMaxNrParticipants(): void {
-    this.showParticipantsLimit = !this.showParticipantsLimit;
+  onChangeNoMaxParticipants(event: any): void {
+    this.showParticipantsLimit = event.currentTarget.checked;
   }
 
-  formToObject(): object {
+  formAsObject(): object {
     return {
       title: this.eventForm.value.title,
-      location: this.location,
+      location: this.eventForm.value.location,
       description: this.eventForm.value.description,
       visibility: this.eventForm.value.visibility,
       category: this.eventForm.value.category,
       minTrustLevel: this.eventForm.value.trustLevel,
-      noMaxParticipants: this.eventForm.value.nrMaxParticipants,
+      noMaxParticipants: this.eventForm.value.noMaxParticipants,
       locationPoint: [this.eventForm.value.x, this.eventForm.value.y],
       startTime: this.addHoursMinsToDate(
         this.eventForm.value.startDate,
@@ -331,12 +343,12 @@ export class EventFormComponent implements OnInit {
   }
 
   onSubmitAdd(): void {
-    this.apiService.addEvent(this.formToObject())
+    this.apiService.addEvent(this.formAsObject())
       .subscribe(() => this.onSubmitFinish());
   }
 
   onSubmitUpdate(): void {
-    this.apiService.updateEvent(this.data.event.id, this.formToObject())
+    this.apiService.updateEvent(this.data.event.id, this.formAsObject())
       .subscribe(() => this.onSubmitFinish());
   }
 
@@ -355,62 +367,47 @@ export class EventFormComponent implements OnInit {
     }
   }
 
-  autocompleteChanged(data: any): void {
-    latLng(data.data.lat, data.data.lon);
-    this.location = data.fullAddress;
+  setLatLon(lg: LatLngLiteral): void {
+    this.mapCenter.lat = lg.lat;
+    this.mapCenter.lng = lg.lng;
+
     this.eventForm.patchValue({
-      x: data.data.lat,
-      y: data.data.lon,
+      x: lg.lat,
+      y: lg.lng,
     });
-    this.onNewLocation(data.data.lat, data.data.lon);
-  }
 
-  onNewLocation(lat, lng): void {
-    if (this.newLocationMarker) {
-      this.newLocationMarker.remove();
+    this.mapCenterMarker.setLatLng(lg);
+
+    if (this.map) {
+      this.map.panTo(lg);
     }
-    this.newLocationMarker = marker(latLng(lat, lng), {
-      icon: icon({
-        iconSize: [21, 37],
-        iconAnchor: [10, 37],
-        iconUrl: 'assets/pin.svg',
-      }),
-    });
-    this.newLocationMarker.addTo(this.map);
   }
 
-  onMapReady(leafletMap: Map): void {
-    this.map = leafletMap;
-    leafletMap.on('click', <LeafletMouseEvent>(e) => {
-      this.eventForm.patchValue({
-        x: e.latlng.lat,
-        y: e.latlng.lng,
-      });
-      this.onNewLocation(e.latlng.lat, e.latlng.lng);
-      this.updateLocationText(e.latlng.lat, e.latlng.lng);
+  autocompleteChanged(data: any): void {
+    this.setLatLon({
+      lat: data.data.lat,
+      lng: data.data.lon,
     });
   }
 
-  updateLocationText(lat: number, lng: number): void {
-    this.geocodingService.getAddresBasedOnLocation(lat, lng).subscribe((value: any) => {
-      const loc = value.features[0].properties.formatted;
-      this.location = loc;
-      this.inputFieldFormControl.patchValue(loc);
+  onMapReady(map: Map): void {
+    console.log('ready');
+    this.map = map;
+  }
 
-      // this.newLocationMarker = marker(latLng(e.latlng.lat, e.latlng.lng), {
-      //   icon: icon({
-      //     iconSize: [21, 37],
-      //     iconAnchor: [10, 37],
-      //     iconUrl: 'assets/pin.svg',
-      //   }),
-      // })
+  onMapClick(e: LeafletMouseEvent): void {
+    this.zone.run(() => {
+      this.setLatLon(e.latlng);
+      this.updateLocationText(e.latlng);
+    });
+  }
 
-      // // leafletMap
-      // this.newLocationMarker.addTo(leafletMap);
-
-      // // leafletMap.addLayer(
-      // //   [this.newLocationMarker
-      // // );
+  updateLocationText(lg: LatLngLiteral): void {
+    this.geocodingService.getAddresBasedOnLocation(lg.lat, lg.lng)
+      .subscribe((value: any) => {
+        this.eventForm.patchValue({
+          location: value.features[0].properties.formatted,
+        });
     });
   }
 }

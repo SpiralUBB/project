@@ -21,7 +21,9 @@ export class HttpErrorInterceptorService implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(req).pipe(
+    return next
+      .handle(req)
+      .pipe
       // catchError((error: HttpErrorResponse) => {
       //   let errorMsg = '';
       //   if (error.error instanceof ErrorEvent) {
@@ -36,6 +38,6 @@ export class HttpErrorInterceptorService implements HttpInterceptor {
       //   });
       //   return throwError(errorMsg);
       // })
-    ) as Observable<HttpEvent<any>>;
+      () as Observable<HttpEvent<any>>;
   }
 }

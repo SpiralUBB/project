@@ -3,9 +3,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable()
 export class ListService {
-  constructor(
+  constructor() {}
 
-  ) { }
-  
   listUpdated$ = new Subject();
 }

@@ -78,6 +78,10 @@ export class ApiService {
     return this.http.get<string[]>('/events/categories');
   }
 
+  getVisibilities(): Observable<Record<string, string>> {
+    return this.http.get<any>('/events/visibilities');
+  }
+
   logout(): Observable<any> {
     return this.http.post<any>('/user/logout', null);
   }
@@ -108,6 +112,10 @@ export class ApiService {
 
   addEvent(body: any): Observable<AppEvent> {
     return this.http.post<AppEvent>('/events', body);
+  }
+
+  updateEvent(eventId: string, body: any): Observable<AppEvent> {
+    return this.http.patch<AppEvent>(`/events/${eventId}`, body);
   }
 
   joinEvent(eventId: string): Observable<Invitation> {

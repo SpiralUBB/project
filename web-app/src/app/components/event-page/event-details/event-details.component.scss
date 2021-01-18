@@ -10,13 +10,14 @@
   margin-top: 16px;
 }
 
-.mat-icon {
-  font-size: 20px;
-}
-
 .icon-with-text {
   display: flex;
   align-items: center;
+
+  .mat-icon {
+    font-size: 20px;
+    margin-right: 8px;
+  }
 }
 
 .card-bottom {

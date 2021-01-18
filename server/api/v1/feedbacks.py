@@ -83,8 +83,8 @@ def feedbacks_put_feedback(user_service: UserService, event_service: EventServic
         if event is None:
             raise EventDoesNotExist()
 
-    points = request.args.get('points')
-    message = request.args.get('message')
+    points = request.json.get('points')
+    message = request.json.get('message')
 
     try:
         user_feedback = user_feedback_service.add(user, to_user, event, points, message)

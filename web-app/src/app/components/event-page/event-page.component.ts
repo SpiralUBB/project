@@ -58,15 +58,16 @@ export class EventPageComponent implements OnInit {
           this.id = id;
           return this.apiService.getEventById(this.id);
         }),
+        catchError((err) => {
+          this.router.navigate(['/events']);
+          return of(null);
+         }),
         switchMap((event: AppEvent) => {
           this.event = event;
           this.compareTime(event.startTime, event.endTime);
           return this.apiService.getCurrentUser();
         }),
-        catchError((err) => {
-            this.router.navigate(['/events']);
-            return of(null);
-        }),
+        
         switchMap((user: User) => {
           this.user = user;
           this.isOwner = this.user?.username === this.event?.owner.username;

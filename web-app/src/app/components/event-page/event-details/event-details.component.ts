@@ -1,9 +1,10 @@
+import { createOfflineCompileUrlResolver } from '@angular/compiler';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { circle, Circle, icon, latLng, marker, Marker } from 'leaflet';
 import { of } from 'rxjs';
-import { catchError, filter, map, mergeMap, take } from 'rxjs/operators';
+import { catchError, filter, map, mergeMap, take, tap } from 'rxjs/operators';
 import { AppEvent } from 'src/app/models/app-event.interface';
 import { Invitation } from 'src/app/models/invitation.interface';
 import { ApiService } from 'src/app/services/api.service';
@@ -61,6 +62,27 @@ export class EventDetailsComponent implements OnInit, OnChanges {
         this.setEventRes(event);
         this.invitation = invitation;
       });
+    // this.apiService
+    //   .getEventById(id ?? this.eventId)
+    //   .pipe(
+    //     tap(eventRes => this.setEventRes(eventRes)),
+    //     mergeMap((event: AppEvent) => {
+    //       let error = false;
+    //       const getInvitation$ = this.apiService.getEventInvitationForUser(event.id).pipe(
+    //         catchError(err => {
+    //           error = true;
+    //           return of(null);
+    //         })
+    //       );
+
+    //       return getInvitation$;
+    //     })
+    //   )
+    //   .subscribe((invitation) => {
+    //     this.invitation = invitation;
+    //   }, (err) => {
+    //     this.invitation = null;
+    //   });
   }
 
   setEventRes(res: AppEvent): void {

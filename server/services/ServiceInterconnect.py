@@ -1,7 +1,6 @@
-from models.Event import EVENT_VISIBILITY_PUBLIC_KEY
 from models.EventInvitation import EventInvitation, EVENT_INVITATION_STATUS_ACCEPTED_KEY, EventInvitationData, \
     EVENT_INVITATION_ATTEND_STATUS_ATTENDED_KEY
-from models.User import PredefinedPoints
+from models.User import PredefinedPoints, User
 from services.EventInvitationService import EventInvitationService
 from services.EventService import EventService
 from services.UserService import UserService
@@ -36,3 +35,6 @@ class ServiceInterconnect:
         self.user_service.add_points(event_invitation.user,
                                      old_invitation_attend_status=old_invitation_data.attend_status,
                                      new_invitation_attend_status=event_invitation.attend_status)
+
+    def on_feedback_points_updated(self, user: User, old_points: int, new_points: int):
+        self.user_service.add_points(user, new_points - old_points)

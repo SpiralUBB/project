@@ -88,14 +88,9 @@ def feedbacks_put_feedback(user_service: UserService, event_service: EventServic
 
     try:
         user_feedback = user_feedback_service.add(user, to_user, event, points, message)
-        old_points = 0
     except UserFeedbackAlreadyExists:
         user_feedback = user_feedback_service.find_one_by(from_user=user, to_user=to_user, event=event)
-        old_points = user_feedback.points
         user_feedback_service.update(user_feedback, points=points, message=message)
-
-    new_points = user_feedback.points
-    user_service.add_points(new_points - old_points)
 
     return jsonify(user_feedback.to_dict(with_details=True))
 

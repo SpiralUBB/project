@@ -2,7 +2,7 @@ from flask_injector import request
 from injector import Injector
 
 from services.UserService import UserService
-from services.UserFeedbackService import UserFeedbackService
+from services.UserFeedbackService import UserFeedbackService, UserFeedbackServiceEvents
 from services.EventService import EventService, EventServiceEvents
 from services.EventCommentService import EventCommentService
 from services.EventInvitationService import EventInvitationService, EventInvitationServiceEvents
@@ -44,6 +44,9 @@ def configure_services(binder):
                                         service_interconnect.on_event_invitation_added)
     event_invitation_service.emitter.on(EventInvitationServiceEvents.INVITATION_UPDATED,
                                         service_interconnect.on_event_invitation_updated)
+
+    user_feedback_service.emitter.on(UserFeedbackServiceEvents.FEEDBACK_POINTS_UPDATED,
+                                     service_interconnect.on_feedback_points_updated)
 
 
 services_injector = Injector([configure_services])

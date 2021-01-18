@@ -188,6 +188,9 @@ class EventService:
 
             self.validator.validate_times(start_time, end_time)
 
+            event.start_time = start_time
+            event.end_time = end_time
+
         if min_trust_level is not None:
             self.validator.validate_min_trust_level(min_trust_level, event.owner)
             event.min_trust_level = min_trust_level
